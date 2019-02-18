@@ -1,11 +1,11 @@
-package me.kingtux.tuxjsql.mysql;
+package me.kingtux.tuxjsql.sql;
 
 import me.kingtux.tuxjsql.core.Where;
 
-public class MysqlWhere implements Where {
+public class SQLWhere implements Where {
     private String where;
 
-    public MysqlWhere(String where) {
+    public SQLWhere(String where) {
         this.where = where;
     }
 

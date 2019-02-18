@@ -1,0 +1,5 @@
+mysql.properties
+.idea/
+*.iml
+target/
+*/target/

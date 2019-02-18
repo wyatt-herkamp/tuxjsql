@@ -12,4 +12,7 @@ public interface Column {
     ColumnType getType();
 
     boolean isAutoIncrement();
+
+
+    String build();
 }

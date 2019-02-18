@@ -1,14 +1,14 @@
-package me.kingtux.tuxjsql.mysql;
+package me.kingtux.tuxjsql.sql;
 
 import me.kingtux.tuxjsql.core.Column;
 import me.kingtux.tuxjsql.core.ColumnType;
 
-public class MySQLColumn implements Column {
+public class SQLColumn implements Column {
     private String name;
     private boolean unique, primary, nullable, autoIncrement;
     private ColumnType type;
 
-    public MySQLColumn(String name, boolean unique, boolean primary, boolean nullable, boolean autoIncrement, ColumnType type) {
+    public SQLColumn(String name, boolean unique, boolean primary, boolean nullable, boolean autoIncrement, ColumnType type) {
         this.name = name;
         this.unique = unique;
         this.primary = primary;
@@ -40,6 +40,20 @@ public class MySQLColumn implements Column {
     @Override
     public boolean isAutoIncrement() {
         return autoIncrement;
+    }
+
+    @Override
+    public String build() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(name);
+        builder.append(" " + getType().type());
+        builder.append(isAutoIncrement() ? " AUTO_INCREMENT" : "");
+        builder.append(isPrimary() ? " PRIMARY KEY" : "");
+        if (!isAutoIncrement()) {
+            builder.append(isNullable() ? "" : " NOT NULL");
+            builder.append(isUnique() ? " UNIQUE" : "");
+        }
+        return builder.toString();
     }
 
     @Override

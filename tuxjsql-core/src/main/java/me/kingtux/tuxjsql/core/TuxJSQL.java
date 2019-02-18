@@ -3,6 +3,9 @@ package me.kingtux.tuxjsql.core;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * I know I know static is bad. But FUCK YOU
@@ -10,10 +13,23 @@ import java.sql.Connection;
 public class TuxJSQL {
     private static Builder builder;
     private static Connection connection;
+    private static List<Table> savedTables = new ArrayList<>();
 
     private TuxJSQL() {
     }
 
+    public static void saveTable(Table table) {
+        savedTables.add(table);
+    }
+
+    public static Table getTableByName(String name) {
+        for (Table table : savedTables) {
+            if(table.getName().equalsIngoreCase(name)){
+                return table;
+            }
+        }
+        return null;
+    }
     public static Builder getBuilder() {
         if (builder == null) {
             try {
@@ -85,8 +101,12 @@ public class TuxJSQL {
         TuxJSQL.connection = connection;
     }
 
+    public static void setConnection(Properties properties) {
+        TuxJSQL.connection = getBuilder().createConnection(properties);
+    }
+
     public static enum Type {
-        MYSQL("me.kingtux.tuxjsql.mysql.MySQLBuilder");
+        SQL("me.kingtux.tuxjsql.sql.SQLBuilder");
         private String classPath;
 
         Type(String classPath) {

@@ -1,23 +1,22 @@
-package me.kingtux.tuxjsql.mysql;
+package me.kingtux.tuxjsql.sql;
 
 import me.kingtux.tuxjsql.core.SubWhereStatement;
 import me.kingtux.tuxjsql.core.Where;
-import me.kingtux.tuxjsql.core.WhereStatement;
 
 import java.util.List;
 
-public class MysqlSubWhereStatement implements SubWhereStatement {
+public class SQLSubWhereStatement implements SubWhereStatement {
     private List<Object> objects;
     private List<Object> items;
 
-    public MysqlSubWhereStatement() {
+    public SQLSubWhereStatement() {
 
     }
 
     @Override
     public SubWhereStatement start(String s, Object value) {
         objects.add(value);
-        items.add(new MysqlWhere(s));
+        items.add(new SQLWhere(s));
         return this;
     }
 
@@ -31,7 +30,7 @@ public class MysqlSubWhereStatement implements SubWhereStatement {
     public SubWhereStatement AND(String s, Object value) {
         objects.add(value);
         items.add("AND");
-        items.add(new MysqlWhere(s));
+        items.add(new SQLWhere(s));
         return this;
     }
 
@@ -47,7 +46,7 @@ public class MysqlSubWhereStatement implements SubWhereStatement {
         objects.add(value);
         items.add("OR");
 
-        items.add(new MysqlWhere(s));
+        items.add(new SQLWhere(s));
         return this;
     }
 
@@ -64,7 +63,7 @@ public class MysqlSubWhereStatement implements SubWhereStatement {
         objects.add(value);
         items.add("NOT");
 
-        items.add(new MysqlWhere(s));
+        items.add(new SQLWhere(s));
         return this;
     }
 

@@ -1,16 +1,17 @@
-package me.kingtux.tuxjsql.mysql;
+package me.kingtux.tuxjsql.sql;
 
-public enum Querie {
+public enum SQLQuery {
     INSERT("INSERT INTO %1$s (%2$s) VALUES (%3$s);"),
     SELECT("SELECT %1$s FROM %2$s"),
     WHERE("WHERE %1$s"),
     DELETE("DELETE FROM %1$s WHERE %2$s"),
-    UPDATE("UPDATE %1$s SET %2$s WHERE %3$s");
+    UPDATE("UPDATE %1$s SET %2$s WHERE %3$s"),
+    TABLE("CREATE TABLE IF NOT EXISTS %1$s (%2$s);");
 
 
     private String query;
 
-    Querie(String query) {
+    SQLQuery(String query) {
         this.query = query;
     }
 
