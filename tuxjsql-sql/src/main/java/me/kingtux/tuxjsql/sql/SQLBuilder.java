@@ -37,7 +37,7 @@ public class SQLBuilder implements Builder {
         String type = (String) properties.get("db.type");
         if (type.equalsIgnoreCase("sqlite")) {
             return createSQLConnection(new File(properties.getProperty("db.file", "db.sql")));
-        } else if (type.equalsIgnoreCase("sql")) {
+        } else if (type.equalsIgnoreCase("mysql")) {
             return createMysqlConnection(properties.getProperty("db.username"), properties.getProperty("db.password"), properties.getProperty("db.host"), properties.getProperty("db.database"));
         }
         return null;
@@ -55,8 +55,8 @@ public class SQLBuilder implements Builder {
 
     private Connection createMysqlConnection(String username, String password, String host, String database) {
         try {
-            return DriverManager.getConnection("jdbc:sql://" + host + "/" + database, username, password);
-        } catch (SQLException e) {
+            return DriverManager.getConnection("jdbc:mysql://" + host + "/" + database, username, password);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;

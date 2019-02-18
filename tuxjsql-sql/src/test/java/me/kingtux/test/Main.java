@@ -7,6 +7,7 @@ import me.kingtux.tuxjsql.core.TuxJSQL;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.sql.ResultSet;
 import java.util.Properties;
 import java.util.Random;
 
@@ -21,8 +22,11 @@ public class Main {
         Builder builder = TuxJSQL.getBuilder();
         Table table = builder.createTable("t1", builder.createColumn("id", CommonDataTypes.INT, true), builder.createColumn("name", CommonDataTypes.TEXT));
         table.createIfNotExists();
-        table.insert("name", "Value" + new Random(10).nextInt());
-        table.delete(builder.createWhere().start("id", 1));
+        table.insertAll("test");
+        ResultSet resultSet = table.select(3);
+        while(resultSet.next()){
+            System.out.println(resultSet.getString("name"));
+        }
     }
 
 
