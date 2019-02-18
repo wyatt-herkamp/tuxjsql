@@ -24,7 +24,7 @@ public class TuxJSQL {
 
     public static Table getTableByName(String name) {
         for (Table table : savedTables) {
-            if(table.getName().equalsIngoreCase(name)){
+            if(table.getName().equalsIgnoreCase(name)){
                 return table;
             }
         }

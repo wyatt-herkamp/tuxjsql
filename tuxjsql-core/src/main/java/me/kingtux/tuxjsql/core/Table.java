@@ -102,7 +102,7 @@ public interface Table {
         update(whereStatement, columns, items.toArray());
     }
 
-    void createIfNotExists();
+    Table createIfNotExists();
     void delete(WhereStatement whereStatement);
 
     public default <T> T delete(T primaryKeyValue) {

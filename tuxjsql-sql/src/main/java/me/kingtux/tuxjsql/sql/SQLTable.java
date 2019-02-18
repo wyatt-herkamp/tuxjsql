@@ -56,7 +56,7 @@ public class SQLTable implements Table {
     }
 
     @Override
-    public void createIfNotExists() {
+    public Table createIfNotExists() {
         StringBuilder builder = new StringBuilder();
         for (Column column : columns) {
             if (!builder.toString().isEmpty()) {
@@ -70,6 +70,7 @@ public class SQLTable implements Table {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return this;
     }
 
     @Override
@@ -139,6 +140,11 @@ public class SQLTable implements Table {
         } catch (SQLException e1) {
             e1.printStackTrace();
         }
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
 }
