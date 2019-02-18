@@ -10,13 +10,7 @@ public interface Builder {
 
     Table createTable(String name, List<Column> columns);
 
-    default WhereStatement createWhere() {
-        return createWhere("");
-    }
-
-    WhereStatement createWhere(String start);
-
-    WhereStatement createWhere(SubWhereStatement start);
+     WhereStatement createWhere();
 
     SubWhereStatement createSubWhere();
 
