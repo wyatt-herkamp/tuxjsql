@@ -8,7 +8,8 @@ public enum SQLQuery {
     UPDATE("UPDATE %1$s SET %2$s WHERE %3$s"),
     TABLE("CREATE TABLE IF NOT EXISTS %1$s (%2$s);"),
     MAX("SELECT MAX(%1$s) FROM %2$s"),
-    MIN("SELECT MIN(%1$s) FROM %2$s"),;
+    MIN("SELECT MIN(%1$s) FROM %2$s"),
+    DROP_TABLE("DROP TABLE %1$s");
 
 
     private String query;

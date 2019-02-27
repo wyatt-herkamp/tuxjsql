@@ -4,15 +4,13 @@ import me.kingtux.tuxjsql.core.*;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.util.List;
 import java.util.Properties;
 
 public class SQLBuilder implements Builder {
 
-
     @Override
-    public Table createTable(String name, List<Column> columns) {
-        return new SQLTable(name, columns);
+    public TableBuilder createTable() {
+        return new MySQLTableBuilder();
     }
 
     @Override
@@ -26,9 +24,10 @@ public class SQLBuilder implements Builder {
     }
 
     @Override
-    public Column createColumn(String name, ColumnType type, boolean primary, boolean nullable, boolean unqiue, boolean isAutoIncreament) {
-        return new SQLColumn(name, unqiue, primary, nullable, isAutoIncreament, type);
+    public ColumnBuilder createColumn() {
+        return new MySQLColumnBuilder();
     }
+
 
     @Override
     public Connection createConnection(Properties properties) {

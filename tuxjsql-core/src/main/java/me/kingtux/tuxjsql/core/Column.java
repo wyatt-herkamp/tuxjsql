@@ -7,12 +7,16 @@ public interface Column {
 
     boolean isPrimary();
 
+    @Deprecated
     boolean isNullable();
+
+    boolean isNotNull();
 
     ColumnType getType();
 
     boolean isAutoIncrement();
 
+    Object defaultValue();
 
     String build();
 }

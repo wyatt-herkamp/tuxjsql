@@ -61,6 +61,11 @@ public interface Table {
         insert(entry.getKey(), entry.getValue().toArray());
     }
 
+    @Deprecated
+    /**
+     * This is pretty fragile
+     * If you use please include a value for Columns with Default Values. Or this will fail
+     */
     public default void insertAll(Object... items) {
         List<Column> c = getInsertableColumns();
         if (items.length != c.size()) throw new IllegalArgumentException("Not Enough items");
@@ -68,7 +73,7 @@ public interface Table {
     }
 
     default List<Column> getInsertableColumns() {
-        return getColumns().stream().filter(c -> c.isPrimary() == false && c.isAutoIncrement() == false).collect(Collectors.toList());
+        return getColumns().stream().filter(c -> (c.isPrimary() == false && c.isAutoIncrement() == false)).collect(Collectors.toList());
     }
     default ResultSet select(WhereStatement whereStatement) {
         return select(whereStatement,getColumns());
@@ -131,4 +136,10 @@ public interface Table {
     }
 
     String getName();
+
+    void drop();
+
+    void dropColumn(Column column);
+
+    void addColumn(Column column);
 }

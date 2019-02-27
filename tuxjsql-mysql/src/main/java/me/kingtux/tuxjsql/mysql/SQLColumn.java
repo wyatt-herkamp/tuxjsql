@@ -5,16 +5,19 @@ import me.kingtux.tuxjsql.core.ColumnType;
 
 public class SQLColumn implements Column {
     private String name;
-    private boolean unique, primary, nullable, autoIncrement;
+    private boolean unique, primary, notNull, autoIncrement;
     private ColumnType type;
+    private Object defaultValue;
 
-    public SQLColumn(String name, boolean unique, boolean primary, boolean nullable, boolean autoIncrement, ColumnType type) {
+
+    SQLColumn(String name, boolean unique, boolean primary, boolean nullable, boolean autoIncrement, ColumnType type, Object defaultValue) {
         this.name = name;
         this.unique = unique;
         this.primary = primary;
-        this.nullable = nullable;
+        this.notNull = nullable;
         this.autoIncrement = autoIncrement;
         this.type = type;
+        this.defaultValue = defaultValue;
     }
 
     @Override
@@ -34,12 +37,22 @@ public class SQLColumn implements Column {
 
     @Override
     public boolean isNullable() {
-        return nullable;
+        return notNull;
+    }
+
+    @Override
+    public boolean isNotNull() {
+        return notNull;
     }
 
     @Override
     public boolean isAutoIncrement() {
         return autoIncrement;
+    }
+
+    @Override
+    public Object defaultValue() {
+        return defaultValue;
     }
 
     @Override
@@ -50,8 +63,16 @@ public class SQLColumn implements Column {
         builder.append(isAutoIncrement() ? " AUTO_INCREMENT" : "");
         builder.append(isPrimary() ? " PRIMARY KEY" : "");
         if (!isAutoIncrement()) {
-            builder.append(isNullable() ? "" : " NOT NULL");
+            builder.append(isNullable() ? " NOT NULL" : "");
             builder.append(isUnique() ? " UNIQUE" : "");
+        }
+        if (defaultValue != null) {
+            builder.append(" DEFAULT ");
+            if (defaultValue instanceof String) {
+                builder.append("'").append(defaultValue).append("'");
+            } else {
+                builder.append(defaultValue);
+            }
         }
         return builder.toString();
     }
@@ -73,5 +94,18 @@ public class SQLColumn implements Column {
         }
         builder.append(")");
         return builder.toString();
+    }
+
+    @Override
+    public String toString() {
+        return "SQLColumn{" +
+                "name='" + name + '\'' +
+                ", unique=" + unique +
+                ", primary=" + primary +
+                ", notNull=" + notNull +
+                ", autoIncrement=" + autoIncrement +
+                ", type=" + type +
+                ", defaultValue=" + defaultValue +
+                '}';
     }
 }

@@ -27,8 +27,14 @@ public interface Builder {
      * @param columns Columns you want
      * @return the Table
      */
-    Table createTable(String name, List<Column> columns);
+    default Table createTable(String name, List<Column> columns) {
+        TableBuilder tb = createTable();
+        tb.name(name);
+        columns.forEach(tb::addColumn);
+        return tb.build();
+    }
 
+    TableBuilder createTable();
     /**
      * Creates a WhereStatement
      *
@@ -115,9 +121,26 @@ public interface Builder {
         return createColumn(name, new ColumnType(type), primary, nullable, unique, autoIncrement);
     }
 
-    //
-    //
-    Column createColumn(String name, ColumnType type, boolean primary, boolean nullable, boolean unique, boolean autoIncrment);
+    /**
+     * @param name         name
+     * @param type         type
+     * @param primary      primary
+     * @param nullable     nullable
+     * @param unique       unique
+     * @param autoIncrment autoinc
+     * @return the Colulm
+     */
+    default Column createColumn(String name, ColumnType type, boolean primary, boolean nullable, boolean unique, boolean autoIncrment) {
+        return createColumn().name(name).type(type).primary(primary).notNull(nullable).unique(unique).autoIncrement(autoIncrment).build();
+    }
+
+    /**
+     * Its highly recommended you use this method for anything more than Name and Type.
+     *
+     * @return The ColumnBuilder
+     */
+    ColumnBuilder createColumn();
+
 
     /**
      * Creates a Connection from properties
