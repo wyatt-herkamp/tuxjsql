@@ -6,11 +6,11 @@
 
     <groupId>me.kingtux</groupId>
     <artifactId>tuxjsql</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
         <module>tuxjsql-core</module>
-        <module>tuxjsql-sql</module>
+        <module>tuxjsql-mysql</module>
     </modules>
     <distributionManagement>
         <repository>

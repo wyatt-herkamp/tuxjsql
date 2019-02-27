@@ -106,7 +106,7 @@ public class TuxJSQL {
     }
 
     public static enum Type {
-        SQL("me.kingtux.tuxjsql.sql.SQLBuilder");
+        MYSQL("me.kingtux.tuxjsql.mysql.SQLBuilder");
         private String classPath;
 
         Type(String classPath) {

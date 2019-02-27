@@ -1,4 +1,4 @@
-package me.kingtux.tuxjsql.sql;
+package me.kingtux.tuxjsql.mysql;
 
 import me.kingtux.tuxjsql.core.Where;
 

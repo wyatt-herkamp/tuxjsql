@@ -53,7 +53,7 @@ public interface Builder {
      * @return column
      * @see Column
      */
-    default Column createColumn(String name, ColumnType type) {
+    default Column createColumn(String name, DataType type) {
         return createColumn(name, type, false);
     }
 
@@ -66,7 +66,7 @@ public interface Builder {
      * @return the created column
      * @see Column
      */
-    default Column createColumn(String name, ColumnType type, boolean primary) {
+    default Column createColumn(String name, DataType type, boolean primary) {
         return createColumn(name, type, primary, false);
     }
 
@@ -80,7 +80,7 @@ public interface Builder {
      * @return the built column
      * @see Column
      */
-    default Column createColumn(String name, ColumnType type, boolean primary, boolean nullable) {
+    default Column createColumn(String name, DataType type, boolean primary, boolean nullable) {
         return createColumn(name, type, primary, nullable, false);
     }
 
@@ -95,7 +95,7 @@ public interface Builder {
      * @return the built column
      * @see Column
      */
-    default Column createColumn(String name, ColumnType type, boolean primary, boolean nullable, boolean unique) {
+    default Column createColumn(String name, DataType type, boolean primary, boolean nullable, boolean unique) {
         return createColumn(name, type, primary, nullable, unique, primary);
     }
 
@@ -111,7 +111,13 @@ public interface Builder {
      * @return the column
      * @see Column
      */
-    Column createColumn(String name, ColumnType type, boolean primary, boolean nullable, boolean unique, boolean autoIncrement);
+    default Column createColumn(String name, DataType type, boolean primary, boolean nullable, boolean unique, boolean autoIncrement) {
+        return createColumn(name, new ColumnType(type), primary, nullable, unique, autoIncrement);
+    }
+
+    //
+    //
+    Column createColumn(String name, ColumnType type, boolean primary, boolean nullable, boolean unique, boolean autoIncrment);
 
     /**
      * Creates a Connection from properties

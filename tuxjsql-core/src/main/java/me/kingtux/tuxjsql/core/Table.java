@@ -91,6 +91,7 @@ public interface Table {
     default Column getPrimaryColumn() {
         return getColumns().stream().filter(Column::isPrimary).findFirst().orElse(null);
     }
+
     default void update(WhereStatement whereStatement, Map<Column, Object> kv) {
         List<Column> columns = new ArrayList<>();
         List<Object> items = new ArrayList<>();
@@ -102,6 +103,21 @@ public interface Table {
         update(whereStatement, columns, items.toArray());
     }
 
+    default <T> void update(T primaryKeyValue, Map<Column, Object> kv) {
+        update(TuxJSQL.getBuilder().createWhere().start(getPrimaryColumn().getName(), primaryKeyValue), kv);
+    }
+
+    int max(Column c);
+
+    int min(Column c);
+
+    default int max(String s) {
+    return max(getColumnByName(s));
+    }
+
+    default int min(String s) {
+        return min(getColumnByName(s));
+    }
     Table createIfNotExists();
     void delete(WhereStatement whereStatement);
 

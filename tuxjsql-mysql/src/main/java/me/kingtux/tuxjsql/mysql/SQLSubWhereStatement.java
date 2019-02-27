@@ -1,35 +1,33 @@
-package me.kingtux.tuxjsql.sql;
+package me.kingtux.tuxjsql.mysql;
 
 import me.kingtux.tuxjsql.core.SubWhereStatement;
 import me.kingtux.tuxjsql.core.Where;
-import me.kingtux.tuxjsql.core.WhereStatement;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class SQLWhereStatement implements WhereStatement {
-    private List<Object> objects = new ArrayList<>();
-    private List<Object> items = new ArrayList<>();
+public class SQLSubWhereStatement implements SubWhereStatement {
+    private List<Object> objects;
+    private List<Object> items;
 
-    public SQLWhereStatement() {
+    public SQLSubWhereStatement() {
 
     }
 
     @Override
-    public WhereStatement start(String s, Object value) {
+    public SubWhereStatement start(String s, Object value) {
         objects.add(value);
         items.add(new SQLWhere(s));
         return this;
     }
 
     @Override
-    public WhereStatement start(SubWhereStatement s) {
+    public SubWhereStatement start(SubWhereStatement s) {
         items.add(s);
         return this;
     }
 
     @Override
-    public WhereStatement AND(String s, Object value) {
+    public SubWhereStatement AND(String s, Object value) {
         objects.add(value);
         items.add("AND");
         items.add(new SQLWhere(s));
@@ -37,14 +35,14 @@ public class SQLWhereStatement implements WhereStatement {
     }
 
     @Override
-    public WhereStatement AND(SubWhereStatement s) {
+    public SubWhereStatement AND(SubWhereStatement s) {
         items.add("AND");
         items.add(s);
         return this;
     }
 
     @Override
-    public WhereStatement OR(String s, Object value) {
+    public SubWhereStatement OR(String s, Object value) {
         objects.add(value);
         items.add("OR");
 
@@ -53,7 +51,7 @@ public class SQLWhereStatement implements WhereStatement {
     }
 
     @Override
-    public WhereStatement OR(SubWhereStatement s) {
+    public SubWhereStatement OR(SubWhereStatement s) {
         items.add("OR");
 
         items.add(s);
@@ -61,7 +59,7 @@ public class SQLWhereStatement implements WhereStatement {
     }
 
     @Override
-    public WhereStatement NOT(String s, Object value) {
+    public SubWhereStatement NOT(String s, Object value) {
         objects.add(value);
         items.add("NOT");
 
@@ -70,7 +68,7 @@ public class SQLWhereStatement implements WhereStatement {
     }
 
     @Override
-    public WhereStatement NOT(SubWhereStatement s) {
+    public SubWhereStatement NOT(SubWhereStatement s) {
         items.add("NOT");
         items.add(s);
         return this;
@@ -96,4 +94,5 @@ public class SQLWhereStatement implements WhereStatement {
 
         return builder.toString();
     }
+
 }

@@ -8,12 +8,12 @@
     <parent>
         <groupId>me.kingtux</groupId>
         <artifactId>tuxjsql</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>tuxjsql-sql</artifactId>
+    <artifactId>tuxjsql-mysql</artifactId>
     <version>1.0-SNAPSHOT</version>
-<description>This is the the dialect for MySQL and SQLlite</description>
+    <description>This is the the dialect for MySQL</description>
     <distributionManagement>
         <repository>
             <id>kingtux-repo</id>
@@ -65,7 +65,7 @@
         <dependency>
             <groupId>me.kingtux</groupId>
             <artifactId>tuxjsql-core</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

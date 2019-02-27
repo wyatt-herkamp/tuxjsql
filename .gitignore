@@ -1,4 +1,4 @@
-sql.properties
+mysql.properties
 .idea/
 *.iml
 target/

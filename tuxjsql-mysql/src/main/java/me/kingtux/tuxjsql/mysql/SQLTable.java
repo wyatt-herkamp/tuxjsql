@@ -1,4 +1,4 @@
-package me.kingtux.tuxjsql.sql;
+package me.kingtux.tuxjsql.mysql;
 
 import me.kingtux.tuxjsql.core.Column;
 import me.kingtux.tuxjsql.core.Table;
@@ -56,6 +56,30 @@ public class SQLTable implements Table {
     }
 
     @Override
+    public int max(Column c) {
+        int i = 0;
+        try (ResultSet resultSet = TuxJSQL.getConnection().createStatement().executeQuery(String.format(SQLQuery.MAX.getQuery(), c.getName(), name))) {
+            resultSet.next();
+            i = resultSet.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return i;
+    }
+
+    @Override
+    public int min(Column c) {
+        int i = 0;
+        try (ResultSet resultSet = TuxJSQL.getConnection().createStatement().executeQuery(String.format(SQLQuery.MIN.getQuery(), c.getName(), name))) {
+            resultSet.next();
+            i = resultSet.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return i;
+    }
+
+    @Override
     public Table createIfNotExists() {
         StringBuilder builder = new StringBuilder();
         for (Column column : columns) {
@@ -86,7 +110,6 @@ public class SQLTable implements Table {
             question.append("?");
         }
         String query = String.format(SQLQuery.INSERT.getQuery(), name, columnsToInsert.toString(), question.toString());
-        System.out.println(query);
         try (PreparedStatement preparedStatement = TuxJSQL.getConnection().prepareStatement(query)) {
             for (int i = 0; i < values.length; i++) {
                 preparedStatement.setObject(i + 1, values[i]);
@@ -111,7 +134,6 @@ public class SQLTable implements Table {
         if (whereStatement != null) {
             query += " " + String.format(SQLQuery.WHERE.getQuery(), whereStatement.build());
         }
-        System.out.println(query);
         try {
             PreparedStatement preparedStatement = TuxJSQL.getConnection().prepareStatement(query);
             if (whereStatement != null) {

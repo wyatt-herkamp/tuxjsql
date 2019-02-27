@@ -7,10 +7,10 @@
     <parent>
         <groupId>me.kingtux</groupId>
         <artifactId>tuxjsql</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>tuxjsql-core</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
     <distributionManagement>
         <repository>
             <id>kingtux-repo</id>

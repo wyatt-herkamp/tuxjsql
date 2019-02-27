@@ -1,4 +1,4 @@
-package me.kingtux.tuxjsql.sql;
+package me.kingtux.tuxjsql.mysql;
 
 import me.kingtux.tuxjsql.core.Column;
 import me.kingtux.tuxjsql.core.ColumnType;
@@ -46,7 +46,7 @@ public class SQLColumn implements Column {
     public String build() {
         StringBuilder builder = new StringBuilder();
         builder.append(name);
-        builder.append(" " + getType().type());
+        builder.append(" " + buildType());
         builder.append(isAutoIncrement() ? " AUTO_INCREMENT" : "");
         builder.append(isPrimary() ? " PRIMARY KEY" : "");
         if (!isAutoIncrement()) {
@@ -59,5 +59,19 @@ public class SQLColumn implements Column {
     @Override
     public ColumnType getType() {
         return type;
+    }
+
+    private String buildType() {
+        if (getType().getRules().size() == 0) return getType().getType().type();
+        StringBuilder builder = new StringBuilder(getType().getType().type());
+        builder.append("(");
+        for (String s : getType().getRules()) {
+            if (!builder.toString().endsWith("(")) {
+                builder.append(",");
+            }
+            builder.append(s);
+        }
+        builder.append(")");
+        return builder.toString();
     }
 }

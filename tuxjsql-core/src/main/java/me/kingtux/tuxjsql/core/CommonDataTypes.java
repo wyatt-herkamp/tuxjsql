@@ -1,8 +1,13 @@
 package me.kingtux.tuxjsql.core;
 
-public enum CommonDataTypes implements ColumnType {
+public enum CommonDataTypes implements DataType {
+
     TEXT,
-    INT;
+    TINYINT,
+    MEDIUMINT,
+    INT,
+    BIGINT,
+    DOUBLE;
 
     @Override
     public String type() {
