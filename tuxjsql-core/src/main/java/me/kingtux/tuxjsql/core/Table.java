@@ -142,4 +142,6 @@ public interface Table {
     void dropColumn(Column column);
 
     void addColumn(Column column);
+
+    void modifyColumn(Column column);
 }

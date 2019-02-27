@@ -2,13 +2,14 @@ package me.kingtux.tuxjsql.mysql;
 
 import me.kingtux.tuxjsql.core.Column;
 import me.kingtux.tuxjsql.core.ColumnType;
+import me.kingtux.tuxjsql.core.Table;
 
 public class SQLColumn implements Column {
     private String name;
     private boolean unique, primary, notNull, autoIncrement;
     private ColumnType type;
     private Object defaultValue;
-
+    private Table table;
 
     SQLColumn(String name, boolean unique, boolean primary, boolean nullable, boolean autoIncrement, ColumnType type, Object defaultValue) {
         this.name = name;
@@ -18,6 +19,11 @@ public class SQLColumn implements Column {
         this.autoIncrement = autoIncrement;
         this.type = type;
         this.defaultValue = defaultValue;
+    }
+
+    @Override
+    public Table getTable() {
+        return table;
     }
 
     @Override
@@ -77,6 +83,10 @@ public class SQLColumn implements Column {
         return builder.toString();
     }
 
+    public void setTable(Table table) {
+        this.table = table;
+    }
+
     @Override
     public ColumnType getType() {
         return type;
@@ -107,5 +117,13 @@ public class SQLColumn implements Column {
                 ", type=" + type +
                 ", defaultValue=" + defaultValue +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof SQLColumn)) return false;
+        if (table == null) return ((SQLColumn) obj).name.equals(name);
+
+        return ((SQLColumn) obj).name.equals(name) && table.equals(((SQLColumn) obj).getTable());
     }
 }

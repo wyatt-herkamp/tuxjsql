@@ -19,4 +19,8 @@ public interface Column {
     Object defaultValue();
 
     String build();
+
+    Table getTable();
+
+
 }
