@@ -35,5 +35,5 @@ dependencies {
 ### Example Code
 ```java
 //Coming Soon
-//https://docs.kingtux.me/tuxjsql-core
+//https://docs.kingtux.me/tuxjsql
 ```

@@ -3,6 +3,9 @@ package me.kingtux.tuxjsql.core;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This represents a A column type. with its datatype and rules
+ */
 public class ColumnType {
     private DataType type;
     private List<String> rules;

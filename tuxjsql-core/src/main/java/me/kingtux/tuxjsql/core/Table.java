@@ -7,6 +7,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * This represents a table.
+ * This also has all the methods you could need to interact with said table.
+ */
 @SuppressWarnings("All")
 public interface Table {
     /**
