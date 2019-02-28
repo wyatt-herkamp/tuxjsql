@@ -118,7 +118,6 @@ public class TuxJSQL {
      * Get the connection
      *
      * @return the connection
-     * @throws IllegalAccessException this is thrown if connection has not been set
      */
     public static Connection getConnection() {
         if (connection == null) {
