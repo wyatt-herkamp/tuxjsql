@@ -3,9 +3,16 @@ package me.kingtux.tuxjsql.core;
 import java.util.Arrays;
 import java.util.List;
 
-//    Column createColumn(String name, ColumnType type, boolean primary, boolean nullable, boolean unique, boolean autoIncrment);
+/**
+ * The Column Builder
+ */
 public interface ColumnBuilder {
-    ColumnBuilder notNull(boolean nullable);
+    /**
+     * The NOT NULL Status
+     * @param notNull is it not null
+     * @return is it not null
+     */
+    ColumnBuilder notNull(boolean notNull);
 
     default ColumnBuilder notNull() {
         return notNull(true);

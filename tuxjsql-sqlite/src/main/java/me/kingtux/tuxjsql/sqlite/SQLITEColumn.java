@@ -46,10 +46,6 @@ public class SQLITEColumn implements Column {
         return primary;
     }
 
-    @Override
-    public boolean isNullable() {
-        return notNull;
-    }
 
     @Override
     public boolean isNotNull() {
@@ -74,7 +70,7 @@ public class SQLITEColumn implements Column {
         builder.append(isPrimary() ? " PRIMARY KEY" : "");
         builder.append(isAutoIncrement() ? " AUTOINCREMENT" : "");
         if (!isAutoIncrement()) {
-            builder.append(isNullable() ? " NOT NULL" : "");
+            builder.append(isNotNull() ? " NOT NULL" : "");
             builder.append(isUnique() ? " UNIQUE" : "");
         }
         if (defaultValue != null) {

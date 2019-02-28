@@ -41,10 +41,6 @@ public class SQLColumn implements Column {
         return primary;
     }
 
-    @Override
-    public boolean isNullable() {
-        return notNull;
-    }
 
     @Override
     public boolean isNotNull() {
@@ -69,7 +65,7 @@ public class SQLColumn implements Column {
         builder.append(isAutoIncrement() ? " AUTO_INCREMENT" : "");
         builder.append(isPrimary() ? " PRIMARY KEY" : "");
         if (!isAutoIncrement()) {
-            builder.append(isNullable() ? " NOT NULL" : "");
+            builder.append(isNotNull() ? " NOT NULL" : "");
             builder.append(isUnique() ? " UNIQUE" : "");
         }
         if (defaultValue != null) {

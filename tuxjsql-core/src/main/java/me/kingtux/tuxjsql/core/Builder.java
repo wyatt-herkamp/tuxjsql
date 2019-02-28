@@ -34,6 +34,11 @@ public interface Builder {
         return tb.build();
     }
 
+    /**
+     * Creates a Table Builder
+     *
+     * @return a table builder
+     */
     TableBuilder createTable();
     /**
      * Creates a WhereStatement

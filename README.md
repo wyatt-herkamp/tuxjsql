@@ -1,10 +1,5 @@
 # tuxjsql
-
-This is Java objects that represents a SQL statement. This will allow you to create an sql statement using these objects.
-
-#### Can you add simple Builders and cool asyn stuff?
-I am working on a module that is a wrapper.
-
+A simple to use SQL Builder and Executor. 
 ## How to use?
 ### Maven
 ```xml
@@ -15,9 +10,9 @@ I am working on a module that is a wrapper.
     </repository>
     <dependency>
       <groupId>me.kingtux</groupId>
-      <artifactId>tuxjsql-sql</artifactId>
+      <artifactId>tuxjsql-core</artifactId>
       <!---Make sure you use Latest Version!-->
-      <version>1.0-SNAPSHOT</version>
+      <version>1.0</version>
       <scope>compile</scope>
     </dependency>
 ```
@@ -28,7 +23,7 @@ repositories {
 }
 
 dependencies {
-   compile "me.kingtux:tuxjsql-sql:1.0-SNAPSHOT"
+   compile "me.kingtux:tuxjsql-core:1.0"
 }
 ```
 

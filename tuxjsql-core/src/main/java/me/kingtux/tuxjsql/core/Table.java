@@ -55,7 +55,12 @@ public interface Table {
         return new AbstractMap.SimpleEntry<List<Column>, List<Object>>(names.stream().map(this::getColumnByName).collect(Collectors.toList()), value);
     }
 
-
+    /**
+     * Insert using the following format
+     * column-name value, column-name value, column-name value
+     *
+     * @param items Insert to the database by just providing name and value
+     */
     public default void insert(Object... items) {
         Map.Entry<List<Column>, List<Object>> entry = seperateThing(items);
         insert(entry.getKey(), entry.getValue().toArray());
@@ -64,6 +69,7 @@ public interface Table {
     /**
      * This is pretty fragile
      * If you use please include a value for Columns with Default Values. Or this will fail
+     * @param items all the values for that table row
      */
     public default void insertAll(Object... items) {
         List<Column> c = getInsertableColumns();
@@ -86,14 +92,14 @@ public interface Table {
 
     void update(WhereStatement whereStatement, List<Column> columns, Object... values);
 
-    default <T> T update(T primaryKeyValue, Object... keyValues) {
+
+    default <T> void update(T primaryKeyValue, Object... keyValues) {
         Map.Entry<List<Column>, List<Object>> entry = seperateThing(keyValues);
-        return update(primaryKeyValue, entry.getKey(), entry.getValue().toArray());
+        update(primaryKeyValue, entry.getKey(), entry.getValue().toArray());
     }
 
-    default <T> T update(T primaryKeyValue, List<Column> columnsToUpdate, Object... vales) {
+    default <T> void update(T primaryKeyValue, List<Column> columnsToUpdate, Object... vales) {
         update(TuxJSQL.getBuilder().createWhere().start(getPrimaryColumn().getName(), primaryKeyValue), columnsToUpdate, vales);
-        return primaryKeyValue;
     }
 
     default Column getPrimaryColumn() {

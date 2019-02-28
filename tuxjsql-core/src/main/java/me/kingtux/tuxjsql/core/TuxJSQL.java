@@ -18,10 +18,21 @@ public class TuxJSQL {
     private TuxJSQL() {
     }
 
+    /**
+     * Save the table to grab later!
+     *
+     * @param table the table
+     */
     public static void saveTable(Table table) {
         savedTables.add(table);
     }
 
+    /**
+     * Get a saved table by name
+     *
+     * @param name the name
+     * @return the saved table!
+     */
     public static Table getTableByName(String name) {
         for (Table table : savedTables) {
             if(table.getName().equalsIgnoreCase(name)){
@@ -30,6 +41,12 @@ public class TuxJSQL {
         }
         return null;
     }
+
+    /**
+     * Gets the SQL Builder
+     *
+     * @return the builder
+     */
     public static Builder getBuilder() {
         if (builder == null) {
             try {
@@ -42,14 +59,29 @@ public class TuxJSQL {
         return builder;
     }
 
+    /**
+     * Set the builder by object
+     *
+     * @param builder the builder
+     */
     public static void setBuilder(Builder builder) {
         TuxJSQL.builder = builder;
     }
 
+    /**
+     * Set the Builder by Type
+     *
+     * @param type the Builder Type
+     */
     public static void setBuilder(Type type) {
         setBuilder(type.classPath);
     }
 
+    /**
+     * Sets the Builder by class path
+     *
+     * @param clazzPath the class path to the builder
+     */
     public static void setBuilder(String clazzPath) {
         Class<?> clazz = null;
         try {
@@ -82,6 +114,12 @@ public class TuxJSQL {
         }
     }
 
+    /**
+     * Get the connection
+     *
+     * @return the connection
+     * @throws IllegalAccessException this is thrown if connection has not been set
+     */
     public static Connection getConnection() {
         if (connection == null) {
             try {
@@ -94,6 +132,10 @@ public class TuxJSQL {
         return connection;
     }
 
+    /**
+     * Set the connection with a connection object
+     * @param connection the connection
+     */
     public static void setConnection(Connection connection) {
         if (connection == null) {
             throw new IllegalArgumentException("Connection is null.");
@@ -101,12 +143,26 @@ public class TuxJSQL {
         TuxJSQL.connection = connection;
     }
 
+    /**
+     * Sets a Connection with a properties file.
+     * Values: https://github.com/wherkamp/tuxjsql/wiki/Creating-a-Connection-with-Properties
+     * @param properties the properties
+     */
     public static void setConnection(Properties properties) {
         TuxJSQL.connection = getBuilder().createConnection(properties);
     }
 
-    public static enum Type {
+    /**
+     * The Database Type
+     */
+    public enum Type {
+        /**
+         * MYSQL
+         */
         MYSQL("me.kingtux.tuxjsql.mysql.SQLBuilder"),
+        /**
+         * SQLITE
+         */
         SQLITE("me.kingtux.tuxjsql.sqlite.SQLITEBuilder");
         private String classPath;
 
