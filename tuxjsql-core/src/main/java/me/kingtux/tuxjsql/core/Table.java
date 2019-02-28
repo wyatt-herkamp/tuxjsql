@@ -61,7 +61,6 @@ public interface Table {
         insert(entry.getKey(), entry.getValue().toArray());
     }
 
-    @Deprecated
     /**
      * This is pretty fragile
      * If you use please include a value for Columns with Default Values. Or this will fail

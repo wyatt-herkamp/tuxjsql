@@ -4,7 +4,7 @@ import me.kingtux.tuxjsql.core.SubWhereStatement;
 import me.kingtux.tuxjsql.core.Where;
 
 import java.util.List;
-
+@SuppressWarnings("Duplicates")
 public class SQLSubWhereStatement implements SubWhereStatement {
     private List<Object> objects;
     private List<Object> items;

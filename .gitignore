@@ -3,3 +3,4 @@ mysql.properties
 *.iml
 target/
 */target/
+db.sql

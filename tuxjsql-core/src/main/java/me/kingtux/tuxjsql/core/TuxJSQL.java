@@ -106,7 +106,8 @@ public class TuxJSQL {
     }
 
     public static enum Type {
-        MYSQL("me.kingtux.tuxjsql.mysql.SQLBuilder");
+        MYSQL("me.kingtux.tuxjsql.mysql.SQLBuilder"),
+        SQLITE("me.kingtux.tuxjsql.sqlite.SQLITEBuilder");
         private String classPath;
 
         Type(String classPath) {

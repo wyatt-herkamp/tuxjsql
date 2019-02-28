@@ -1,11 +1,11 @@
-package me.kingtux.tuxjsql.mysql;
+package me.kingtux.tuxjsql.sqlite;
 
 import me.kingtux.tuxjsql.core.Where;
 @SuppressWarnings("Duplicates")
-public class SQLWhere implements Where {
+public class SQLITEWhere implements Where {
     private String where;
 
-    public SQLWhere(String where) {
+     SQLITEWhere(String where) {
         this.where = where;
     }
 

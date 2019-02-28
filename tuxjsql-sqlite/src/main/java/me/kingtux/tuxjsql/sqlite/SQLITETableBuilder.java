@@ -1,4 +1,4 @@
-package me.kingtux.tuxjsql.mysql;
+package me.kingtux.tuxjsql.sqlite;
 
 import me.kingtux.tuxjsql.core.Column;
 import me.kingtux.tuxjsql.core.Table;
@@ -7,7 +7,7 @@ import me.kingtux.tuxjsql.core.TableBuilder;
 import java.util.ArrayList;
 import java.util.List;
 @SuppressWarnings("Duplicates")
-public class MySQLTableBuilder implements TableBuilder {
+public class SQLITETableBuilder implements TableBuilder {
     private String name;
     private List<Column> columns= new ArrayList<>();
 
@@ -25,6 +25,6 @@ public class MySQLTableBuilder implements TableBuilder {
     }
 
     public Table build() {
-        return new SQLTable(name, columns);
+        return new SQLiteTable(name, columns);
     }
 }

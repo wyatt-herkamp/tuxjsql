@@ -1,10 +1,12 @@
-package me.kingtux.tuxjsql.mysql;
+package me.kingtux.tuxjsql.sqlite;
 
 import me.kingtux.tuxjsql.core.Column;
 import me.kingtux.tuxjsql.core.ColumnBuilder;
 import me.kingtux.tuxjsql.core.ColumnType;
+import me.kingtux.tuxjsql.core.CommonDataTypes;
+
 @SuppressWarnings("Duplicates")
-public class MySQLColumnBuilder implements ColumnBuilder {
+public class SQLiteColumnBuilder implements ColumnBuilder {
     private boolean notNull, autoIncrement, primary, unique;
     private String name;
     private Object defaultValue = null;
@@ -48,14 +50,15 @@ public class MySQLColumnBuilder implements ColumnBuilder {
 
     @Override
     public ColumnBuilder type(ColumnType value) {
+        if (value.getType() instanceof CommonDataTypes) {
+            value.setType(SQLITEDataTypes.getType((CommonDataTypes) value.getType()));
+        }
         type = value;
         return this;
     }
 
     @Override
     public Column build() {
-        return new SQLColumn(name, unique, primary, notNull, autoIncrement, type, defaultValue);
+        return new SQLITEColumn(name, unique, primary, notNull, autoIncrement, type, defaultValue);
     }
-
-
 }

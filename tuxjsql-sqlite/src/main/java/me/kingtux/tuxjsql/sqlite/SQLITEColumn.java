@@ -1,17 +1,18 @@
-package me.kingtux.tuxjsql.mysql;
+package me.kingtux.tuxjsql.sqlite;
 
 import me.kingtux.tuxjsql.core.Column;
 import me.kingtux.tuxjsql.core.ColumnType;
 import me.kingtux.tuxjsql.core.Table;
+
 @SuppressWarnings("Duplicates")
-public class SQLColumn implements Column {
+public class SQLITEColumn implements Column {
     private String name;
     private boolean unique, primary, notNull, autoIncrement;
     private ColumnType type;
     private Object defaultValue;
     private Table table;
 
-    SQLColumn(String name, boolean unique, boolean primary, boolean nullable, boolean autoIncrement, ColumnType type, Object defaultValue) {
+    SQLITEColumn(String name, boolean unique, boolean primary, boolean nullable, boolean autoIncrement, ColumnType type, Object defaultValue) {
         this.name = name;
         this.unique = unique;
         this.primary = primary;
@@ -24,6 +25,10 @@ public class SQLColumn implements Column {
     @Override
     public Table getTable() {
         return table;
+    }
+
+    void setTable(Table table) {
+        this.table = table;
     }
 
     @Override
@@ -66,8 +71,8 @@ public class SQLColumn implements Column {
         StringBuilder builder = new StringBuilder();
         builder.append(name);
         builder.append(" " + buildType());
-        builder.append(isAutoIncrement() ? " AUTO_INCREMENT" : "");
         builder.append(isPrimary() ? " PRIMARY KEY" : "");
+        builder.append(isAutoIncrement() ? " AUTOINCREMENT" : "");
         if (!isAutoIncrement()) {
             builder.append(isNullable() ? " NOT NULL" : "");
             builder.append(isUnique() ? " UNIQUE" : "");
@@ -81,10 +86,6 @@ public class SQLColumn implements Column {
             }
         }
         return builder.toString();
-    }
-
-    public void setTable(Table table) {
-        this.table = table;
     }
 
     @Override
@@ -106,24 +107,12 @@ public class SQLColumn implements Column {
         return builder.toString();
     }
 
-    @Override
-    public String toString() {
-        return "SQLColumn{" +
-                "name='" + name + '\'' +
-                ", unique=" + unique +
-                ", primary=" + primary +
-                ", notNull=" + notNull +
-                ", autoIncrement=" + autoIncrement +
-                ", type=" + type +
-                ", defaultValue=" + defaultValue +
-                '}';
-    }
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof SQLColumn)) return false;
-        if (table == null) return ((SQLColumn) obj).name.equals(name);
+        if (!(obj instanceof SQLITEColumn)) return false;
+        if (table == null) return ((SQLITEColumn) obj).name.equals(name);
 
-        return ((SQLColumn) obj).name.equals(name) && table.equals(((SQLColumn) obj).getTable());
+        return ((SQLITEColumn) obj).name.equals(name) && table.equals(((SQLITEColumn) obj).getTable());
     }
 }

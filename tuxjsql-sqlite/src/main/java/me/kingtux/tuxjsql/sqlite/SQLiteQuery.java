@@ -1,6 +1,6 @@
-package me.kingtux.tuxjsql.mysql;
+package me.kingtux.tuxjsql.sqlite;
 @SuppressWarnings("Duplicates")
-public enum SQLQuery {
+public enum SQLiteQuery {
     INSERT("INSERT INTO %1$s (%2$s) VALUES (%3$s);"),
     SELECT("SELECT %1$s FROM %2$s"),
     WHERE("WHERE %1$s"),
@@ -17,7 +17,7 @@ public enum SQLQuery {
 
     private String query;
 
-    SQLQuery(String query) {
+    SQLiteQuery(String query) {
         this.query = query;
     }
 

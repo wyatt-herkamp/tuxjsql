@@ -5,7 +5,7 @@ import me.kingtux.tuxjsql.core.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Properties;
-
+@SuppressWarnings("Duplicates")
 public class SQLBuilder implements Builder {
 
     @Override
