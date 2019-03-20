@@ -5,6 +5,9 @@ import me.kingtux.tuxjsql.core.Table;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * This is a simplified version of a ResultSet so less errors in the end
+ */
 public class DBResult implements Iterable<DBRow> {
     private int numberOfRows, numberOfColumns;
     private Table table;

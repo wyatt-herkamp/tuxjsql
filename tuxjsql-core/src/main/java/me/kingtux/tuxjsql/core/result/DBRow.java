@@ -2,6 +2,9 @@ package me.kingtux.tuxjsql.core.result;
 
 import java.util.List;
 
+/**
+ * This represents a row ina DBResult
+ */
 public class DBRow {
     private List<ColumnItem> items;
 

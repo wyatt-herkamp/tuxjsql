@@ -86,7 +86,7 @@ public abstract class Table {
     }
 
     static TableBuilder create() {
-        return TuxJSQL.getBuilder().createTable();
+        return TuxJSQL.getSQLBuilder().createTable();
     }
 
     public DBResult select(WhereStatement whereStatement) {
@@ -108,7 +108,7 @@ public abstract class Table {
     }
 
     public <T> void update(T primaryKeyValue, List<Column> columnsToUpdate, Object... vales) {
-        update(TuxJSQL.getBuilder().createWhere().start(getPrimaryColumn().getName(), primaryKeyValue), columnsToUpdate, vales);
+        update(TuxJSQL.getSQLBuilder().createWhere().start(getPrimaryColumn().getName(), primaryKeyValue), columnsToUpdate, vales);
     }
 
     public Column getPrimaryColumn() {
@@ -127,7 +127,7 @@ public abstract class Table {
     }
 
     public <T> void update(T primaryKeyValue, Map<Column, Object> kv) {
-        update(TuxJSQL.getBuilder().createWhere().start(getPrimaryColumn().getName(), primaryKeyValue), kv);
+        update(TuxJSQL.getSQLBuilder().createWhere().start(getPrimaryColumn().getName(), primaryKeyValue), kv);
     }
 
     public abstract int max(Column c);
@@ -146,7 +146,7 @@ public abstract class Table {
     public abstract void delete(WhereStatement whereStatement);
 
     public <T> T delete(T primaryKeyValue) {
-        delete(TuxJSQL.getBuilder().createWhere().start(getPrimaryColumn().getName(), primaryKeyValue));
+        delete(TuxJSQL.getSQLBuilder().createWhere().start(getPrimaryColumn().getName(), primaryKeyValue));
         return primaryKeyValue;
     }
 
@@ -165,6 +165,6 @@ public abstract class Table {
     }
 
     public <T> DBResult select(T primaryKeyValue) {
-        return select(TuxJSQL.getBuilder().createWhere().start(getPrimaryColumn().getName(), primaryKeyValue));
+        return select(TuxJSQL.getSQLBuilder().createWhere().start(getPrimaryColumn().getName(), primaryKeyValue));
     }
 }

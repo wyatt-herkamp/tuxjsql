@@ -1,5 +1,7 @@
 # tuxjsql
-A simple to use SQL Builder and Executor. 
+A simple to use SQL Builder and Executor.
+
+The Goal of this project. Is to make executing and creating sql as simple as possible 
 ## How to use?
 ### Maven
 ```xml

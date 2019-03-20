@@ -11,10 +11,10 @@ public class Main {
         Properties properties = new Properties();
         properties.setProperty("file", "db.sql");
         TuxJSQL.setDatasource(properties);
-        Builder builder = TuxJSQL.getBuilder();
-        Table table = TuxJSQL.getBuilder().createTable().name("t1").
-                addColumn(builder.createColumn().type(CommonDataTypes.INT).autoIncrement(true).primary(true).name("id").build()).
-                addColumn(builder.createColumn().type(CommonDataTypes.TEXT).name("name").build()).build().createIfNotExists();
+        SQLBuilder SQLBuilder = TuxJSQL.getSQLBuilder();
+        Table table = TuxJSQL.getSQLBuilder().createTable().name("t1").
+                addColumn(SQLBuilder.createColumn().type(CommonDataTypes.INT).autoIncrement(true).primary(true).name("id").build()).
+                addColumn(SQLBuilder.createColumn().type(CommonDataTypes.TEXT).name("name").build()).build().createIfNotExists();
         table.insertAll("Test");
         System.out.println(table.select(SelectStatement.create().addColumn("id")).first().getRowItem("id").getAsInt());
     }

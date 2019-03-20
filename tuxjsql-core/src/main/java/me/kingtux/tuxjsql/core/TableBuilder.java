@@ -9,7 +9,7 @@ public interface TableBuilder {
     Table build();
 
     static TableBuilder create() {
-        return TuxJSQL.getBuilder().createTable();
+        return TuxJSQL.getSQLBuilder().createTable();
     }
 
 }

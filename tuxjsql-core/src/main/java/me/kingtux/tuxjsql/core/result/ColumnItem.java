@@ -1,5 +1,9 @@
 package me.kingtux.tuxjsql.core.result;
 
+/**
+ * This represents a Column value.
+ *
+ */
 public class ColumnItem {
     private Object object;
     private String name;

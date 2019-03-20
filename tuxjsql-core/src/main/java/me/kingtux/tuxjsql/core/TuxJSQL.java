@@ -19,7 +19,7 @@ import java.util.Properties;
  * I know I know static is bad. But FUCK YOU
  */
 public class TuxJSQL {
-    private static Builder builder;
+    private static SQLBuilder SQLBuilder;
     private static HikariDataSource ds;
     protected static Logger logger = LoggerFactory.getLogger(TuxJSQL.class);
     private static List<Table> savedTables = new ArrayList<>();
@@ -52,48 +52,48 @@ public class TuxJSQL {
     }
 
     /**
-     * Gets the SQL Builder
+     * Gets the SQL SQLBuilder
      *
-     * @return the builder
+     * @return the SQLBuilder
      */
-    public static Builder getBuilder() {
-        if (builder == null) {
+    public static SQLBuilder getSQLBuilder() {
+        if (SQLBuilder == null) {
             try {
-                throw new IllegalAccessException("TuxJSQL has not been configured... Please set the Builder");
+                throw new IllegalAccessException("TuxJSQL has not been configured... Please set the SQLBuilder");
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
                 return null;
             }
         }
-        return builder;
+        return SQLBuilder;
     }
 
     /**
-     * Set the builder by object
+     * Set the SQLBuilder by object
      *
-     * @param builder the builder
+     * @param SQLBuilder the SQLBuilder
      */
-    public static void setBuilder(Builder builder) {
-        TuxJSQL.builder = builder;
+    public static void setSQLBuilder(SQLBuilder SQLBuilder) {
+        TuxJSQL.SQLBuilder = SQLBuilder;
     }
 
     /**
-     * Set the Builder by Type
+     * Set the SQLBuilder by Type
      *
-     * @param type the Builder Type
+     * @param type the SQLBuilder Type
      */
     public static void setBuilder(Type type) {
         try {
             setBuilder(type.classPath);
         } catch (ClassNotFoundException e) {
-            logger.error("Please add" + type.dependency + " To your maven or gradle. Use the same groupId as TuxJSQL-core");
+            logger.error("Please add " + type.dependency + " To your maven or gradle. Use the same groupId as TuxJSQL-core");
         }
     }
 
     /**
-     * Sets the Builder by class path
+     * Sets the SQLBuilder by class path
      *
-     * @param clazzPath the class path to the builder
+     * @param clazzPath the class path to the SQLBuilder
      */
     public static void setBuilder(String clazzPath) throws ClassNotFoundException {
         Class<?> clazz = null;
@@ -101,23 +101,8 @@ public class TuxJSQL {
         if (clazz == null) {
             return;
         }
-        Method method;
-
         try {
-            method = clazz.getMethod("getInstance");
-        } catch (NoSuchMethodException e) {
-            method = null;
-        }
-        if (method != null) {
-            try {
-                builder = (Builder) method.invoke(null);
-                return;
-            } catch (IllegalAccessException | InvocationTargetException ignored) {
-
-            }
-        }
-        try {
-            builder = (Builder) clazz.getConstructor().newInstance();
+            SQLBuilder = (SQLBuilder) clazz.getConstructor().newInstance();
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();
         }
@@ -143,7 +128,7 @@ public class TuxJSQL {
      * @param properties the properties
      */
     public static void setDatasource(Properties properties) {
-        TuxJSQL.ds = getBuilder().createConnection(properties);
+        TuxJSQL.ds = getSQLBuilder().createConnection(properties);
     }
 
     public static void setDatasource(HikariDataSource datasource) {
@@ -156,7 +141,7 @@ public class TuxJSQL {
         /**
          * MYSQL
          */
-        MYSQL("me.kingtux.tuxjsql.mysql.SQLBuilder", "tuxjsql-mysql"),
+        MYSQL("me.kingtux.tuxjsql.mysql.MySQLBuilder", "tuxjsql-mysql"),
         /**
          * SQLITE
          */

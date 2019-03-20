@@ -9,7 +9,7 @@ import me.kingtux.tuxjsql.core.statements.WhereStatement;
 
 import java.util.Properties;
 @SuppressWarnings("Duplicates")
-public class SQLBuilder implements Builder {
+public class MySQLBuilder implements me.kingtux.tuxjsql.core.SQLBuilder {
 
     @Override
     public TableBuilder createTable() {

@@ -11,7 +11,7 @@ public abstract class SelectStatement {
     protected WhereStatement whereStatement = null;
 
     public static SelectStatement create() {
-        return TuxJSQL.getBuilder().createSelectStatement();
+        return TuxJSQL.getSQLBuilder().createSelectStatement();
     }
 
     public SelectStatement addColumn(Column column) {

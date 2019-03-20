@@ -11,7 +11,7 @@ import java.io.File;
 import java.util.Properties;
 
 @SuppressWarnings("Duplicates")
-public class SQLITEBuilder implements Builder {
+public class SQLITEBuilder implements SQLBuilder {
     @Override
     public TableBuilder createTable() {
         return new SQLITETableBuilder();

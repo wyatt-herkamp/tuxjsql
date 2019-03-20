@@ -13,7 +13,7 @@ public abstract class SubWhereStatement {
     protected List<Object> items = new ArrayList<>();
 
     static SubWhereStatement create() {
-        return TuxJSQL.getBuilder().createSubWhere();
+        return TuxJSQL.getSQLBuilder().createSubWhere();
     }
 
     public SubWhereStatement start(String s, Object value) {

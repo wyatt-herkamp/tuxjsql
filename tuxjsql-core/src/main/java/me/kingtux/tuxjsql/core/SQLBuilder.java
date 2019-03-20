@@ -12,7 +12,7 @@ import java.util.Properties;
 /**
  * This is the central builder. This is used to build everything.
  */
-public interface Builder {
+public interface SQLBuilder {
     /**
      * Build a table with name and columns
      *
@@ -39,7 +39,7 @@ public interface Builder {
     }
 
     /**
-     * Creates a Table Builder
+     * Creates a Table SQLBuilder
      *
      * @return a table builder
      */

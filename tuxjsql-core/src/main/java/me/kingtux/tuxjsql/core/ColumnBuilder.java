@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * The Column Builder
+ * The Column SQLBuilder
  */
 public interface ColumnBuilder {
     /**
@@ -46,6 +46,6 @@ public interface ColumnBuilder {
     Column build();
 
     static ColumnBuilder create() {
-        return TuxJSQL.getBuilder().createColumn();
+        return TuxJSQL.getSQLBuilder().createColumn();
     }
 }
