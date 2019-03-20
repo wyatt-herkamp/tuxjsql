@@ -1,9 +1,12 @@
 package me.kingtux.tuxjsql.mysql;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import me.kingtux.tuxjsql.core.*;
+import me.kingtux.tuxjsql.core.statements.SelectStatement;
+import me.kingtux.tuxjsql.core.statements.SubWhereStatement;
+import me.kingtux.tuxjsql.core.statements.WhereStatement;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.util.Properties;
 @SuppressWarnings("Duplicates")
 public class SQLBuilder implements Builder {
@@ -30,17 +33,20 @@ public class SQLBuilder implements Builder {
 
 
     @Override
-    public Connection createConnection(Properties properties) {
-        return createMysqlConnection(properties.getProperty("db.username"), properties.getProperty("db.password"), properties.getProperty("db.host"), properties.getProperty("db.database"));
+    public HikariDataSource createConnection(Properties properties) {
+        HikariConfig config = new HikariConfig();
+        config.setJdbcUrl("jdbc:mysql://" + properties.getProperty("db.host") + "/" + properties.getProperty("db.database")+"?useSSL=false");
+        config.setUsername(properties.getProperty("db.username"));
+        config.setPassword(properties.getProperty("db.password"));
+        config.addDataSourceProperty("cachePrepStmts", "true");
+        config.addDataSourceProperty("prepStmtCacheSize", "250");
+        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+        return new HikariDataSource(config);
     }
 
-
-    private Connection createMysqlConnection(String username, String password, String host, String database) {
-        try {
-            return DriverManager.getConnection("jdbc:mysql://" + host + "/" + database, username, password);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+    @Override
+    public SelectStatement createSelectStatement() {
+        return new MySQLSelectStatement();
     }
+
 }

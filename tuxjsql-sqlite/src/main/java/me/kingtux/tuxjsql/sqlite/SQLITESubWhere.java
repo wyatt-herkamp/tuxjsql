@@ -1,86 +1,14 @@
 package me.kingtux.tuxjsql.sqlite;
 
-import me.kingtux.tuxjsql.core.SubWhereStatement;
-import me.kingtux.tuxjsql.core.Where;
+import me.kingtux.tuxjsql.core.Query;
+import me.kingtux.tuxjsql.core.statements.SubWhereStatement;
+import me.kingtux.tuxjsql.core.statements.Where;
 
 import java.util.List;
 @SuppressWarnings("Duplicates")
-public class SQLITESubWhere implements SubWhereStatement {
-    private List<Object> objects;
-    private List<Object> items;
-
-     SQLITESubWhere() {
-
-    }
-
+public class SQLITESubWhere extends SubWhereStatement {
     @Override
-    public SubWhereStatement start(String s, Object value) {
-        objects.add(value);
-        items.add(new SQLITEWhere(s));
-        return this;
-    }
-
-    @Override
-    public SubWhereStatement start(SubWhereStatement s) {
-        items.add(s);
-        return this;
-    }
-
-    @Override
-    public SubWhereStatement AND(String s, Object value) {
-        objects.add(value);
-        items.add("AND");
-        items.add(new SQLITEWhere(s));
-        return this;
-    }
-
-    @Override
-    public SubWhereStatement AND(SubWhereStatement s) {
-        items.add("AND");
-        items.add(s);
-        return this;
-    }
-
-    @Override
-    public SubWhereStatement OR(String s, Object value) {
-        objects.add(value);
-        items.add("OR");
-
-        items.add(new SQLITEWhere(s));
-        return this;
-    }
-
-    @Override
-    public SubWhereStatement OR(SubWhereStatement s) {
-        items.add("OR");
-
-        items.add(s);
-        return this;
-    }
-
-    @Override
-    public SubWhereStatement NOT(String s, Object value) {
-        objects.add(value);
-        items.add("NOT");
-
-        items.add(new SQLITEWhere(s));
-        return this;
-    }
-
-    @Override
-    public SubWhereStatement NOT(SubWhereStatement s) {
-        items.add("NOT");
-        items.add(s);
-        return this;
-    }
-
-    @Override
-    public Object[] getValues() {
-        return objects.toArray();
-    }
-
-    @Override
-    public String build() {
+    public Query build() {
         StringBuilder builder = new StringBuilder();
         for (Object object : items) {
             if (object instanceof SubWhereStatement) {
@@ -92,6 +20,7 @@ public class SQLITESubWhere implements SubWhereStatement {
             }
         }
 
-        return builder.toString();
+        return new Query(builder.toString(), values());
     }
+
 }

@@ -45,4 +45,7 @@ public interface ColumnBuilder {
 
     Column build();
 
+    static ColumnBuilder create() {
+        return TuxJSQL.getBuilder().createColumn();
+    }
 }

@@ -1,14 +1,19 @@
 package me.kingtux.tuxjsql.sqlite;
 
-import me.kingtux.tuxjsql.core.Column;
-import me.kingtux.tuxjsql.core.Table;
-import me.kingtux.tuxjsql.core.TuxJSQL;
-import me.kingtux.tuxjsql.core.WhereStatement;
+import me.kingtux.tuxjsql.core.*;
+import me.kingtux.tuxjsql.core.result.DBResult;
+import me.kingtux.tuxjsql.core.result.ColumnItem;
+import me.kingtux.tuxjsql.core.result.DBRow;
+import me.kingtux.tuxjsql.core.statements.SelectStatement;
+import me.kingtux.tuxjsql.core.statements.WhereStatement;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+
+import static me.kingtux.tuxjsql.core.TuxJSQL.Utils.resultSetToResultRow;
 
 @SuppressWarnings("Duplicates")
 public class SQLiteTable implements Table {
@@ -122,35 +127,34 @@ public class SQLiteTable implements Table {
         }
     }
 
+
+
+
+
     @Override
-    public ResultSet select(WhereStatement whereStatement, List<Column> columns) {
+    public DBResult select(SelectStatement statement) {
+        Query sqlQuery = statement.build(this);
         ResultSet resultSet = null;
-        StringBuilder columnsToSelect = new StringBuilder();
-        for (Column column : columns) {
-            if (!columnsToSelect.toString().isEmpty()) {
-                columnsToSelect.append(",");
-            }
-            columnsToSelect.append(column.getName());
-        }
-        String query = String.format(SQLiteQuery.SELECT.getQuery(), columnsToSelect.toString(), name);
-        if (whereStatement != null) {
-            query += " " + String.format(SQLiteQuery.WHERE.getQuery(), whereStatement.build());
-        }
+        List<DBRow> rows = null;
         try {
-            PreparedStatement preparedStatement = TuxJSQL.getConnection().prepareStatement(query);
-            if (whereStatement != null) {
-                Object[] values = whereStatement.values();
-                for (int i = 0; i < values.length; i++) {
-                    preparedStatement.setObject(i + 1, values[i]);
+            PreparedStatement preparedStatement = TuxJSQL.getConnection().prepareStatement(sqlQuery.getQuery());
+            if (sqlQuery.getValues() != null) {
+                for (int i = 0; i < sqlQuery.getValues().length; i++) {
+                    preparedStatement.setObject(i + 1, sqlQuery.getValues()[i]);
                 }
             }
             resultSet = preparedStatement.executeQuery();
+
+            rows = resultSetToResultRow(resultSet, statement.getColumns().size());
+            preparedStatement.close();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        return resultSet;
+        return new DBResult(rows.size(), statement.getColumns().size(), this, rows);
     }
+
+
 
     @Override
     public void delete(WhereStatement whereStatement) {

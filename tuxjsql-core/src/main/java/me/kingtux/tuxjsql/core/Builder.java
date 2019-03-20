@@ -1,6 +1,10 @@
 package me.kingtux.tuxjsql.core;
 
-import java.sql.Connection;
+import com.zaxxer.hikari.HikariDataSource;
+import me.kingtux.tuxjsql.core.statements.SelectStatement;
+import me.kingtux.tuxjsql.core.statements.SubWhereStatement;
+import me.kingtux.tuxjsql.core.statements.WhereStatement;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
@@ -153,5 +157,7 @@ public interface Builder {
      * @param properties the properties
      * @return the Connection
      */
-    Connection createConnection(Properties properties);
+    HikariDataSource createConnection(Properties properties);
+
+    SelectStatement createSelectStatement();
 }

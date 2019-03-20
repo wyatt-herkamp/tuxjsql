@@ -63,4 +63,7 @@ public interface Column {
     Table getTable();
 
 
+    static ColumnBuilder create() {
+        return TuxJSQL.getBuilder().createColumn();
+    }
 }

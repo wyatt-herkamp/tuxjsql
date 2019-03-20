@@ -1,8 +1,14 @@
 package me.kingtux.tuxjsql.core;
 
+import com.zaxxer.hikari.HikariDataSource;
+import me.kingtux.tuxjsql.core.result.ColumnItem;
+import me.kingtux.tuxjsql.core.result.DBRow;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -12,7 +18,8 @@ import java.util.Properties;
  */
 public class TuxJSQL {
     private static Builder builder;
-    private static Connection connection;
+    private static HikariDataSource ds;
+
     private static List<Table> savedTables = new ArrayList<>();
 
     private TuxJSQL() {
@@ -120,26 +127,12 @@ public class TuxJSQL {
      * @return the connection
      */
     public static Connection getConnection() {
-        if (connection == null) {
-            try {
-                throw new IllegalAccessException("TuxJSQL has not been configured... Please set the connection.");
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-                return null;
-            }
+        try {
+            return ds.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return connection;
-    }
-
-    /**
-     * Set the connection with a connection object
-     * @param connection the connection
-     */
-    public static void setConnection(Connection connection) {
-        if (connection == null) {
-            throw new IllegalArgumentException("Connection is null.");
-        }
-        TuxJSQL.connection = connection;
+        return null;
     }
 
     /**
@@ -147,10 +140,13 @@ public class TuxJSQL {
      * Values: https://github.com/wherkamp/tuxjsql/wiki/Creating-a-Connection-with-Properties
      * @param properties the properties
      */
-    public static void setConnection(Properties properties) {
-        TuxJSQL.connection = getBuilder().createConnection(properties);
+    public static void setDatasource(Properties properties) {
+        TuxJSQL.ds = getBuilder().createConnection(properties);
     }
 
+    public static void setDatasource(HikariDataSource datasource) {
+        TuxJSQL.ds = datasource;
+    }
     /**
      * The Database Type
      */
@@ -171,6 +167,26 @@ public class TuxJSQL {
 
         public String getClassPath() {
             return classPath;
+        }
+    }
+
+    public static class Utils {
+        public static List<DBRow> resultSetToResultRow(ResultSet resultSet, int numberOfColumns) {
+            List<DBRow> results = new ArrayList<>();
+            try {
+                int i = numberOfColumns;
+                System.out.println(i);
+                while (resultSet.next()) {
+                    List<ColumnItem> items = new ArrayList<>();
+                    for (int j = 1; j <= i; j++) {
+                        items.add(new ColumnItem(resultSet.getObject(j), resultSet.getMetaData().getColumnName(j)));
+                    }
+                    results.add(new DBRow(items));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return results;
         }
     }
 }

@@ -1,6 +1,9 @@
 package me.kingtux.tuxjsql.core;
 
-import java.sql.ResultSet;
+import me.kingtux.tuxjsql.core.result.DBResult;
+import me.kingtux.tuxjsql.core.statements.SelectStatement;
+import me.kingtux.tuxjsql.core.statements.WhereStatement;
+
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
@@ -80,15 +83,20 @@ public interface Table {
     default List<Column> getInsertableColumns() {
         return getColumns().stream().filter(c -> (c.isPrimary() == false && c.isAutoIncrement() == false)).collect(Collectors.toList());
     }
-    default ResultSet select(WhereStatement whereStatement) {
+
+    static TableBuilder create() {
+        return TuxJSQL.getBuilder().createTable();
+    }
+
+    default DBResult select(WhereStatement whereStatement) {
         return select(whereStatement,getColumns());
     }
 
-    ResultSet select(WhereStatement whereStatement,List<Column> columns);
-
-    public default <T> ResultSet select(T primaryKeyValue) {
-        return select(TuxJSQL.getBuilder().createWhere().start(getPrimaryColumn().getName(), primaryKeyValue));
+    default DBResult select(WhereStatement whereStatement, List<Column> columns) {
+        return select(SelectStatement.create().where(whereStatement).setColumns(columns.stream().map(Column::getName).collect(Collectors.toList())));
     }
+
+    DBResult select(SelectStatement statement);
 
     void update(WhereStatement whereStatement, List<Column> columns, Object... values);
 
@@ -149,4 +157,8 @@ public interface Table {
     void addColumn(Column column);
 
     void modifyColumn(Column column);
+
+    public default <T> DBResult select(T primaryKeyValue) {
+        return select(TuxJSQL.getBuilder().createWhere().start(getPrimaryColumn().getName(), primaryKeyValue));
+    }
 }

@@ -1,10 +1,13 @@
 package me.kingtux.tuxjsql.sqlite;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import me.kingtux.tuxjsql.core.*;
+import me.kingtux.tuxjsql.core.statements.SelectStatement;
+import me.kingtux.tuxjsql.core.statements.SubWhereStatement;
+import me.kingtux.tuxjsql.core.statements.WhereStatement;
 
 import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.util.Properties;
 
 @SuppressWarnings("Duplicates")
@@ -29,17 +32,22 @@ public class SQLITEBuilder implements Builder {
         return new SQLiteColumnBuilder();
     }
 
+
     @Override
-    public Connection createConnection(Properties properties) {
-        return createSQLiteConnection(new File(properties.getProperty("db.file")));
+    public HikariDataSource createConnection(Properties properties) {
+        HikariConfig config = new HikariConfig();
+        config.setJdbcUrl("jdbc:sqlite:" + new File(properties.getProperty("file")).getAbsolutePath());
+
+        config.addDataSourceProperty("cachePrepStmts", "true");
+        config.addDataSourceProperty("prepStmtCacheSize", "250");
+        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+        return new HikariDataSource(config);
     }
 
-    private Connection createSQLiteConnection(File file) {
-        try {
-            return DriverManager.getConnection("jdbc:sqlite:" + file.getAbsolutePath());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+    @Override
+    public SelectStatement createSelectStatement() {
+        return new SQLITESelectStatement();
     }
+
+
 }
