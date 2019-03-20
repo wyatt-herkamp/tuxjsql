@@ -3,6 +3,8 @@ package me.kingtux.tuxjsql.core;
 import com.zaxxer.hikari.HikariDataSource;
 import me.kingtux.tuxjsql.core.result.ColumnItem;
 import me.kingtux.tuxjsql.core.result.DBRow;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -19,7 +21,7 @@ import java.util.Properties;
 public class TuxJSQL {
     private static Builder builder;
     private static HikariDataSource ds;
-
+    protected static Logger logger = LoggerFactory.getLogger(TuxJSQL.class);
     private static List<Table> savedTables = new ArrayList<>();
 
     private TuxJSQL() {
@@ -81,7 +83,11 @@ public class TuxJSQL {
      * @param type the Builder Type
      */
     public static void setBuilder(Type type) {
-        setBuilder(type.classPath);
+        try {
+            setBuilder(type.classPath);
+        } catch (ClassNotFoundException e) {
+            logger.error("Please add" + type.dependency + " To your maven or gradle. Use the same groupId as TuxJSQL-core");
+        }
     }
 
     /**
@@ -89,13 +95,9 @@ public class TuxJSQL {
      *
      * @param clazzPath the class path to the builder
      */
-    public static void setBuilder(String clazzPath) {
+    public static void setBuilder(String clazzPath) throws ClassNotFoundException {
         Class<?> clazz = null;
-        try {
-            clazz = Class.forName(clazzPath);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        clazz = Class.forName(clazzPath);
         if (clazz == null) {
             return;
         }
@@ -154,15 +156,19 @@ public class TuxJSQL {
         /**
          * MYSQL
          */
-        MYSQL("me.kingtux.tuxjsql.mysql.SQLBuilder"),
+        MYSQL("me.kingtux.tuxjsql.mysql.SQLBuilder", "tuxjsql-mysql"),
         /**
          * SQLITE
          */
-        SQLITE("me.kingtux.tuxjsql.sqlite.SQLITEBuilder");
-        private String classPath;
-
+        SQLITE("me.kingtux.tuxjsql.sqlite.SQLITEBuilder", "tuxjsql-sqlite");
+        private String classPath, dependency;
         Type(String classPath) {
             this.classPath = classPath;
+        }
+
+        Type(String classPath, String dependency) {
+            this.classPath = classPath;
+            this.dependency = dependency;
         }
 
         public String getClassPath() {

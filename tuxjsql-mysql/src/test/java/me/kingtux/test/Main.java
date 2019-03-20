@@ -9,6 +9,7 @@ import java.util.Properties;
 
 public class Main {
     public static void main(String[] args) throws Exception {
+
         //Configure the TUxJSQL
         Properties properties = new Properties();
         String path = System.getProperty("user.home") + "/mysql.properties";

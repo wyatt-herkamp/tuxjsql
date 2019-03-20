@@ -1,10 +1,12 @@
 import me.kingtux.tuxjsql.core.*;
 import me.kingtux.tuxjsql.core.statements.SelectStatement;
 
+
 import java.util.Properties;
 
 public class Main {
     public static void main(String[] args) {
+
         TuxJSQL.setBuilder(TuxJSQL.Type.SQLITE);
         Properties properties = new Properties();
         properties.setProperty("file", "db.sql");

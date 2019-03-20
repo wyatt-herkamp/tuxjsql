@@ -3,6 +3,7 @@ package me.kingtux.tuxjsql.core;
 import me.kingtux.tuxjsql.core.result.DBResult;
 import me.kingtux.tuxjsql.core.statements.SelectStatement;
 import me.kingtux.tuxjsql.core.statements.WhereStatement;
+import org.slf4j.Logger;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -15,15 +16,15 @@ import java.util.stream.Collectors;
  * This also has all the methods you could need to interact with said table.
  */
 @SuppressWarnings("All")
-public interface Table {
+public abstract class Table {
     /**
      * This returns all the columns
      *
      * @return columns
      */
-    List<Column> getColumns();
+    public abstract List<Column> getColumns();
 
-    default Column getColumnByName(String s) {
+    public Column getColumnByName(String s) {
         for (Column c : getColumns()) {
             if (c.getName().equals(s)) {
                 return c;
@@ -32,9 +33,9 @@ public interface Table {
         return null;
     }
 
-    void insert(List<Column> columns, Object... values);
+    public abstract void insert(List<Column> columns, Object... values);
 
-    default void insert(Map<Column, Object> kv) {
+    public void insert(Map<Column, Object> kv) {
         List<Column> columns = new ArrayList<>();
         List<Object> items = new ArrayList<>();
         for (Map.Entry<Column, Object> e : kv.entrySet()) {
@@ -45,7 +46,7 @@ public interface Table {
         insert(columns, items.toArray());
     }
 
-    public default Map.Entry<List<Column>, List<Object>> seperateThing(Object... items) {
+    public Map.Entry<List<Column>, List<Object>> seperateThing(Object... items) {
         List<String> names = new ArrayList<>();
         List<Object> value = new ArrayList<>();
         for (int i = 0; i < items.length; i++) {
@@ -64,23 +65,23 @@ public interface Table {
      *
      * @param items Insert to the database by just providing name and value
      */
-    public default void insert(Object... items) {
+    public void insert(Object... items) {
         Map.Entry<List<Column>, List<Object>> entry = seperateThing(items);
         insert(entry.getKey(), entry.getValue().toArray());
     }
 
     /**
      * This is pretty fragile
-     * If you use please include a value for Columns with Default Values. Or this will fail
+     * If you use please include a value for Columns with public Values. Or this will fail
      * @param items all the values for that table row
      */
-    public default void insertAll(Object... items) {
+    public void insertAll(Object... items) {
         List<Column> c = getInsertableColumns();
         if (items.length != c.size()) throw new IllegalArgumentException("Not Enough items");
         insert(c, items);
     }
 
-    default List<Column> getInsertableColumns() {
+    public List<Column> getInsertableColumns() {
         return getColumns().stream().filter(c -> (c.isPrimary() == false && c.isAutoIncrement() == false)).collect(Collectors.toList());
     }
 
@@ -88,33 +89,33 @@ public interface Table {
         return TuxJSQL.getBuilder().createTable();
     }
 
-    default DBResult select(WhereStatement whereStatement) {
+    public DBResult select(WhereStatement whereStatement) {
         return select(whereStatement,getColumns());
     }
 
-    default DBResult select(WhereStatement whereStatement, List<Column> columns) {
+    public DBResult select(WhereStatement whereStatement, List<Column> columns) {
         return select(SelectStatement.create().where(whereStatement).setColumns(columns.stream().map(Column::getName).collect(Collectors.toList())));
     }
 
-    DBResult select(SelectStatement statement);
+    public abstract DBResult select(SelectStatement statement);
 
-    void update(WhereStatement whereStatement, List<Column> columns, Object... values);
+    public abstract void update(WhereStatement whereStatement, List<Column> columns, Object... values);
 
 
-    default <T> void update(T primaryKeyValue, Object... keyValues) {
+    public <T> void update(T primaryKeyValue, Object... keyValues) {
         Map.Entry<List<Column>, List<Object>> entry = seperateThing(keyValues);
         update(primaryKeyValue, entry.getKey(), entry.getValue().toArray());
     }
 
-    default <T> void update(T primaryKeyValue, List<Column> columnsToUpdate, Object... vales) {
+    public <T> void update(T primaryKeyValue, List<Column> columnsToUpdate, Object... vales) {
         update(TuxJSQL.getBuilder().createWhere().start(getPrimaryColumn().getName(), primaryKeyValue), columnsToUpdate, vales);
     }
 
-    default Column getPrimaryColumn() {
+    public Column getPrimaryColumn() {
         return getColumns().stream().filter(Column::isPrimary).findFirst().orElse(null);
     }
 
-    default void update(WhereStatement whereStatement, Map<Column, Object> kv) {
+    public void update(WhereStatement whereStatement, Map<Column, Object> kv) {
         List<Column> columns = new ArrayList<>();
         List<Object> items = new ArrayList<>();
         for (Map.Entry<Column, Object> e : kv.entrySet()) {
@@ -125,40 +126,45 @@ public interface Table {
         update(whereStatement, columns, items.toArray());
     }
 
-    default <T> void update(T primaryKeyValue, Map<Column, Object> kv) {
+    public <T> void update(T primaryKeyValue, Map<Column, Object> kv) {
         update(TuxJSQL.getBuilder().createWhere().start(getPrimaryColumn().getName(), primaryKeyValue), kv);
     }
 
-    int max(Column c);
+    public abstract int max(Column c);
 
-    int min(Column c);
+    public abstract  int min(Column c);
 
-    default int max(String s) {
+    public int max(String s) {
     return max(getColumnByName(s));
     }
 
-    default int min(String s) {
+    public int min(String s) {
         return min(getColumnByName(s));
     }
-    Table createIfNotExists();
-    void delete(WhereStatement whereStatement);
 
-    public default <T> T delete(T primaryKeyValue) {
+    public abstract Table createIfNotExists();
+    public abstract void delete(WhereStatement whereStatement);
+
+    public <T> T delete(T primaryKeyValue) {
         delete(TuxJSQL.getBuilder().createWhere().start(getPrimaryColumn().getName(), primaryKeyValue));
         return primaryKeyValue;
     }
 
-    String getName();
+    public abstract String getName();
 
-    void drop();
+    public abstract void drop();
 
-    void dropColumn(Column column);
+    public abstract void dropColumn(Column column);
 
-    void addColumn(Column column);
+    public abstract void addColumn(Column column);
 
-    void modifyColumn(Column column);
+    public abstract void modifyColumn(Column column);
 
-    public default <T> DBResult select(T primaryKeyValue) {
+    protected Logger getLogger() {
+        return TuxJSQL.logger;
+    }
+
+    public <T> DBResult select(T primaryKeyValue) {
         return select(TuxJSQL.getBuilder().createWhere().start(getPrimaryColumn().getName(), primaryKeyValue));
     }
 }

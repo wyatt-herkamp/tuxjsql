@@ -1,8 +1,10 @@
 package me.kingtux.tuxjsql.sqlite;
 
-import me.kingtux.tuxjsql.core.*;
+import me.kingtux.tuxjsql.core.Column;
+import me.kingtux.tuxjsql.core.Query;
+import me.kingtux.tuxjsql.core.Table;
+import me.kingtux.tuxjsql.core.TuxJSQL;
 import me.kingtux.tuxjsql.core.result.DBResult;
-import me.kingtux.tuxjsql.core.result.ColumnItem;
 import me.kingtux.tuxjsql.core.result.DBRow;
 import me.kingtux.tuxjsql.core.statements.SelectStatement;
 import me.kingtux.tuxjsql.core.statements.WhereStatement;
@@ -10,13 +12,12 @@ import me.kingtux.tuxjsql.core.statements.WhereStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import static me.kingtux.tuxjsql.core.TuxJSQL.Utils.resultSetToResultRow;
 
 @SuppressWarnings("Duplicates")
-public class SQLiteTable implements Table {
+public class SQLiteTable extends Table {
     private String name;
     private List<Column> columns;
 
@@ -95,7 +96,7 @@ public class SQLiteTable implements Table {
             builder.append(column.build());
         }
         String query = String.format(SQLiteQuery.TABLE.getQuery(), name, builder.toString());
-        //System.out.println(query);
+        getLogger().debug(query);
         try {
             TuxJSQL.getConnection().createStatement().execute(query);
         } catch (SQLException e) {

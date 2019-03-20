@@ -12,7 +12,7 @@ A simple to use SQL Builder and Executor.
       <groupId>me.kingtux</groupId>
       <artifactId>tuxjsql-core</artifactId>
       <!---Make sure you use Latest Version!-->
-      <version>1.0</version>
+      <version>1.1</version>
       <scope>compile</scope>
     </dependency>
 ```
@@ -23,10 +23,9 @@ repositories {
 }
 
 dependencies {
-   compile "me.kingtux:tuxjsql-core:1.0"
+   compile "me.kingtux:tuxjsql-core:1.1"
 }
 ```
-
 ### Example Code
 ```java
 //Coming Soon
