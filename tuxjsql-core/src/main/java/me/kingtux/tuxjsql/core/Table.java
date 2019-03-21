@@ -1,6 +1,7 @@
 package me.kingtux.tuxjsql.core;
 
 import me.kingtux.tuxjsql.core.result.DBResult;
+import me.kingtux.tuxjsql.core.builders.TableBuilder;
 import me.kingtux.tuxjsql.core.statements.SelectStatement;
 import me.kingtux.tuxjsql.core.statements.WhereStatement;
 import org.slf4j.Logger;

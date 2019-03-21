@@ -16,6 +16,11 @@ public class DBRow {
         return items;
     }
 
+    /**
+     * Get row item by name
+     * @param name the name
+     * @return the ColumnItem
+     */
     public ColumnItem getRowItem(String name) {
         return items.stream().filter(ri -> name.equalsIgnoreCase(ri.getName())).findFirst().orElse(null);
     }

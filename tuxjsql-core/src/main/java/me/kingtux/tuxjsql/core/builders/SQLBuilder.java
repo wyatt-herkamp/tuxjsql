@@ -1,6 +1,7 @@
-package me.kingtux.tuxjsql.core;
+package me.kingtux.tuxjsql.core.builders;
 
 import com.zaxxer.hikari.HikariDataSource;
+import me.kingtux.tuxjsql.core.*;
 import me.kingtux.tuxjsql.core.statements.SelectStatement;
 import me.kingtux.tuxjsql.core.statements.SubWhereStatement;
 import me.kingtux.tuxjsql.core.statements.WhereStatement;

@@ -1,4 +1,9 @@
-package me.kingtux.tuxjsql.core;
+package me.kingtux.tuxjsql.core.builders;
+
+import me.kingtux.tuxjsql.core.Column;
+import me.kingtux.tuxjsql.core.ColumnType;
+import me.kingtux.tuxjsql.core.DataType;
+import me.kingtux.tuxjsql.core.TuxJSQL;
 
 import java.util.Arrays;
 import java.util.List;

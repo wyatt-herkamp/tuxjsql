@@ -28,6 +28,7 @@ dependencies {
    compile "me.kingtux:tuxjsql-core:1.1"
 }
 ```
+#### Please Remeber to include tuxjsql-{dialect} in your pom or gradle
 ### Example Code
 ```java
 //Coming Soon

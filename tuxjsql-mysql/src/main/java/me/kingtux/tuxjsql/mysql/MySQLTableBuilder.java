@@ -2,7 +2,7 @@ package me.kingtux.tuxjsql.mysql;
 
 import me.kingtux.tuxjsql.core.Column;
 import me.kingtux.tuxjsql.core.Table;
-import me.kingtux.tuxjsql.core.TableBuilder;
+import me.kingtux.tuxjsql.core.builders.TableBuilder;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -2,7 +2,9 @@ package me.kingtux.tuxjsql.sqlite;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import me.kingtux.tuxjsql.core.*;
+import me.kingtux.tuxjsql.core.builders.SQLBuilder;
+import me.kingtux.tuxjsql.core.builders.TableBuilder;
+import me.kingtux.tuxjsql.core.builders.ColumnBuilder;
 import me.kingtux.tuxjsql.core.statements.SelectStatement;
 import me.kingtux.tuxjsql.core.statements.SubWhereStatement;
 import me.kingtux.tuxjsql.core.statements.WhereStatement;

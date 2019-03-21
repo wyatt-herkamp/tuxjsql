@@ -1,7 +1,7 @@
 package me.kingtux.tuxjsql.mysql;
 
 import me.kingtux.tuxjsql.core.Column;
-import me.kingtux.tuxjsql.core.ColumnBuilder;
+import me.kingtux.tuxjsql.core.builders.ColumnBuilder;
 import me.kingtux.tuxjsql.core.ColumnType;
 @SuppressWarnings("Duplicates")
 public class MySQLColumnBuilder implements ColumnBuilder {

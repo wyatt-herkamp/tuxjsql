@@ -1,4 +1,5 @@
 import me.kingtux.tuxjsql.core.*;
+import me.kingtux.tuxjsql.core.builders.SQLBuilder;
 import me.kingtux.tuxjsql.core.statements.SelectStatement;
 
 

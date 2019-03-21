@@ -1,4 +1,8 @@
-package me.kingtux.tuxjsql.core;
+package me.kingtux.tuxjsql.core.builders;
+
+import me.kingtux.tuxjsql.core.Column;
+import me.kingtux.tuxjsql.core.Table;
+import me.kingtux.tuxjsql.core.TuxJSQL;
 
 public interface TableBuilder {
 

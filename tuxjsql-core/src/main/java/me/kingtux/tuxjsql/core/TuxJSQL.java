@@ -1,6 +1,7 @@
 package me.kingtux.tuxjsql.core;
 
 import com.zaxxer.hikari.HikariDataSource;
+import me.kingtux.tuxjsql.core.builders.SQLBuilder;
 import me.kingtux.tuxjsql.core.result.ColumnItem;
 import me.kingtux.tuxjsql.core.result.DBRow;
 import org.slf4j.Logger;
@@ -18,7 +19,7 @@ import java.util.Properties;
  * I know I know static is bad. But FUCK YOU
  */
 public class TuxJSQL {
-    private static SQLBuilder SQLBuilder;
+    private static me.kingtux.tuxjsql.core.builders.SQLBuilder SQLBuilder;
     private static HikariDataSource ds;
     protected static Logger logger = LoggerFactory.getLogger(TuxJSQL.class);
     private static List<Table> savedTables = new ArrayList<>();
@@ -93,6 +94,7 @@ public class TuxJSQL {
      * Sets the SQLBuilder by class path
      *
      * @param clazzPath the class path to the SQLBuilder
+     * @throws ClassNotFoundException Class not found exception
      */
     public static void setBuilder(String clazzPath) throws ClassNotFoundException {
         Class<?> clazz = null;

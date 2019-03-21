@@ -20,18 +20,34 @@ public class DBResult implements Iterable<DBRow> {
         this.rows = rows;
     }
 
+    /**
+     * Number of rows
+     * @return the number of rows
+     */
     public int getNumberOfRows() {
         return numberOfRows;
     }
 
+    /**
+     * Number of columns
+     * @return the number of columns
+     */
     public int getNumberOfColumns() {
         return numberOfColumns;
     }
 
+    /**
+     * The table that it was used on
+     * @return the table
+     */
     public Table getTable() {
         return table;
     }
 
+    /**
+     * The Rows
+     * @return the rows
+     */
     public List<DBRow> getRows() {
         return rows;
     }

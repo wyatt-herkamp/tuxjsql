@@ -1,5 +1,7 @@
 package me.kingtux.tuxjsql.core;
 
+import me.kingtux.tuxjsql.core.builders.ColumnBuilder;
+
 /**
  * An Object to represent a column
  */
