@@ -9,9 +9,11 @@ import me.kingtux.tuxjsql.core.result.DBRow;
 import me.kingtux.tuxjsql.core.statements.SelectStatement;
 import me.kingtux.tuxjsql.core.statements.WhereStatement;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,9 +24,22 @@ public class SQLiteTable extends Table {
     private String name;
     private List<Column> columns;
 
-    public SQLiteTable(String name, List<Column> columns) {
+    SQLiteTable(String name, List<Column> columns) {
+        if (TuxJSQL.getConnection() == null) {
+            try {
+                throw new IllegalAccessException("You cannot create a table with setting up a connection!");
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+                return;
+            }
+        }
         this.name = name;
-        this.columns = columns;
+        this.columns = new ArrayList<>();
+        for (Column column : columns) {
+            SQLITEColumn sc = (SQLITEColumn) column;
+            sc.setTable(this);
+            this.columns.add(sc);
+        }
     }
 
     @Override
@@ -44,7 +59,8 @@ public class SQLiteTable extends Table {
         }
         String query = String.format(SQLiteQuery.UPDATE.getQuery(), name, columsToUpdate, whereStatement.build());
         try {
-            PreparedStatement preparedStatement = TuxJSQL.getConnection().prepareStatement(query);
+            Connection connection = TuxJSQL.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
             int fin = 0;
             for (int i = 0; i < values.length; i++) {
                 preparedStatement.setObject(i + 1, values[i]);
@@ -58,6 +74,7 @@ public class SQLiteTable extends Table {
 
             preparedStatement.execute();
             preparedStatement.close();
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -66,9 +83,12 @@ public class SQLiteTable extends Table {
     @Override
     public long max(Column c) {
         long i = 0;
-        try (ResultSet resultSet = TuxJSQL.getConnection().createStatement().executeQuery(String.format(SQLiteQuery.MAX.getQuery(), c.getName(), name))) {
+        Connection connection = TuxJSQL.getConnection();
+        try (ResultSet resultSet = connection.createStatement().executeQuery(String.format(SQLiteQuery.MAX.getQuery(), c.getName(), name))) {
             resultSet.next();
             i = resultSet.getLong(1);
+            resultSet.close();
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -78,9 +98,11 @@ public class SQLiteTable extends Table {
     @Override
     public long min(Column c) {
         long i = 0;
-        try (ResultSet resultSet = TuxJSQL.getConnection().createStatement().executeQuery(String.format(SQLiteQuery.MIN.getQuery(), c.getName(), name))) {
+        Connection connection = TuxJSQL.getConnection();
+        try (ResultSet resultSet = connection.createStatement().executeQuery(String.format(SQLiteQuery.MIN.getQuery(), c.getName(), name))) {
             resultSet.next();
             i = resultSet.getLong(1);
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -97,12 +119,9 @@ public class SQLiteTable extends Table {
             builder.append(column.build());
         }
         String query = String.format(SQLiteQuery.TABLE.getQuery(), name, builder.toString());
-        getLogger().debug(query);
-        try {
-            TuxJSQL.getConnection().createStatement().execute(query);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
+        executeSimpleStatement(query);
+
         return this;
     }
 
@@ -119,39 +138,39 @@ public class SQLiteTable extends Table {
             question.append("?");
         }
         String query = String.format(SQLiteQuery.INSERT.getQuery(), name, columnsToInsert.toString(), question.toString());
-        try (PreparedStatement preparedStatement = TuxJSQL.getConnection().prepareStatement(query)) {
+        Connection connection = TuxJSQL.getConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             for (int i = 0; i < values.length; i++) {
                 preparedStatement.setObject(i + 1, values[i]);
             }
             preparedStatement.execute();
+            preparedStatement.close();
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
 
-
-
-
     @Override
     public DBResult select(SelectStatement statement) {
-        Query sqlQuery = statement.build(this);
+        Query SQLiteQuery = statement.build(this);
         ResultSet resultSet = null;
         List<DBRow> rows = null;
         try {
-            getLogger().debug(sqlQuery.getQuery());
-            getLogger().debug(sqlQuery.getValuesAsString());
-            PreparedStatement preparedStatement = TuxJSQL.getConnection().prepareStatement(sqlQuery.getQuery());
-            if (sqlQuery.getValues() != null||sqlQuery.getValues().length == 0) {
-                for (int i = 0; i < sqlQuery.getValues().length; i++) {
-                    preparedStatement.setObject(i + 1, sqlQuery.getValues()[i]);
+            getLogger().debug(SQLiteQuery.getQuery());
+            getLogger().debug(SQLiteQuery.getValuesAsString());
+            Connection connection = TuxJSQL.getConnection();
+            PreparedStatement preparedStatement = TuxJSQL.getConnection().prepareStatement(SQLiteQuery.getQuery());
+            if (SQLiteQuery.getValues() != null && SQLiteQuery.getValues().length > 0) {
+                for (int i = 0; i < SQLiteQuery.getValues().length; i++) {
+                    preparedStatement.setObject(i + 1, SQLiteQuery.getValues()[i]);
                 }
             }
             resultSet = preparedStatement.executeQuery();
-
             rows = resultSetToResultRow(resultSet, statement.getColumns().size());
             preparedStatement.close();
-
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -159,16 +178,18 @@ public class SQLiteTable extends Table {
     }
 
 
-
     @Override
     public void delete(WhereStatement whereStatement) {
         String query = String.format(SQLiteQuery.DELETE.getQuery(), name, whereStatement.build());
-        try (PreparedStatement preparedStatement = TuxJSQL.getConnection().prepareStatement(query)) {
+        Connection connection = TuxJSQL.getConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             Object[] values = whereStatement.values();
             for (int i = 0; i < values.length; i++) {
                 preparedStatement.setObject(i + 1, values[i]);
             }
             preparedStatement.execute();
+            preparedStatement.close();
+            connection.close();
         } catch (SQLException e1) {
             e1.printStackTrace();
         }
@@ -181,16 +202,15 @@ public class SQLiteTable extends Table {
 
     @Override
     public void drop() {
-        try {
-            TuxJSQL.getConnection().createStatement().execute(String.format(SQLiteQuery.DROP_TABLE.getQuery(), getName()));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        executeSimpleStatement(String.format(SQLiteQuery.DROP_TABLE.getQuery(), getName()));
     }
 
     private void executeSimpleStatement(String statement) {
         try {
-            TuxJSQL.getConnection().createStatement().execute(statement);
+            getLogger().debug(statement);
+            Connection connection = TuxJSQL.getConnection();
+            connection.createStatement().execute(statement);
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

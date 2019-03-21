@@ -41,6 +41,8 @@ public class SQLITEBuilder implements SQLBuilder {
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+        config.setMaximumPoolSize(20);
+        config.setIdleTimeout(30000);
         return new HikariDataSource(config);
     }
 
