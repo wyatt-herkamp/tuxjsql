@@ -28,8 +28,12 @@ public class Query {
     }
 
     public String getValuesAsString() {
-        StringBuilder builder = new StringBuilder(values.length + "[ ");
-        Arrays.stream(getValues()).forEach(s -> builder.append(",").append(s.toString()));
-        return builder.toString();
+        if(values !=null) {
+            StringBuilder builder = new StringBuilder(values.length + "[ ");
+            Arrays.stream(values).forEach(s -> builder.append(",").append(s.toString()));
+            builder.append("]");
+            return builder.toString();
+        }
+        return "0 []";
     }
 }

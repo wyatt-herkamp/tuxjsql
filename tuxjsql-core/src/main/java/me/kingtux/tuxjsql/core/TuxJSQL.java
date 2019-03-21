@@ -163,7 +163,6 @@ public class TuxJSQL {
     public static class Utils {
         public static List<DBRow> resultSetToResultRow(ResultSet resultSet, int numberOfColumns) {
             List<DBRow> results = new ArrayList<>();
-            System.out.println("Building");
             try {
                 int i = numberOfColumns;
                 logger.debug("Number of rows! " + i);
@@ -177,7 +176,6 @@ public class TuxJSQL {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            System.out.println("Done Building");
             return results;
         }
     }

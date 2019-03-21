@@ -57,7 +57,8 @@ public class SQLiteTable extends Table {
             }
             columsToUpdate.append(column.getName() + "=?");
         }
-        String query = String.format(SQLiteQuery.UPDATE.getQuery(), name, columsToUpdate, whereStatement.build());
+        String query = String.format(SQLiteQuery.UPDATE.getQuery(), name, columsToUpdate, whereStatement.build().getQuery());
+        getLogger().debug(query);
         try {
             Connection connection = TuxJSQL.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -138,6 +139,7 @@ public class SQLiteTable extends Table {
             question.append("?");
         }
         String query = String.format(SQLiteQuery.INSERT.getQuery(), name, columnsToInsert.toString(), question.toString());
+        getLogger().debug(query);
         Connection connection = TuxJSQL.getConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             for (int i = 0; i < values.length; i++) {
@@ -180,7 +182,9 @@ public class SQLiteTable extends Table {
 
     @Override
     public void delete(WhereStatement whereStatement) {
-        String query = String.format(SQLiteQuery.DELETE.getQuery(), name, whereStatement.build());
+        String query = String.format(SQLiteQuery.DELETE.getQuery(), name, whereStatement.build().getQuery());
+        getLogger().debug(query);
+        getLogger().debug(whereStatement.build().getValuesAsString());
         Connection connection = TuxJSQL.getConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             Object[] values = whereStatement.values();
