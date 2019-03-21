@@ -130,6 +130,10 @@ public class TuxJSQL {
         TuxJSQL.ds = getSQLBuilder().createConnection(properties);
     }
 
+    public static void setup(Properties properties) {
+        setBuilder(Type.valueOf(properties.getProperty("db.type").toUpperCase()));
+        setDatasource(properties);
+    }
     public static void setDatasource(HikariDataSource datasource) {
         TuxJSQL.ds = datasource;
     }
@@ -159,7 +163,6 @@ public class TuxJSQL {
             return classPath;
         }
     }
-
     public static class Utils {
         public static List<DBRow> resultSetToResultRow(ResultSet resultSet, int numberOfColumns) {
             List<DBRow> results = new ArrayList<>();

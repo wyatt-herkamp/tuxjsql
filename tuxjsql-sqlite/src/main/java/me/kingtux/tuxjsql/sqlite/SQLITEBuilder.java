@@ -36,7 +36,7 @@ public class SQLITEBuilder implements SQLBuilder {
     @Override
     public HikariDataSource createConnection(Properties properties) {
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl("jdbc:sqlite:" + new File(properties.getProperty("file")).getAbsolutePath());
+        config.setJdbcUrl("jdbc:sqlite:" + new File(properties.getProperty("db.file")).getAbsolutePath());
 
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
