@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -164,9 +163,10 @@ public class TuxJSQL {
     public static class Utils {
         public static List<DBRow> resultSetToResultRow(ResultSet resultSet, int numberOfColumns) {
             List<DBRow> results = new ArrayList<>();
+            System.out.println("Building");
             try {
                 int i = numberOfColumns;
-                System.out.println(i);
+                logger.debug("Number of rows! " + i);
                 while (resultSet.next()) {
                     List<ColumnItem> items = new ArrayList<>();
                     for (int j = 1; j <= i; j++) {
@@ -177,6 +177,7 @@ public class TuxJSQL {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+            System.out.println("Done Building");
             return results;
         }
     }

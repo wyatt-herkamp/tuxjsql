@@ -2,8 +2,8 @@ package me.kingtux.tuxjsql.sqlite;
 
 import me.kingtux.tuxjsql.core.Column;
 import me.kingtux.tuxjsql.core.Query;
-import me.kingtux.tuxjsql.core.statements.SelectStatement;
 import me.kingtux.tuxjsql.core.Table;
+import me.kingtux.tuxjsql.core.statements.SelectStatement;
 
 import java.util.stream.Collectors;
 @SuppressWarnings("All")
@@ -20,6 +20,8 @@ public class SQLITESelectStatement extends SelectStatement {
             }
             columnsToSelect.append(column);
         }
-        return new Query(String.format(SQLiteQuery.SELECT.getQuery(), columnsToSelect,table.getName()), whereStatement == null ? null : whereStatement.values());
+        StringBuilder builder = new StringBuilder(String.format(SQLiteQuery.SELECT.getQuery(), columnsToSelect, table.getName()));
+        builder.append(whereStatement == null ? "" : " WHERE " + whereStatement.build().getQuery());
+        return new Query(builder.toString(), whereStatement == null ? null : whereStatement.values());
     }
 }

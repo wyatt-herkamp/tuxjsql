@@ -1,5 +1,7 @@
 package me.kingtux.tuxjsql.core;
 
+import java.util.Arrays;
+
 public class Query {
     private String query;
     private Object[] values;
@@ -23,5 +25,11 @@ public class Query {
 
     public void setValues(Object[] values) {
         this.values = values;
+    }
+
+    public String getValuesAsString() {
+        StringBuilder builder = new StringBuilder(values.length + "[ ");
+        Arrays.stream(getValues()).forEach(s -> builder.append(",").append(s.toString()));
+        return builder.toString();
     }
 }

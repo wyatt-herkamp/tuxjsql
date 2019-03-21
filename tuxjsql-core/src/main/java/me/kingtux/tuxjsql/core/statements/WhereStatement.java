@@ -15,7 +15,7 @@ public abstract class WhereStatement {
     protected List<Object> objects = new ArrayList<>();
     protected List<Object> items = new ArrayList<>();
 
-    static WhereStatement create() {
+    public static WhereStatement create() {
         return TuxJSQL.getSQLBuilder().createWhere();
     }
 
@@ -86,6 +86,7 @@ public abstract class WhereStatement {
     }
 
     public abstract Query build();
+
 
     public Object[] values() {
         List<Object> values = new ArrayList<>();

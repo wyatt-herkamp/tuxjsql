@@ -20,6 +20,7 @@ public class MySQLSelectStatement extends SelectStatement {
             }
             columnsToSelect.append(column);
         }
-        return new Query(String.format(SQLQuery.SELECT.getQuery(), columnsToSelect,table.getName()), whereStatement == null ? null : whereStatement.values());
-    }
+        StringBuilder builder = new StringBuilder(String.format(SQLQuery.SELECT.getQuery(), columnsToSelect, table.getName()));
+        builder.append(whereStatement == null ? "" : " WHERE " + whereStatement.build().getQuery());
+        return new Query(builder.toString(), whereStatement == null ? null : whereStatement.values());    }
 }

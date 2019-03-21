@@ -130,15 +130,15 @@ public abstract class Table {
         update(TuxJSQL.getSQLBuilder().createWhere().start(getPrimaryColumn().getName(), primaryKeyValue), kv);
     }
 
-    public abstract int max(Column c);
+    public abstract long max(Column c);
 
-    public abstract  int min(Column c);
+    public abstract  long min(Column c);
 
-    public int max(String s) {
+    public long max(String s) {
     return max(getColumnByName(s));
     }
 
-    public int min(String s) {
+    public long min(String s) {
         return min(getColumnByName(s));
     }
 

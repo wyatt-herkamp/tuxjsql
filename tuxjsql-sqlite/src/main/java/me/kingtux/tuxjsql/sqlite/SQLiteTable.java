@@ -12,6 +12,7 @@ import me.kingtux.tuxjsql.core.statements.WhereStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 
 import static me.kingtux.tuxjsql.core.TuxJSQL.Utils.resultSetToResultRow;
@@ -63,11 +64,11 @@ public class SQLiteTable extends Table {
     }
 
     @Override
-    public int max(Column c) {
-        int i = 0;
+    public long max(Column c) {
+        long i = 0;
         try (ResultSet resultSet = TuxJSQL.getConnection().createStatement().executeQuery(String.format(SQLiteQuery.MAX.getQuery(), c.getName(), name))) {
             resultSet.next();
-            i = resultSet.getInt(1);
+            i = resultSet.getLong(1);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -75,11 +76,11 @@ public class SQLiteTable extends Table {
     }
 
     @Override
-    public int min(Column c) {
-        int i = 0;
+    public long min(Column c) {
+        long i = 0;
         try (ResultSet resultSet = TuxJSQL.getConnection().createStatement().executeQuery(String.format(SQLiteQuery.MIN.getQuery(), c.getName(), name))) {
             resultSet.next();
-            i = resultSet.getInt(1);
+            i = resultSet.getLong(1);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -138,8 +139,10 @@ public class SQLiteTable extends Table {
         ResultSet resultSet = null;
         List<DBRow> rows = null;
         try {
+            getLogger().debug(sqlQuery.getQuery());
+            getLogger().debug(sqlQuery.getValuesAsString());
             PreparedStatement preparedStatement = TuxJSQL.getConnection().prepareStatement(sqlQuery.getQuery());
-            if (sqlQuery.getValues() != null) {
+            if (sqlQuery.getValues() != null||sqlQuery.getValues().length == 0) {
                 for (int i = 0; i < sqlQuery.getValues().length; i++) {
                     preparedStatement.setObject(i + 1, sqlQuery.getValues()[i]);
                 }

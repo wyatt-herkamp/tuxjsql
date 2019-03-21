@@ -2,7 +2,8 @@ package me.kingtux.tuxjsql.mysql;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import me.kingtux.tuxjsql.core.*;
+import me.kingtux.tuxjsql.core.ColumnBuilder;
+import me.kingtux.tuxjsql.core.TableBuilder;
 import me.kingtux.tuxjsql.core.statements.SelectStatement;
 import me.kingtux.tuxjsql.core.statements.SubWhereStatement;
 import me.kingtux.tuxjsql.core.statements.WhereStatement;
@@ -41,6 +42,8 @@ public class MySQLBuilder implements me.kingtux.tuxjsql.core.SQLBuilder {
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+        config.setMaximumPoolSize(20);
+        config.setIdleTimeout(30000);
         return new HikariDataSource(config);
     }
 
