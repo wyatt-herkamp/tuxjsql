@@ -4,16 +4,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>me.kingtux</groupId>
-    <artifactId>tuxjsql</artifactId>
+    <parent>
+        <groupId>me.kingtux</groupId>
+        <artifactId>tuxjsql</artifactId>
+        <version>1.1</version>
+    </parent>
+
+    <artifactId>tuxjsql-h2</artifactId>
     <version>1.1</version>
-    <packaging>pom</packaging>
-    <modules>
-        <module>tuxjsql-core</module>
-        <module>tuxjsql-mysql</module>
-        <module>tuxjsql-sqlite</module>
-        <module>tuxjsql-h2</module>
-    </modules>
+
     <distributionManagement>
         <repository>
             <id>kingtux-repo</id>
@@ -61,5 +60,23 @@
             </plugin>
         </plugins>
     </build>
-
+    <dependencies>
+        <dependency>
+            <groupId>me.kingtux</groupId>
+            <artifactId>tuxjsql-core</artifactId>
+            <version>1.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.199</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.0.13</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 </project>

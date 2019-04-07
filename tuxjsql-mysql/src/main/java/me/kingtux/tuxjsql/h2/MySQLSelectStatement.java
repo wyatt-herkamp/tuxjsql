@@ -1,4 +1,4 @@
-package me.kingtux.tuxjsql.mysql;
+package me.kingtux.tuxjsql.h2;
 
 import me.kingtux.tuxjsql.core.Column;
 import me.kingtux.tuxjsql.core.Query;

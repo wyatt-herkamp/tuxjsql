@@ -13,11 +13,9 @@ public class Main {
 
         //Configure the TUxJSQL
         Properties properties = new Properties();
-        String path = System.getProperty("user.home") + "/h2.properties";
-        System.out.println(path);
-        properties.load(new FileInputStream(new File(path)));
-        TuxJSQL.setBuilder(TuxJSQL.Type.MYSQL);
-        TuxJSQL.setDatasource(properties);
+        properties.setProperty("db.type", "H2");
+        properties.setProperty("db.file", "gay.h2");
+        TuxJSQL.setup(properties);
         //Start to use it.
         SQLBuilder SQLBuilder = TuxJSQL.getSQLBuilder();
         Column primary = SQLBuilder.createColumn().primary(true).name("id").autoIncrement(true).type(CommonDataTypes.INT).build();

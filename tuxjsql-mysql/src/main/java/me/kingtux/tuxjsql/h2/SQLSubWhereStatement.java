@@ -1,10 +1,9 @@
-package me.kingtux.tuxjsql.mysql;
+package me.kingtux.tuxjsql.h2;
 
 import me.kingtux.tuxjsql.core.Query;
 import me.kingtux.tuxjsql.core.statements.SubWhereStatement;
 import me.kingtux.tuxjsql.core.statements.Where;
 
-import java.util.List;
 @SuppressWarnings("Duplicates")
 public class SQLSubWhereStatement extends SubWhereStatement {
     @Override

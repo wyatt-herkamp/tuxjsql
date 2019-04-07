@@ -21,7 +21,7 @@ import java.util.Properties;
 public class TuxJSQL {
     private static me.kingtux.tuxjsql.core.builders.SQLBuilder SQLBuilder;
     private static HikariDataSource ds;
-    protected static Logger logger = LoggerFactory.getLogger(TuxJSQL.class);
+    public final static Logger logger = LoggerFactory.getLogger(TuxJSQL.class);
     private static List<Table> savedTables = new ArrayList<>();
 
     private TuxJSQL() {
@@ -49,6 +49,10 @@ public class TuxJSQL {
             }
         }
         return null;
+    }
+
+    public static HikariDataSource getDataSource() {
+        return ds;
     }
 
     /**
@@ -97,7 +101,7 @@ public class TuxJSQL {
      * @throws ClassNotFoundException Class not found exception
      */
     public static void setBuilder(String clazzPath) throws ClassNotFoundException {
-        Class<?> clazz = null;
+        Class<?> clazz;
         clazz = Class.forName(clazzPath);
         if (clazz == null) {
             return;
@@ -146,11 +150,12 @@ public class TuxJSQL {
         /**
          * MYSQL
          */
-        MYSQL("me.kingtux.tuxjsql.mysql.MySQLBuilder", "tuxjsql-mysql"),
+        MYSQL("me.kingtux.tuxjsql.h2.MySQLBuilder", "tuxjsql-h2"),
         /**
          * SQLITE
          */
-        SQLITE("me.kingtux.tuxjsql.sqlite.SQLITEBuilder", "tuxjsql-sqlite");
+        SQLITE("me.kingtux.tuxjsql.sqlite.SQLITEBuilder", "tuxjsql-sqlite"),
+        H2("me.kingtux.tuxjsql.h2.H2Builder", "tuxjsql-h2");
         private String classPath, dependency;
         Type(String classPath) {
             this.classPath = classPath;

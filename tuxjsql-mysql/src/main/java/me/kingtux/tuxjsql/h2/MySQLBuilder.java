@@ -1,4 +1,4 @@
-package me.kingtux.tuxjsql.mysql;
+package me.kingtux.tuxjsql.h2;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -37,7 +37,7 @@ public class MySQLBuilder implements SQLBuilder {
     @Override
     public HikariDataSource createConnection(Properties properties) {
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl("jdbc:mysql://" + properties.getProperty("db.host") + "/" + properties.getProperty("db.database")+"?useSSL=false");
+        config.setJdbcUrl("jdbc:h2://" + properties.getProperty("db.host") + "/" + properties.getProperty("db.database")+"?useSSL=false");
         config.setUsername(properties.getProperty("db.username"));
         config.setPassword(properties.getProperty("db.password"));
         config.addDataSourceProperty("cachePrepStmts", "true");

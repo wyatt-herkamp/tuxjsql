@@ -1,4 +1,4 @@
-package me.kingtux.tuxjsql.mysql;
+package me.kingtux.tuxjsql.h2;
 
 import me.kingtux.tuxjsql.core.Query;
 import me.kingtux.tuxjsql.core.statements.SubWhereStatement;
@@ -6,7 +6,7 @@ import me.kingtux.tuxjsql.core.statements.Where;
 import me.kingtux.tuxjsql.core.statements.WhereStatement;
 
 @SuppressWarnings("Duplicates")
-public class SQLWhereStatement extends WhereStatement {
+public class H2WhereStatement extends WhereStatement {
     @Override
     public Query build() {
         StringBuilder builder = new StringBuilder();
