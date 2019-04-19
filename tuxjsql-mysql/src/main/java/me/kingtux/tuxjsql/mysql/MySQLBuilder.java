@@ -1,64 +1,63 @@
-package me.kingtux.tuxjsql.sqlite;
+package me.kingtux.tuxjsql.mysql;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
+import me.kingtux.tuxjsql.core.builders.ColumnBuilder;
 import me.kingtux.tuxjsql.core.builders.SQLBuilder;
 import me.kingtux.tuxjsql.core.builders.TableBuilder;
-import me.kingtux.tuxjsql.core.builders.ColumnBuilder;
 import me.kingtux.tuxjsql.core.statements.SelectStatement;
 import me.kingtux.tuxjsql.core.statements.SubWhereStatement;
 import me.kingtux.tuxjsql.core.statements.WhereStatement;
 import org.apache.commons.dbcp.BasicDataSource;
 
-import java.io.File;
 import java.util.Properties;
-
 @SuppressWarnings("Duplicates")
-public class SQLITEBuilder implements SQLBuilder {
-    private BasicDataSource basicDataSource;
+public class MySQLBuilder implements SQLBuilder {
+    private BasicDataSource dataSource;
     @Override
     public TableBuilder createTable() {
-        return new SQLITETableBuilder(this);
+        return new MySQLTableBuilder(this);
     }
 
     @Override
     public WhereStatement createWhere() {
-        return new SQLiteWhereStatement();
+        return new SQLWhereStatement();
     }
 
     @Override
     public SubWhereStatement createSubWhere() {
-        return new SQLITESubWhere();
+        return new SQLSubWhereStatement();
     }
 
     @Override
     public ColumnBuilder createColumn() {
-        return new SQLiteColumnBuilder();
+        return new MySQLColumnBuilder();
     }
 
 
     @Override
     public void createConnection(Properties properties) {
-        basicDataSource = new BasicDataSource();
-        basicDataSource.setUrl("jdbc:sqlite:" + new File(properties.getProperty("db.file")).getAbsolutePath());
-        basicDataSource.setDriverClassName("org.sqlite.JDBC");
-        basicDataSource.setInitialSize(Integer.parseInt(properties.getProperty("db.poolsize", "5")));
+        dataSource = new BasicDataSource();
+        dataSource.setUrl("jdbc:h2://" + properties.getProperty("db.host") + "/" + properties.getProperty("db.database") + "?useSSL=false");
+        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+        dataSource.setPassword(properties.getProperty("db.password"));
+        dataSource.setUsername(properties.getProperty("db.username"));
+        dataSource.setInitialSize(Integer.parseInt(properties.getProperty("db.poolsize", "5")));
+
     }
 
     @Override
     public SelectStatement createSelectStatement() {
-        return new SQLITESelectStatement();
+        return new MySQLSelectStatement();
     }
 
     @Override
     public BasicDataSource getDataSource() {
-        return basicDataSource;
+        return dataSource;
     }
 
     @Override
     public void setDataSource(BasicDataSource bds) {
-        basicDataSource = bds;
-    }
+        dataSource = bds;
 
+    }
 
 }

@@ -1,4 +1,4 @@
-package me.kingtux.tuxjsql.h2;
+package me.kingtux.tuxjsql.mysql;
 @SuppressWarnings("Duplicates")
 public enum SQLQuery {
     INSERT("INSERT INTO %1$s (%2$s) VALUES (%3$s);"),

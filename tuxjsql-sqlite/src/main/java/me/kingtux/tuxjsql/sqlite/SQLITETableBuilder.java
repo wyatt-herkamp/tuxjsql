@@ -10,7 +10,11 @@ import java.util.List;
 public class SQLITETableBuilder implements TableBuilder {
     private String name;
     private List<Column> columns= new ArrayList<>();
+private SQLITEBuilder builder;
 
+    public SQLITETableBuilder(SQLITEBuilder builder) {
+        this.builder = builder;
+    }
 
     @Override
     public TableBuilder name(String s) {
@@ -25,6 +29,6 @@ public class SQLITETableBuilder implements TableBuilder {
     }
 
     public Table build() {
-        return new SQLiteTable(name, columns);
+        return new SQLiteTable(name, columns, builder);
     }
 }

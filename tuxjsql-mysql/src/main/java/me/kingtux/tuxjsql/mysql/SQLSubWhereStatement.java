@@ -1,4 +1,4 @@
-package me.kingtux.tuxjsql.h2;
+package me.kingtux.tuxjsql.mysql;
 
 import me.kingtux.tuxjsql.core.Query;
 import me.kingtux.tuxjsql.core.statements.SubWhereStatement;

@@ -14,7 +14,7 @@ public class Main {
         //Configure the TUxJSQL
         Properties properties = new Properties();
         properties.setProperty("db.type", "H2");
-        properties.setProperty("db.file", "gay.h2");
+        properties.setProperty("db.file", "gay.mysql");
         TuxJSQL.setup(properties);
         //Start to use it.
         SQLBuilder SQLBuilder = TuxJSQL.getSQLBuilder();

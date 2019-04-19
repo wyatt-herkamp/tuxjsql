@@ -10,13 +10,19 @@ public class Main {
 
         TuxJSQL.setBuilder(TuxJSQL.Type.SQLITE);
         Properties properties = new Properties();
-        properties.setProperty("file", "db.sql");
-        TuxJSQL.setDatasource(properties);
-        SQLBuilder SQLBuilder = TuxJSQL.getSQLBuilder();
+        properties.setProperty("db.file", "db.sql");
+        SQLBuilder sqlbuilder = TuxJSQL.getSQLBuilder();
+        sqlbuilder.createConnection(properties);
+        System.out.println(TuxJSQL.getConnection().getClass().getSimpleName());
         Table table = TuxJSQL.getSQLBuilder().createTable().name("t1").
-                addColumn(SQLBuilder.createColumn().type(CommonDataTypes.INT).autoIncrement(true).primary(true).name("id").build()).
-                addColumn(SQLBuilder.createColumn().type(CommonDataTypes.TEXT).name("name").build()).build().createIfNotExists();
-        table.insertAll("Test");
-        System.out.println(table.select(SelectStatement.create().addColumn("id")).first().getRowItem("id").getAsInt());
+                addColumn(sqlbuilder.createColumn().type(CommonDataTypes.INT).autoIncrement(true).primary(true).name("id").build()).
+                addColumn(sqlbuilder.createColumn().type(CommonDataTypes.TEXT).name("name").build()).build().createIfNotExists();
+            new Thread(() -> {
+                table.insertAll("Test");
+                System.out.println(table.select(SelectStatement.create().addColumn("id")).first().getRowItem("id").getAsInt());
+            }).start();
+
+
+
     }
 }

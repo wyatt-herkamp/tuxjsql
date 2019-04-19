@@ -1,6 +1,5 @@
 package me.kingtux.tuxjsql.core;
 
-import com.zaxxer.hikari.HikariDataSource;
 import me.kingtux.tuxjsql.core.builders.SQLBuilder;
 import me.kingtux.tuxjsql.core.result.ColumnItem;
 import me.kingtux.tuxjsql.core.result.DBRow;
@@ -20,7 +19,6 @@ import java.util.Properties;
  */
 public class TuxJSQL {
     private static me.kingtux.tuxjsql.core.builders.SQLBuilder SQLBuilder;
-    private static HikariDataSource ds;
     public final static Logger logger = LoggerFactory.getLogger(TuxJSQL.class);
     private static List<Table> savedTables = new ArrayList<>();
 
@@ -49,10 +47,6 @@ public class TuxJSQL {
             }
         }
         return null;
-    }
-
-    public static HikariDataSource getDataSource() {
-        return ds;
     }
 
     /**
@@ -120,7 +114,7 @@ public class TuxJSQL {
      */
     public static Connection getConnection() {
         try {
-            return ds.getConnection();
+            return getSQLBuilder().getDataSource().getConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -133,15 +127,13 @@ public class TuxJSQL {
      * @param properties the properties
      */
     public static void setDatasource(Properties properties) {
-        TuxJSQL.ds = getSQLBuilder().createConnection(properties);
+        getSQLBuilder().createConnection(properties);
     }
 
-    public static void setup(Properties properties) {
-        setBuilder(Type.valueOf(properties.getProperty("db.type").toUpperCase()));
-        setDatasource(properties);
-    }
-    public static void setDatasource(HikariDataSource datasource) {
-        TuxJSQL.ds = datasource;
+    public static SQLBuilder setup(Properties properties) {
+        SQLBuilder builder = Type.valueOf(properties.getProperty("db.type").toUpperCase()).create();
+        builder.createConnection(properties);
+        return builder;
     }
     /**
      * The Database Type
@@ -150,11 +142,16 @@ public class TuxJSQL {
         /**
          * MYSQL
          */
-        MYSQL("me.kingtux.tuxjsql.h2.MySQLBuilder", "tuxjsql-h2"),
+        MYSQL("me.kingtux.tuxjsql.mysql.MySQLBuilder", "tuxjsql-mysql"),
         /**
          * SQLITE
          */
         SQLITE("me.kingtux.tuxjsql.sqlite.SQLITEBuilder", "tuxjsql-sqlite"),
+        /**
+         * h2 database
+         *
+         * @deprecated This hasnt been tested that well
+         */
         H2("me.kingtux.tuxjsql.h2.H2Builder", "tuxjsql-h2");
         private String classPath, dependency;
         Type(String classPath) {
@@ -169,8 +166,25 @@ public class TuxJSQL {
         public String getClassPath() {
             return classPath;
         }
+
+        public SQLBuilder create() {
+            Class<?> clazz = null;
+            try {
+                clazz = Class.forName(classPath);
+            } catch (ClassNotFoundException e) {
+                logger.error("Please add " + dependency + " To your maven or gradle. Use the same groupId as TuxJSQL-core");
+            }
+
+            try {
+                return (SQLBuilder) clazz.getConstructor().newInstance();
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
     }
     public static class Utils {
+
         public static List<DBRow> resultSetToResultRow(ResultSet resultSet, int numberOfColumns) {
             List<DBRow> results = new ArrayList<>();
             try {

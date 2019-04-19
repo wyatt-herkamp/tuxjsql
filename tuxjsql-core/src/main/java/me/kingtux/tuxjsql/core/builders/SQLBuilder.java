@@ -1,10 +1,14 @@
 package me.kingtux.tuxjsql.core.builders;
 
 import com.zaxxer.hikari.HikariDataSource;
-import me.kingtux.tuxjsql.core.*;
+import me.kingtux.tuxjsql.core.Column;
+import me.kingtux.tuxjsql.core.ColumnType;
+import me.kingtux.tuxjsql.core.DataType;
+import me.kingtux.tuxjsql.core.Table;
 import me.kingtux.tuxjsql.core.statements.SelectStatement;
 import me.kingtux.tuxjsql.core.statements.SubWhereStatement;
 import me.kingtux.tuxjsql.core.statements.WhereStatement;
+import org.apache.commons.dbcp.BasicDataSource;
 
 import java.util.Arrays;
 import java.util.List;
@@ -156,9 +160,13 @@ public interface SQLBuilder {
      * Creates a Connection from properties
      *
      * @param properties the properties
-     * @return the Connection
+     *
      */
-    HikariDataSource createConnection(Properties properties);
+    void createConnection(Properties properties);
 
     SelectStatement createSelectStatement();
+
+    BasicDataSource getDataSource();
+
+    void setDataSource(BasicDataSource bds);
 }

@@ -14,7 +14,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static me.kingtux.tuxjsql.core.TuxJSQL.Utils.resultSetToResultRow;
@@ -23,9 +22,10 @@ import static me.kingtux.tuxjsql.core.TuxJSQL.Utils.resultSetToResultRow;
 public class SQLiteTable extends Table {
     private String name;
     private List<Column> columns;
-
-    SQLiteTable(String name, List<Column> columns) {
-        if (TuxJSQL.getConnection() == null) {
+    private SQLITEBuilder builder;
+    SQLiteTable(String name, List<Column> columns, SQLITEBuilder builder) {
+        this.builder = builder;
+        if (getConnection() == null) {
             try {
                 throw new IllegalAccessException("You cannot create a table with setting up a connection!");
             } catch (IllegalAccessException e) {
@@ -47,6 +47,14 @@ public class SQLiteTable extends Table {
         return columns;
     }
 
+    public Connection getConnection(){
+        try {
+            return builder.getDataSource().getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     @Override
     public void update(WhereStatement whereStatement, List<Column> columns, Object... values) {
@@ -60,7 +68,7 @@ public class SQLiteTable extends Table {
         String query = String.format(SQLiteQuery.UPDATE.getQuery(), name, columsToUpdate, whereStatement.build().getQuery());
         getLogger().debug(query);
         try {
-            Connection connection = TuxJSQL.getConnection();
+            Connection connection = getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             int fin = 0;
             for (int i = 0; i < values.length; i++) {
@@ -84,7 +92,7 @@ public class SQLiteTable extends Table {
     @Override
     public long max(Column c) {
         long i = 0;
-        Connection connection = TuxJSQL.getConnection();
+        Connection connection = getConnection();
         try (ResultSet resultSet = connection.createStatement().executeQuery(String.format(SQLiteQuery.MAX.getQuery(), c.getName(), name))) {
             resultSet.next();
             i = resultSet.getLong(1);
@@ -99,7 +107,7 @@ public class SQLiteTable extends Table {
     @Override
     public long min(Column c) {
         long i = 0;
-        Connection connection = TuxJSQL.getConnection();
+        Connection connection = getConnection();
         try (ResultSet resultSet = connection.createStatement().executeQuery(String.format(SQLiteQuery.MIN.getQuery(), c.getName(), name))) {
             resultSet.next();
             i = resultSet.getLong(1);
@@ -140,7 +148,7 @@ public class SQLiteTable extends Table {
         }
         String query = String.format(SQLiteQuery.INSERT.getQuery(), name, columnsToInsert.toString(), question.toString());
         getLogger().debug(query);
-        Connection connection = TuxJSQL.getConnection();
+        Connection connection = getConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             for (int i = 0; i < values.length; i++) {
                 preparedStatement.setObject(i + 1, values[i]);
@@ -162,8 +170,8 @@ public class SQLiteTable extends Table {
         try {
             getLogger().debug(SQLiteQuery.getQuery());
             getLogger().debug(SQLiteQuery.getValuesAsString());
-            Connection connection = TuxJSQL.getConnection();
-            PreparedStatement preparedStatement = TuxJSQL.getConnection().prepareStatement(SQLiteQuery.getQuery());
+            Connection connection = getConnection();
+            PreparedStatement preparedStatement = getConnection().prepareStatement(SQLiteQuery.getQuery());
             if (SQLiteQuery.getValues() != null && SQLiteQuery.getValues().length > 0) {
                 for (int i = 0; i < SQLiteQuery.getValues().length; i++) {
                     preparedStatement.setObject(i + 1, SQLiteQuery.getValues()[i]);
@@ -185,7 +193,7 @@ public class SQLiteTable extends Table {
         String query = String.format(SQLiteQuery.DELETE.getQuery(), name, whereStatement.build().getQuery());
         getLogger().debug(query);
         getLogger().debug(whereStatement.build().getValuesAsString());
-        Connection connection = TuxJSQL.getConnection();
+        Connection connection = getConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             Object[] values = whereStatement.values();
             for (int i = 0; i < values.length; i++) {
@@ -212,7 +220,7 @@ public class SQLiteTable extends Table {
     private void executeSimpleStatement(String statement) {
         try {
             getLogger().debug(statement);
-            Connection connection = TuxJSQL.getConnection();
+            Connection connection = getConnection();
             connection.createStatement().execute(statement);
             connection.close();
         } catch (SQLException e) {

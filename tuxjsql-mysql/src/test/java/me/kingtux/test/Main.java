@@ -13,7 +13,7 @@ public class Main {
 
         //Configure the TUxJSQL
         Properties properties = new Properties();
-        String path = System.getProperty("user.home") + "/h2.properties";
+        String path = System.getProperty("user.home") + "/mysql.properties";
         System.out.println(path);
         properties.load(new FileInputStream(new File(path)));
         TuxJSQL.setBuilder(TuxJSQL.Type.MYSQL);

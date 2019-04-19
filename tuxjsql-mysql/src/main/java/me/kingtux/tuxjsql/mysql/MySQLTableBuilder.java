@@ -1,4 +1,4 @@
-package me.kingtux.tuxjsql.h2;
+package me.kingtux.tuxjsql.mysql;
 
 import me.kingtux.tuxjsql.core.Column;
 import me.kingtux.tuxjsql.core.Table;
@@ -11,6 +11,11 @@ public class MySQLTableBuilder implements TableBuilder {
     private String name;
     private List<Column> columns= new ArrayList<>();
 
+    private MySQLBuilder builder;
+
+    public MySQLTableBuilder(MySQLBuilder builder) {
+        this.builder = builder;
+    }
 
     @Override
     public TableBuilder name(String s) {
@@ -25,6 +30,6 @@ public class MySQLTableBuilder implements TableBuilder {
     }
 
     public Table build() {
-        return new SQLTable(name, columns);
+        return new SQLTable(name, columns, builder);
     }
 }
