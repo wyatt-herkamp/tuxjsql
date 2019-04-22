@@ -15,7 +15,7 @@ import java.util.Properties;
 
 @SuppressWarnings("Duplicates")
 public class SQLITEBuilder implements SQLBuilder {
-    private BasicDataSource basicDataSource;
+    private HikariDataSource dataSource;
     @Override
     public TableBuilder createTable() {
         return new SQLITETableBuilder(this);
@@ -38,26 +38,47 @@ public class SQLITEBuilder implements SQLBuilder {
 
 
     @Override
-    public void createConnection(Properties properties) {
-        basicDataSource = new BasicDataSource();
-        basicDataSource.setUrl("jdbc:sqlite:" + new File(properties.getProperty("db.file")).getAbsolutePath());
-        basicDataSource.setDriverClassName("org.sqlite.JDBC");
-        basicDataSource.setInitialSize(Integer.parseInt(properties.getProperty("db.poolsize", "5")));
-    }
-
-    @Override
     public SelectStatement createSelectStatement() {
         return new SQLITESelectStatement();
     }
 
+   //"jdbc:sqlite:" + new File(properties.getProperty("db.file")).getAbsolutePath()
+
+
     @Override
-    public BasicDataSource getDataSource() {
-        return basicDataSource;
+    public void createConnection(Properties properties) {
+        HikariConfig config = getDefaultHikariConfig();
+        config.setJdbcUrl(String.format(config.getJdbcUrl(), properties.getProperty("db.file")));
+
+        setDataSource(config);
+    }
+
+
+
+    @Override
+    public HikariDataSource getDataSource() {
+        return dataSource;
     }
 
     @Override
-    public void setDataSource(BasicDataSource bds) {
-        basicDataSource = bds;
+    public void setDataSource(HikariDataSource bds) {
+        dataSource = bds;
+
+    }
+
+    @Override
+    public void setDataSource(HikariConfig config) {
+        setDataSource(new HikariDataSource(config));
+    }
+
+    @Override
+    public HikariConfig getDefaultHikariConfig() {
+        HikariConfig config = new HikariConfig();
+        config.setDriverClassName("org.sqlite.JDBC");
+        config.setJdbcUrl("jdbc:sqlite:%1$s");
+        config.setMaximumPoolSize(5);
+        config.setIdleTimeout(30000);
+        return config;
     }
 
 

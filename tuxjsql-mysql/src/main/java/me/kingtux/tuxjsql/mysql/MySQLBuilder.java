@@ -1,17 +1,18 @@
 package me.kingtux.tuxjsql.mysql;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import me.kingtux.tuxjsql.core.builders.ColumnBuilder;
 import me.kingtux.tuxjsql.core.builders.SQLBuilder;
 import me.kingtux.tuxjsql.core.builders.TableBuilder;
 import me.kingtux.tuxjsql.core.statements.SelectStatement;
 import me.kingtux.tuxjsql.core.statements.SubWhereStatement;
 import me.kingtux.tuxjsql.core.statements.WhereStatement;
-import org.apache.commons.dbcp.BasicDataSource;
 
 import java.util.Properties;
 @SuppressWarnings("Duplicates")
 public class MySQLBuilder implements SQLBuilder {
-    private BasicDataSource dataSource;
+    private HikariDataSource dataSource;
     @Override
     public TableBuilder createTable() {
         return new MySQLTableBuilder(this);
@@ -35,13 +36,11 @@ public class MySQLBuilder implements SQLBuilder {
 
     @Override
     public void createConnection(Properties properties) {
-        dataSource = new BasicDataSource();
-        dataSource.setUrl("jdbc:h2://" + properties.getProperty("db.host") + "/" + properties.getProperty("db.database") + "?useSSL=false");
-        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setPassword(properties.getProperty("db.password"));
-        dataSource.setUsername(properties.getProperty("db.username"));
-        dataSource.setInitialSize(Integer.parseInt(properties.getProperty("db.poolsize", "5")));
-
+        HikariConfig config = getDefaultHikariConfig();
+        config.setJdbcUrl(String.format(config.getJdbcUrl(), properties.getProperty("db.host"), properties.getProperty("db.db")));
+        config.setUsername(properties.getProperty("db.username"));
+        config.setPassword(properties.getProperty("db.password"));
+        setDataSource(config);
     }
 
     @Override
@@ -50,14 +49,29 @@ public class MySQLBuilder implements SQLBuilder {
     }
 
     @Override
-    public BasicDataSource getDataSource() {
+    public HikariDataSource getDataSource() {
         return dataSource;
     }
 
     @Override
-    public void setDataSource(BasicDataSource bds) {
+    public void setDataSource(HikariDataSource bds) {
         dataSource = bds;
 
+    }
+
+    @Override
+    public void setDataSource(HikariConfig config) {
+        setDataSource(new HikariDataSource(config));
+    }
+
+    @Override
+    public HikariConfig getDefaultHikariConfig() {
+        HikariConfig config = new HikariConfig();
+        config.setDriverClassName("com.mysql.jdbc.Driver");
+        config.setJdbcUrl("jdbc:mysql://%1$s/%2$s?useSSL=false");
+        config.setMaximumPoolSize(5);
+        config.setIdleTimeout(30000);
+        return config;
     }
 
 }

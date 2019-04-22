@@ -1,5 +1,6 @@
 package me.kingtux.tuxjsql.core.builders;
 
+import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import me.kingtux.tuxjsql.core.Column;
 import me.kingtux.tuxjsql.core.ColumnType;
@@ -166,7 +167,12 @@ public interface SQLBuilder {
 
     SelectStatement createSelectStatement();
 
-    BasicDataSource getDataSource();
+    HikariDataSource getDataSource();
 
-    void setDataSource(BasicDataSource bds);
+    void setDataSource(HikariDataSource bds);
+
+    HikariConfig getDefaultHikariConfig();
+
+    void setDataSource(HikariConfig config);
 }
+

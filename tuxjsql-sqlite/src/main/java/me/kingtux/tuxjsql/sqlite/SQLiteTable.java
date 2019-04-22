@@ -24,6 +24,7 @@ public class SQLiteTable extends Table {
     private List<Column> columns;
     private SQLITEBuilder builder;
     SQLiteTable(String name, List<Column> columns, SQLITEBuilder builder) {
+        super(builder);
         this.builder = builder;
         if (getConnection() == null) {
             try {

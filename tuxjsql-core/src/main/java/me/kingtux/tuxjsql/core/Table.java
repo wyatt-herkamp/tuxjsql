@@ -1,5 +1,6 @@
 package me.kingtux.tuxjsql.core;
 
+import me.kingtux.tuxjsql.core.builders.SQLBuilder;
 import me.kingtux.tuxjsql.core.result.DBResult;
 import me.kingtux.tuxjsql.core.builders.TableBuilder;
 import me.kingtux.tuxjsql.core.statements.SelectStatement;
@@ -18,12 +19,22 @@ import java.util.stream.Collectors;
  */
 @SuppressWarnings("All")
 public abstract class Table {
+    private SQLBuilder builder;
+
+    public Table(SQLBuilder builder) {
+        this.builder = builder;
+    }
+
     /**
      * This returns all the columns
      *
      * @return columns
      */
     public abstract List<Column> getColumns();
+
+    public SQLBuilder getBuilder() {
+        return builder;
+    }
 
     public Column getColumnByName(String s) {
         for (Column c : getColumns()) {
@@ -95,7 +106,7 @@ public abstract class Table {
     }
 
     public DBResult select(WhereStatement whereStatement, List<Column> columns) {
-        return select(SelectStatement.create().where(whereStatement).setColumns(columns.stream().map(Column::getName).collect(Collectors.toList())));
+        return select(builder.createSelectStatement().where(whereStatement).setColumns(columns.stream().map(Column::getName).collect(Collectors.toList())));
     }
 
     public abstract DBResult select(SelectStatement statement);
@@ -109,7 +120,7 @@ public abstract class Table {
     }
 
     public <T> void update(T primaryKeyValue, List<Column> columnsToUpdate, Object... vales) {
-        update(TuxJSQL.getSQLBuilder().createWhere().start(getPrimaryColumn().getName(), primaryKeyValue), columnsToUpdate, vales);
+        update(builder.createWhere().start(getPrimaryColumn().getName(), primaryKeyValue), columnsToUpdate, vales);
     }
 
     public Column getPrimaryColumn() {
@@ -128,7 +139,7 @@ public abstract class Table {
     }
 
     public <T> void update(T primaryKeyValue, Map<Column, Object> kv) {
-        update(TuxJSQL.getSQLBuilder().createWhere().start(getPrimaryColumn().getName(), primaryKeyValue), kv);
+        update(builder.createWhere().start(getPrimaryColumn().getName(), primaryKeyValue), kv);
     }
 
     public abstract long max(Column c);
@@ -147,7 +158,7 @@ public abstract class Table {
     public abstract void delete(WhereStatement whereStatement);
 
     public <T> T delete(T primaryKeyValue) {
-        delete(TuxJSQL.getSQLBuilder().createWhere().start(getPrimaryColumn().getName(), primaryKeyValue));
+        delete(builder.createWhere().start(getPrimaryColumn().getName(), primaryKeyValue));
         return primaryKeyValue;
     }
 
@@ -166,6 +177,6 @@ public abstract class Table {
     }
 
     public <T> DBResult select(T primaryKeyValue) {
-        return select(TuxJSQL.getSQLBuilder().createWhere().start(getPrimaryColumn().getName(), primaryKeyValue));
+        return select(builder.createWhere().start(getPrimaryColumn().getName(), primaryKeyValue));
     }
 }
