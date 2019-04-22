@@ -45,13 +45,6 @@ public class SQLITEBuilder implements SQLBuilder {
    //"jdbc:sqlite:" + new File(properties.getProperty("db.file")).getAbsolutePath()
 
 
-    @Override
-    public void createConnection(Properties properties) {
-        HikariConfig config = getDefaultHikariConfig();
-        config.setJdbcUrl(String.format(config.getJdbcUrl(), properties.getProperty("db.file")));
-
-        setDataSource(config);
-    }
 
 
 
@@ -62,8 +55,10 @@ public class SQLITEBuilder implements SQLBuilder {
 
     @Override
     public void setDataSource(HikariDataSource bds) {
+        if(dataSource!=null && !dataSource.isClosed()){
+            dataSource.close();
+        }
         dataSource = bds;
-
     }
 
     @Override
@@ -78,7 +73,15 @@ public class SQLITEBuilder implements SQLBuilder {
         config.setJdbcUrl("jdbc:sqlite:%1$s");
         config.setMaximumPoolSize(5);
         config.setIdleTimeout(30000);
+        config.setLeakDetectionThreshold(30000);
         return config;
+    }
+
+    @Override
+    public void createConnection(HikariConfig config, Properties properties) {
+        config.setJdbcUrl(String.format(config.getJdbcUrl(), properties.getProperty("db.file")));
+
+        setDataSource(config);
     }
 
 

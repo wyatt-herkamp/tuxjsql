@@ -13,14 +13,16 @@ public class Main {
         properties.setProperty("db.file", "db.sql");
         SQLBuilder sqlbuilder = TuxJSQL.getSQLBuilder();
         sqlbuilder.createConnection(properties);
-        System.out.println(TuxJSQL.getConnection().getClass().getSimpleName());
         Table table = TuxJSQL.getSQLBuilder().createTable().name("t1").
                 addColumn(sqlbuilder.createColumn().type(CommonDataTypes.INT).autoIncrement(true).primary(true).name("id").build()).
                 addColumn(sqlbuilder.createColumn().type(CommonDataTypes.TEXT).name("name").build()).build().createIfNotExists();
             new Thread(() -> {
-                table.insertAll("Test");
-                System.out.println(table.select(SelectStatement.create().addColumn("id")).first().getRowItem("id").getAsInt());
-            }).start();
+                for (int i = 0; i < 5; i++) {
+                    table.insertAll("Test");
+                    System.out.println(table.select(SelectStatement.create().addColumn("id")).first().getRowItem("id").getAsInt());
+
+                }
+                }).start();
 
 
 

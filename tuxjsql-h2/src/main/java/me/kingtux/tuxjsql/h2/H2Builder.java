@@ -1,4 +1,4 @@
-package me.kingtux.tuxjsql.mysql;
+package me.kingtux.tuxjsql.h2;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -10,34 +10,35 @@ import me.kingtux.tuxjsql.core.statements.SubWhereStatement;
 import me.kingtux.tuxjsql.core.statements.WhereStatement;
 
 import java.util.Properties;
+
 @SuppressWarnings("Duplicates")
-public class MySQLBuilder implements SQLBuilder {
+public class H2Builder implements SQLBuilder {
     private HikariDataSource dataSource;
+
     @Override
     public TableBuilder createTable() {
-        return new MySQLTableBuilder(this);
+        return new H2TableBuilder(this);
     }
 
     @Override
     public WhereStatement createWhere() {
-        return new SQLWhereStatement();
+        return new H2WhereStatement();
     }
 
     @Override
     public SubWhereStatement createSubWhere() {
-        return new SQLSubWhereStatement();
+        return new H2SubWhereStatement();
     }
 
     @Override
     public ColumnBuilder createColumn() {
-        return new MySQLColumnBuilder();
+        return new H2ColumnBuilder();
     }
 
-    
 
     @Override
     public SelectStatement createSelectStatement() {
-        return new MySQLSelectStatement();
+        return new H2SelectStatement();
     }
 
     @Override
@@ -50,8 +51,7 @@ public class MySQLBuilder implements SQLBuilder {
         if(dataSource!=null && !dataSource.isClosed()){
             dataSource.close();
         }
-        dataSource = bds;
-
+        this.dataSource = bds;
     }
 
     @Override
@@ -62,8 +62,8 @@ public class MySQLBuilder implements SQLBuilder {
     @Override
     public HikariConfig getDefaultHikariConfig() {
         HikariConfig config = new HikariConfig();
-        config.setDriverClassName("com.mysql.jdbc.Driver");
-        config.setJdbcUrl("jdbc:mysql://%1$s/%2$s?useSSL=false");
+        config.setDriverClassName("org.h2.Driver");
+        config.setJdbcUrl("jdbc:h2:%1$s");
         config.setMaximumPoolSize(5);
         config.setIdleTimeout(30000);
         config.setLeakDetectionThreshold(30000);
@@ -72,10 +72,8 @@ public class MySQLBuilder implements SQLBuilder {
 
     @Override
     public void createConnection(HikariConfig config, Properties properties) {
+        config.setJdbcUrl(String.format(config.getJdbcUrl(), properties.getProperty("db.file")));
 
-        config.setJdbcUrl(String.format(config.getJdbcUrl(), properties.getProperty("db.host"), properties.getProperty("db.db")));
-        config.setUsername(properties.getProperty("db.username"));
-        config.setPassword(properties.getProperty("db.password"));
         setDataSource(config);
     }
 

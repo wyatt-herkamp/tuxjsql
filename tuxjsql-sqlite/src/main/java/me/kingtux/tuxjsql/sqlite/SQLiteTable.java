@@ -3,7 +3,6 @@ package me.kingtux.tuxjsql.sqlite;
 import me.kingtux.tuxjsql.core.Column;
 import me.kingtux.tuxjsql.core.Query;
 import me.kingtux.tuxjsql.core.Table;
-import me.kingtux.tuxjsql.core.TuxJSQL;
 import me.kingtux.tuxjsql.core.result.DBResult;
 import me.kingtux.tuxjsql.core.result.DBRow;
 import me.kingtux.tuxjsql.core.statements.SelectStatement;
@@ -26,7 +25,7 @@ public class SQLiteTable extends Table {
     SQLiteTable(String name, List<Column> columns, SQLITEBuilder builder) {
         super(builder);
         this.builder = builder;
-        if (getConnection() == null) {
+        if (this.builder.getDataSource() == null){
             try {
                 throw new IllegalAccessException("You cannot create a table with setting up a connection!");
             } catch (IllegalAccessException e) {
@@ -172,7 +171,7 @@ public class SQLiteTable extends Table {
             getLogger().debug(SQLiteQuery.getQuery());
             getLogger().debug(SQLiteQuery.getValuesAsString());
             Connection connection = getConnection();
-            PreparedStatement preparedStatement = getConnection().prepareStatement(SQLiteQuery.getQuery());
+            PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQuery.getQuery());
             if (SQLiteQuery.getValues() != null && SQLiteQuery.getValues().length > 0) {
                 for (int i = 0; i < SQLiteQuery.getValues().length; i++) {
                     preparedStatement.setObject(i + 1, SQLiteQuery.getValues()[i]);

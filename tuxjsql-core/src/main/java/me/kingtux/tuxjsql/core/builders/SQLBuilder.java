@@ -163,7 +163,9 @@ public interface SQLBuilder {
      * @param properties the properties
      *
      */
-    void createConnection(Properties properties);
+    default void createConnection(Properties properties){
+        createConnection(getDefaultHikariConfig(), properties);
+    }
 
     SelectStatement createSelectStatement();
 
@@ -173,6 +175,10 @@ public interface SQLBuilder {
 
     HikariConfig getDefaultHikariConfig();
 
-    void setDataSource(HikariConfig config);
+    void createConnection(HikariConfig config, Properties properties);
+
+    default  void setDataSource(HikariConfig config){
+        setDataSource(new HikariDataSource(config));
+    }
 }
 
