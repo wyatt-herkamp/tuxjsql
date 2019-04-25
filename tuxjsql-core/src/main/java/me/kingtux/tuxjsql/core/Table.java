@@ -1,12 +1,13 @@
 package me.kingtux.tuxjsql.core;
 
 import me.kingtux.tuxjsql.core.builders.SQLBuilder;
-import me.kingtux.tuxjsql.core.result.DBResult;
 import me.kingtux.tuxjsql.core.builders.TableBuilder;
+import me.kingtux.tuxjsql.core.result.DBResult;
 import me.kingtux.tuxjsql.core.statements.SelectStatement;
 import me.kingtux.tuxjsql.core.statements.WhereStatement;
 import org.slf4j.Logger;
 
+import java.sql.*;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,72 @@ public abstract class Table {
         return builder;
     }
 
+    public boolean tableExists() {
+        boolean response = false;
+        Connection connection = getConnection();
+        try {
+            DatabaseMetaData dbm = connection.getMetaData();
+            ResultSet tables = dbm.getTables(null, null, getName(), null);
+            response = tables.next();
+            tables.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return response;
+    }
+
+    protected Connection getConnection() {
+
+        try {
+            return builder.getDataSource().getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * @Deprecated Just Dont
+     */
+    @Deprecated
+    public void createUpdate() {
+        if (!tableExists()) {
+            createIfNotExists();
+            return;
+        }
+        List<String> columnsPresent = new ArrayList<>();
+        List<String> columnsNeeded = getColumns().stream().map(Column::getName).collect(Collectors.toList());
+        for (String string : columnsNeeded) {
+            if (columnsPresent.contains(string)) {
+                continue;
+            }
+            addColumn(getColumnByName(string));
+        }
+        for (String string : columnsPresent) {
+            if (columnsNeeded.contains(string)) {
+                continue;
+            }
+            dropColumn(string);
+        }
+    }
+
+    public List<String> getColumnsInTable() {
+        Connection connection = getConnection();
+        List<String> columnsName = new ArrayList<>();
+        try {
+            ResultSet rs = connection.createStatement().executeQuery("SELECT * FROM " + getName());
+            ResultSetMetaData rsMetaData = rs.getMetaData();
+            int numberOfColumns = rsMetaData.getColumnCount();
+
+            for (int i = 1; i < numberOfColumns + 1; i++) {
+                columnsName.add(rsMetaData.getColumnName(i));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return columnsName;
+    }
     public Column getColumnByName(String s) {
         for (Column c : getColumns()) {
             if (c.getName().equals(s)) {
@@ -166,8 +233,11 @@ public abstract class Table {
 
     public abstract void drop();
 
-    public abstract void dropColumn(Column column);
+    public abstract void dropColumn(String column);
 
+    public void dropColumn(Column co) {
+        dropColumn(co.getName());
+    }
     public abstract void addColumn(Column column);
 
     public abstract void modifyColumn(Column column);

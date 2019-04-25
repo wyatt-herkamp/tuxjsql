@@ -14,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static me.kingtux.tuxjsql.core.TuxJSQL.Utils.resultSetToResultRow;
 
@@ -25,14 +26,7 @@ public class SQLiteTable extends Table {
     SQLiteTable(String name, List<Column> columns, SQLITEBuilder builder) {
         super(builder);
         this.builder = builder;
-        if (this.builder.getDataSource() == null){
-            try {
-                throw new IllegalAccessException("You cannot create a table with setting up a connection!");
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-                return;
-            }
-        }
+
         this.name = name;
         this.columns = new ArrayList<>();
         for (Column column : columns) {
@@ -47,14 +41,6 @@ public class SQLiteTable extends Table {
         return columns;
     }
 
-    public Connection getConnection(){
-        try {
-            return builder.getDataSource().getConnection();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
     @Override
     public void update(WhereStatement whereStatement, List<Column> columns, Object... values) {
@@ -229,14 +215,15 @@ public class SQLiteTable extends Table {
     }
 
     @Override
-    public void dropColumn(Column column) {
-        if (!columns.contains(column)) {
+    public void dropColumn(String column) {
+        if (!getColumnsInTable().contains(column)) {
             throw new IllegalArgumentException("Column Does not exist!");
         }
-        columns.remove(column);
-        executeSimpleStatement(String.format(SQLiteQuery.DROP_COLUMN.getQuery(), name, column.getName()));
+        if(columns.stream().map(Column::getName).collect(Collectors.toList()).contains(column)) {
+            columns.remove(getColumnByName(column));
+        }
+        executeSimpleStatement(String.format(SQLiteQuery.DROP_COLUMN.getQuery(), name, column));
     }
-
     @Override
     public void addColumn(Column column) {
         executeSimpleStatement(String.format(SQLiteQuery.ADD_COLUMN.getQuery(), name, column.build()));

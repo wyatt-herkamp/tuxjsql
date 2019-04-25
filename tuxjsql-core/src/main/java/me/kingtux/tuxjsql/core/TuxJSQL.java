@@ -132,7 +132,7 @@ public class TuxJSQL {
 
     public static SQLBuilder setup(Properties properties) {
         SQLBuilder builder = Type.valueOf(properties.getProperty("db.type").toUpperCase()).create();
-        if (Boolean.parseBoolean(properties.getProperty("db.auto-connect", "false"))) {
+        if (Boolean.parseBoolean(properties.getProperty("db.auto.connect", "true"))) {
             builder.createConnection(properties);
         }
         return builder;
