@@ -44,6 +44,7 @@ public abstract class Table {
             DatabaseMetaData dbm = connection.getMetaData();
             ResultSet tables = dbm.getTables(null, null, getName(), null);
             response = tables.next();
+            TuxJSQL.logger.debug(getName()+ " " + response);
             tables.close();
             connection.close();
         } catch (SQLException e) {
@@ -63,15 +64,17 @@ public abstract class Table {
     }
 
     /**
+     * The goal of this method is to find differences between the Table in the db and your Table Object.
+     * By deleting columns not found in the object and adding columns not found in the DB table.
+     *
      * @Deprecated Just Dont
      */
     @Deprecated
-    public void createUpdate() {
+    public Table createUpdate() {
         if (!tableExists()) {
-            createIfNotExists();
-            return;
+            return createIfNotExists();
         }
-        List<String> columnsPresent = new ArrayList<>();
+        List<String> columnsPresent = getColumnsInTable();
         List<String> columnsNeeded = getColumns().stream().map(Column::getName).collect(Collectors.toList());
         for (String string : columnsNeeded) {
             if (columnsPresent.contains(string)) {
@@ -79,12 +82,17 @@ public abstract class Table {
             }
             addColumn(getColumnByName(string));
         }
+        if(builder.getType()== TuxJSQL.Type.SQLITE){
+            TuxJSQL.logger.error("Unable to Update Table. SQLITE doesnt support column dropping");
+            return this;
+        }
         for (String string : columnsPresent) {
             if (columnsNeeded.contains(string)) {
                 continue;
             }
             dropColumn(string);
         }
+        return this;
     }
 
     public List<String> getColumnsInTable() {
@@ -98,6 +106,8 @@ public abstract class Table {
             for (int i = 1; i < numberOfColumns + 1; i++) {
                 columnsName.add(rsMetaData.getColumnName(i));
             }
+            rs.close();
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

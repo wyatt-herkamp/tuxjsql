@@ -1,7 +1,7 @@
-import me.kingtux.tuxjsql.core.*;
+import me.kingtux.tuxjsql.core.CommonDataTypes;
+import me.kingtux.tuxjsql.core.Table;
+import me.kingtux.tuxjsql.core.TuxJSQL;
 import me.kingtux.tuxjsql.core.builders.SQLBuilder;
-import me.kingtux.tuxjsql.core.statements.SelectStatement;
-
 
 import java.util.Properties;
 
@@ -15,16 +15,9 @@ public class Main {
         sqlbuilder.createConnection(properties);
         Table table = TuxJSQL.getSQLBuilder().createTable().name("t1").
                 addColumn(sqlbuilder.createColumn().type(CommonDataTypes.INT).autoIncrement(true).primary(true).name("id").build()).
-                addColumn(sqlbuilder.createColumn().type(CommonDataTypes.TEXT).name("name").build()).build().createIfNotExists();
-            new Thread(() -> {
-                for (int i = 0; i < 5; i++) {
-                    table.insertAll("Test");
-                    System.out.println(table.select(SelectStatement.create().addColumn("id")).first().getRowItem("id").getAsInt());
-
-                }
-                }).start();
-
-
+                addColumn(sqlbuilder.createColumn().type(CommonDataTypes.TEXT).name("name").build()).build().createUpdate();
+//.
+//                addColumn(sqlbuilder.createColumn().type(CommonDataTypes.INT).name("new").build())
 
     }
 }

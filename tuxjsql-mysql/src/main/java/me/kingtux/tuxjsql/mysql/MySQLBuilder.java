@@ -2,6 +2,7 @@ package me.kingtux.tuxjsql.mysql;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import me.kingtux.tuxjsql.core.TuxJSQL;
 import me.kingtux.tuxjsql.core.builders.ColumnBuilder;
 import me.kingtux.tuxjsql.core.builders.SQLBuilder;
 import me.kingtux.tuxjsql.core.builders.TableBuilder;
@@ -54,6 +55,10 @@ public class MySQLBuilder implements SQLBuilder {
 
     }
 
+    @Override
+    public TuxJSQL.Type getType() {
+        return TuxJSQL.Type.MYSQL;
+    }
     @Override
     public void setDataSource(HikariConfig config) {
         setDataSource(new HikariDataSource(config));

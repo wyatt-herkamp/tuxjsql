@@ -2,6 +2,7 @@ package me.kingtux.tuxjsql.h2;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import me.kingtux.tuxjsql.core.TuxJSQL;
 import me.kingtux.tuxjsql.core.builders.ColumnBuilder;
 import me.kingtux.tuxjsql.core.builders.SQLBuilder;
 import me.kingtux.tuxjsql.core.builders.TableBuilder;
@@ -57,6 +58,11 @@ public class H2Builder implements SQLBuilder {
     @Override
     public void setDataSource(HikariConfig config) {
         setDataSource(new HikariDataSource(config));
+    }
+
+    @Override
+    public TuxJSQL.Type getType() {
+        return TuxJSQL.Type.H2;
     }
 
     @Override

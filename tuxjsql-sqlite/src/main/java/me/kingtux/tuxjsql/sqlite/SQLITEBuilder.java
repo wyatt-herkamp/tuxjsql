@@ -2,6 +2,7 @@ package me.kingtux.tuxjsql.sqlite;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import me.kingtux.tuxjsql.core.TuxJSQL;
 import me.kingtux.tuxjsql.core.builders.SQLBuilder;
 import me.kingtux.tuxjsql.core.builders.TableBuilder;
 import me.kingtux.tuxjsql.core.builders.ColumnBuilder;
@@ -44,7 +45,10 @@ public class SQLITEBuilder implements SQLBuilder {
 
    //"jdbc:sqlite:" + new File(properties.getProperty("db.file")).getAbsolutePath()
 
-
+    @Override
+    public TuxJSQL.Type getType() {
+        return TuxJSQL.Type.SQLITE;
+    }
 
 
 

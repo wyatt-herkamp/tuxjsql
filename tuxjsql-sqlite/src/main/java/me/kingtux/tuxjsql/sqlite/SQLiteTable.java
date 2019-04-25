@@ -3,6 +3,7 @@ package me.kingtux.tuxjsql.sqlite;
 import me.kingtux.tuxjsql.core.Column;
 import me.kingtux.tuxjsql.core.Query;
 import me.kingtux.tuxjsql.core.Table;
+import me.kingtux.tuxjsql.core.TuxJSQL;
 import me.kingtux.tuxjsql.core.result.DBResult;
 import me.kingtux.tuxjsql.core.result.DBRow;
 import me.kingtux.tuxjsql.core.statements.SelectStatement;
@@ -216,13 +217,7 @@ public class SQLiteTable extends Table {
 
     @Override
     public void dropColumn(String column) {
-        if (!getColumnsInTable().contains(column)) {
-            throw new IllegalArgumentException("Column Does not exist!");
-        }
-        if(columns.stream().map(Column::getName).collect(Collectors.toList()).contains(column)) {
-            columns.remove(getColumnByName(column));
-        }
-        executeSimpleStatement(String.format(SQLiteQuery.DROP_COLUMN.getQuery(), name, column));
+        TuxJSQL.logger.warn("SQLITE does not support dropping of columns", new UnsupportedOperationException("SQLITE doesnt have support for dropping columns"));
     }
     @Override
     public void addColumn(Column column) {

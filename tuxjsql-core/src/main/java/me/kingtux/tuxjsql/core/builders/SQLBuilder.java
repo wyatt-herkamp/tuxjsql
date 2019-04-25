@@ -2,10 +2,7 @@ package me.kingtux.tuxjsql.core.builders;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import me.kingtux.tuxjsql.core.Column;
-import me.kingtux.tuxjsql.core.ColumnType;
-import me.kingtux.tuxjsql.core.DataType;
-import me.kingtux.tuxjsql.core.Table;
+import me.kingtux.tuxjsql.core.*;
 import me.kingtux.tuxjsql.core.statements.SelectStatement;
 import me.kingtux.tuxjsql.core.statements.SubWhereStatement;
 import me.kingtux.tuxjsql.core.statements.WhereStatement;
@@ -180,5 +177,7 @@ public interface SQLBuilder {
     default  void setDataSource(HikariConfig config){
         setDataSource(new HikariDataSource(config));
     }
+
+    TuxJSQL.Type getType();
 }
 
