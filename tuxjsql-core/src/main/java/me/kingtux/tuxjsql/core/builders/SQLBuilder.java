@@ -6,7 +6,6 @@ import me.kingtux.tuxjsql.core.*;
 import me.kingtux.tuxjsql.core.statements.SelectStatement;
 import me.kingtux.tuxjsql.core.statements.SubWhereStatement;
 import me.kingtux.tuxjsql.core.statements.WhereStatement;
-import org.apache.commons.dbcp.BasicDataSource;
 
 import java.util.Arrays;
 import java.util.List;

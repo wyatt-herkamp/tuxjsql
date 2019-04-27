@@ -1,36 +1,21 @@
 # tuxjsql
-A simple to use SQL Builder and Executor.
 
-The Goal of this project. Is to make executing and creating sql as simple as possible 
-## How to use?
-### Maven
-```xml
 
-   <repository>
-      <id>kingtux-repo</id>
-      <url>http://repo.kingtux.me/repository/maven-public/</url>
-    </repository>
-    <dependency>
-      <groupId>me.kingtux</groupId>
-      <artifactId>tuxjsql-core</artifactId>
-      <!---Make sure you use Latest Version!-->
-      <version>1.1</version>
-      <scope>compile</scope>
-    </dependency>
-```
-### Gradle
-```
-repositories {
-  maven { url 'http://repo.kingtux.me/repository/maven-public/' }
-}
+TuxJSQL is a JBDC wrapper, sql builder, and sql executor. 
+This allows you to execute things to databases without even knowing SQL. 
+This even prevents issues between dialects.
 
-dependencies {
-   compile "me.kingtux:tuxjsql-core:1.1"
-}
-```
-#### Please Remeber to include tuxjsql-{dialect} in your pom or gradle
-### Example Code
-```java
-//Coming Soon
-//https://docs.kingtux.me/tuxjsql
-```
+##### Current Version: `1.2`
+
+
+[How to use](https://github.com/wherkamp/tuxjsql/wiki)
+
+[Javadocs](https://docs.kingtux.me/tuxjsql/)
+### Maven and Gradle Repo 
+Name: `kingtux-repo`
+
+URL: `https://repo.kingtux.me/repository/maven-public/`
+
+
+### Do you love this project?
+Consider Donating https://paypal.me/wherkamp
