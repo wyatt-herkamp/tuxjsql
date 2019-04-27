@@ -67,9 +67,8 @@ public abstract class Table {
      * The goal of this method is to find differences between the Table in the db and your Table Object.
      * By deleting columns not found in the object and adding columns not found in the DB table.
      *
-     * @Deprecated Just Dont
+     * <b>JUST DONT</b>
      */
-    @Deprecated
     public Table createUpdate() {
         if (!tableExists()) {
             return createIfNotExists();

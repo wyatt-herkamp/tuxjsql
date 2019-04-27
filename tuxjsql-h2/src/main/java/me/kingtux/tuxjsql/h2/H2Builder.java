@@ -10,6 +10,7 @@ import me.kingtux.tuxjsql.core.statements.SelectStatement;
 import me.kingtux.tuxjsql.core.statements.SubWhereStatement;
 import me.kingtux.tuxjsql.core.statements.WhereStatement;
 
+import java.io.File;
 import java.util.Properties;
 
 @SuppressWarnings("Duplicates")
@@ -78,7 +79,7 @@ public class H2Builder implements SQLBuilder {
 
     @Override
     public void createConnection(HikariConfig config, Properties properties) {
-        config.setJdbcUrl(String.format(config.getJdbcUrl(), properties.getProperty("db.file")));
+        config.setJdbcUrl(String.format(config.getJdbcUrl(),new File( properties.getProperty("db.file")).getAbsolutePath()));
 
         setDataSource(config);
     }

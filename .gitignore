@@ -4,3 +4,4 @@ mysql.properties
 target/
 */target/
 db.sql
+db.h2

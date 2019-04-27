@@ -15,7 +15,9 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * I know I know static is bad. But FUCK YOU
+ * TuxJSQL core class.
+ *
+ * @author KingTux
  */
 public class TuxJSQL {
     private static me.kingtux.tuxjsql.core.builders.SQLBuilder SQLBuilder;
@@ -50,7 +52,7 @@ public class TuxJSQL {
     }
 
     /**
-     * Gets the SQL SQLBuilder
+     * Gets the static SQLBuilder
      *
      * @return the SQLBuilder
      */
@@ -67,7 +69,8 @@ public class TuxJSQL {
     }
 
     /**
-     * Set the SQLBuilder by object
+     * Set the static access TuxJSQL
+     *
      *
      * @param SQLBuilder the SQLBuilder
      */
@@ -75,41 +78,10 @@ public class TuxJSQL {
         TuxJSQL.SQLBuilder = SQLBuilder;
     }
 
-    /**
-     * Set the SQLBuilder by Type
-     *
-     * @param type the SQLBuilder Type
-     */
-    public static void setBuilder(Type type) {
-        try {
-            setBuilder(type.classPath);
-        } catch (ClassNotFoundException e) {
-            logger.error("Please add " + type.dependency + " To your maven or gradle. Use the same groupId as TuxJSQL-core");
-        }
-    }
-
-    /**
-     * Sets the SQLBuilder by class path
-     *
-     * @param clazzPath the class path to the SQLBuilder
-     * @throws ClassNotFoundException Class not found exception
-     */
-    public static void setBuilder(String clazzPath) throws ClassNotFoundException {
-        Class<?> clazz;
-        clazz = Class.forName(clazzPath);
-        if (clazz == null) {
-            return;
-        }
-        try {
-            SQLBuilder = (SQLBuilder) clazz.getConstructor().newInstance();
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * Get the connection
-     *
+     * <b>Warning: for this to work the SQLBuilder must be set in TuxJSQL</b>
      * @return the connection
      */
     public static Connection getConnection() {
@@ -120,18 +92,26 @@ public class TuxJSQL {
         }
         return null;
     }
-
     /**
-     * Sets a Connection with a properties file.
-     * Values: https://github.com/wherkamp/tuxjsql/wiki/Creating-a-Connection-with-Properties
-     * @param properties the properties
+     * Creates a SQLBuilder from the properties provided
+     * <a href="https://github.com/wherkamp/tuxjsql/wiki/Creating-your-first-TuxJSQL-SQLBuilder">Learn more here</a>
+     *
+     * @param properties Properties in the correct format
+     * @return the SQLBuilder null if not found.
      */
-    public static void setDatasource(Properties properties) {
-        getSQLBuilder().createConnection(properties);
-    }
-
     public static SQLBuilder setup(Properties properties) {
-        SQLBuilder builder = Type.valueOf(properties.getProperty("db.type").toUpperCase()).create();
+        Type type = Type.valueOf(properties.getProperty("db.type").toUpperCase());
+        SQLBuilder builder;
+        if (type == Type.OTHER) {
+            try {
+                builder = (me.kingtux.tuxjsql.core.builders.SQLBuilder) Class.forName(properties.getProperty("db.class")).getConstructor().newInstance();
+            } catch (InstantiationException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+                logger.error("Unable to find " + properties.getProperty("db.class"), e);
+                return null;
+            }
+        } else {
+            builder = type.create();
+        }
         if (Boolean.parseBoolean(properties.getProperty("db.auto.connect", "true"))) {
             builder.createConnection(properties);
         }
@@ -152,9 +132,13 @@ public class TuxJSQL {
         /**
          * h2 database
          *
-         * @deprecated This hasnt been tested that well
          */
-        H2("me.kingtux.tuxjsql.h2.H2Builder", "tuxjsql-h2");
+        H2("me.kingtux.tuxjsql.h2.H2Builder", "tuxjsql-h2"),
+        /**
+         * Other. If this is set please set the propertie value
+         * db.class to your builders class.
+         */
+        OTHER("", "");
         private String classPath, dependency;
         Type(String classPath) {
             this.classPath = classPath;
