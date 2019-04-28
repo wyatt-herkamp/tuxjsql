@@ -13,17 +13,36 @@
     <artifactId>tuxjsql-sqlite</artifactId>
     <version>1.2</version>
 
+    <name>TuxJSQL (SQLITE)</name>
+    <licenses>
+        <license>
+            <name>GNU General Public License v3.0</name>
+        </license>
+    </licenses>
+    <url>https://github.com/wherkamp/tuxorm</url>
+    <description>A JBDC wrapper, sql builder, and sql executor (SQLITE Implementation)</description>
+    <scm>
+        <url>https://github.com/wherkamp/tuxorm</url>
+    </scm>
+    <developers>
+        <developer>
+            <name>Wyatt Herkamp</name>
+            <url>https://kingtux.me</url>
+            <email>wherkamp@kingtux.me</email>
+        </developer>
+    </developers>
     <distributionManagement>
-        <repository>
-            <id>kingtux-repo</id>
-            <url>https://repo.kingtux.me/repository/maven-releases/</url>
-        </repository>
         <snapshotRepository>
-            <id>kingtux-repo</id>
-            <url>https://repo.kingtux.me/repository/maven-snapshots/</url>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
     </distributionManagement>
     <build>
+        <sourceDirectory>src/main/java</sourceDirectory>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -36,26 +55,53 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.0.2</version>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
                 <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.6.8</version>
-                <executions>
-                    <execution>
-                        <id>default-deploy</id>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>deploy</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                <version>1.6.7</version>
+                <extensions>true</extensions>
                 <configuration>
-                    <serverId>kingtux-repo</serverId>
-                    <nexusUrl>https://repo.kingtux.me/repository/maven-public/</nexusUrl>
-                    <skipStaging>true</skipStaging>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
             </plugin>
         </plugins>

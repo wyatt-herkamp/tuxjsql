@@ -68,6 +68,7 @@ public abstract class Table {
      * By deleting columns not found in the object and adding columns not found in the DB table.
      *
      * <b>JUST DONT</b>
+     * @return The Table
      */
     public Table createUpdate() {
         if (!tableExists()) {

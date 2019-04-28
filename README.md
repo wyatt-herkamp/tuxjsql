@@ -11,10 +11,6 @@ This even prevents issues between dialects.
 [How to use](https://github.com/wherkamp/tuxjsql/wiki)
 
 [Javadocs](https://docs.kingtux.me/tuxjsql/)
-### Maven and Gradle Repo 
-Name: `kingtux-repo`
-
-URL: `https://repo.kingtux.me/repository/maven-public/`
 
 
 ### Do you love this project?
