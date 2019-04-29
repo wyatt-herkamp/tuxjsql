@@ -6,7 +6,7 @@
 
     <groupId>me.kingtux</groupId>
     <artifactId>tuxjsql</artifactId>
-    <version>1.2</version>
+    <version>1.2.1</version>
     <packaging>pom</packaging>
     <modules>
         <module>tuxjsql-core</module>

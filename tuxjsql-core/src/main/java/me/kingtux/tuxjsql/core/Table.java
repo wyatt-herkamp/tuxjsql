@@ -82,13 +82,13 @@ public abstract class Table {
             }
             addColumn(getColumnByName(string));
         }
-        if(builder.getType()== TuxJSQL.Type.SQLITE){
-            TuxJSQL.logger.error("Unable to Update Table. SQLITE doesnt support column dropping");
-            return this;
-        }
         for (String string : columnsPresent) {
             if (columnsNeeded.contains(string)) {
                 continue;
+            }
+            if(builder.getType()== TuxJSQL.Type.SQLITE){
+                TuxJSQL.logger.error("Unable to Update Table. SQLITE doesnt support column dropping");
+                return this;
             }
             dropColumn(string);
         }

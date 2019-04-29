@@ -8,11 +8,11 @@
     <parent>
         <groupId>me.kingtux</groupId>
         <artifactId>tuxjsql</artifactId>
-        <version>1.2</version>
+        <version>1.2.1</version>
     </parent>
 
     <artifactId>tuxjsql-mysql</artifactId>
-    <version>1.2</version>
+    <version>1.2.1</version>
     <name>TuxJSQL (MYSQL)</name>
     <licenses>
         <license>
@@ -110,8 +110,7 @@
         <dependency>
             <groupId>me.kingtux</groupId>
             <artifactId>tuxjsql-core</artifactId>
-            <version>1.2</version>
-            <scope>compile</scope>
+            <version>1.2.1</version>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
