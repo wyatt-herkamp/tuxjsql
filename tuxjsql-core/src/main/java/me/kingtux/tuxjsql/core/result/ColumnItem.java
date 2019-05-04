@@ -42,4 +42,13 @@ public class ColumnItem {
         if (object == null) return 0;
         return ((int) object);
     }
+
+    /**
+     * Get as long
+     * @return get as long
+     */
+    public long getAsLong() {
+        if (object == null) return 0;
+        return ((long) object);
+    }
 }

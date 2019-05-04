@@ -22,6 +22,19 @@ public class SQLITESelectStatement extends SelectStatement {
         }
         StringBuilder builder = new StringBuilder(String.format(SQLiteQuery.SELECT.getQuery(), columnsToSelect, table.getName()));
         builder.append(whereStatement == null ? "" : " WHERE " + whereStatement.build().getQuery());
+        if (orderBy != null) {
+            builder.append(" ORDER BY ");
+            columnsToOrderBy.forEach(s -> {
+                builder.append("`" + s + "`");
+                if (!columnsToOrderBy.get(0).equals(s)) {
+                    builder.append(", ");
+                }
+            });
+            builder.append(" ").append(orderBy.getKey());
+        }
+        if (limit != 0) {
+            builder.append(" LIMIT ").append(limit);
+        }
         return new Query(builder.toString(), whereStatement == null ? null : whereStatement.values());
     }
 }

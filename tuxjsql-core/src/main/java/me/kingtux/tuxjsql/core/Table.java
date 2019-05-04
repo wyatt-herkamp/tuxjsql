@@ -72,8 +72,10 @@ public abstract class Table {
      */
     public Table createUpdate() {
         if (!tableExists()) {
+            TuxJSQL.logger.debug("Creating Table " + getName());
             return createIfNotExists();
         }
+        TuxJSQL.logger.debug("Running Table#createUpdate() on " + getName());
         List<String> columnsPresent = getColumnsInTable();
         List<String> columnsNeeded = getColumns().stream().map(Column::getName).collect(Collectors.toList());
         for (String string : columnsNeeded) {

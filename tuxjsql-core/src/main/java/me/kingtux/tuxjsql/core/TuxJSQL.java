@@ -21,7 +21,7 @@ import java.util.Properties;
  */
 public class TuxJSQL {
     private static me.kingtux.tuxjsql.core.builders.SQLBuilder SQLBuilder;
-    public final static Logger logger = LoggerFactory.getLogger(TuxJSQL.class);
+    public  static Logger logger = LoggerFactory.getLogger(TuxJSQL.class);
     private static List<Table> savedTables = new ArrayList<>();
 
     private TuxJSQL() {
@@ -135,7 +135,7 @@ public class TuxJSQL {
          */
         H2("me.kingtux.tuxjsql.h2.H2Builder", "tuxjsql-h2"),
         /**
-         * Other. If this is set please set the propertie value
+         * Other. If this is set please set the properties value
          * db.class to your builders class.
          */
         OTHER("", "");

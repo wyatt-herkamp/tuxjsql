@@ -65,8 +65,8 @@ public class SQLITEColumn implements Column {
     @Override
     public String build() {
         StringBuilder builder = new StringBuilder();
-        builder.append(name);
-        builder.append(" " + buildType());
+        builder.append("`").append(name).append("`");
+        builder.append(" ").append(buildType());;
         builder.append(isPrimary() ? " PRIMARY KEY" : "");
         builder.append(isAutoIncrement() ? " AUTOINCREMENT" : "");
         if (!isAutoIncrement()) {

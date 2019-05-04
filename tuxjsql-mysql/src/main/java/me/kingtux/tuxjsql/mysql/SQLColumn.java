@@ -60,8 +60,8 @@ public class SQLColumn implements Column {
     @Override
     public String build() {
         StringBuilder builder = new StringBuilder();
-        builder.append(name);
-        builder.append(" " + buildType());
+        builder.append("`").append(name).append("`");
+        builder.append(" ").append(buildType());
         builder.append(isAutoIncrement() ? " AUTO_INCREMENT" : "");
         builder.append(isPrimary() ? " PRIMARY KEY" : "");
         if (!isAutoIncrement()) {
