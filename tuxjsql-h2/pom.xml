@@ -18,10 +18,10 @@
             <name>GNU General Public License v3.0</name>
         </license>
     </licenses>
-    <url>https://github.com/wherkamp/tuxorm</url>
+    <url>https://github.com/wherkamp/tuxjsql</url>
     <description>A JBDC wrapper, sql builder, and sql executor (H2 Implementation)</description>
     <scm>
-        <url>https://github.com/wherkamp/tuxorm</url>
+        <url>https://github.com/wherkamp/tuxjsql</url>
     </scm>
     <developers>
         <developer>

@@ -8,6 +8,6 @@ public class Where {
     }
 
     public String build() {
-        return where + "=?";
+        return "`"+where+"`" + "=?";
     }
 }

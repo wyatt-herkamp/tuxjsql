@@ -14,6 +14,14 @@ public interface Column {
     String getName();
 
     /**
+     * A keyword safe name
+     * @return adds ` to the name
+     */
+    default String getSafeName() {
+        return "`" + getName() + "`";
+    }
+
+    /**
      * Is it unique
      *
      * @return the unique

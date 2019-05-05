@@ -5,8 +5,7 @@ TuxJSQL is a JBDC wrapper, sql builder, and sql executor.
 This allows you to execute things to databases without even knowing SQL. 
 This even prevents issues between dialects.
 
-##### Current Version: `1.2.2`
-
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/me.kingtux/tuxjsql/badge.svg)](https://mvnrepository.com/artifact/me.kingtux/tuxjsql-core)
 
 [How to use](https://github.com/wherkamp/tuxjsql/wiki)
 
