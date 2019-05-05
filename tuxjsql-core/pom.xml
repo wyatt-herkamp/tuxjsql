@@ -7,10 +7,10 @@
     <parent>
         <groupId>me.kingtux</groupId>
         <artifactId>tuxjsql</artifactId>
-        <version>1.2.3</version>
+        <version>1.2.4</version>
     </parent>
     <artifactId>tuxjsql-core</artifactId>
-    <version>1.2.3</version>
+    <version>1.2.4</version>
     <name>TuxJSQL (Core)</name>
     <licenses>
         <license>
