@@ -18,7 +18,8 @@ public class H2SelectStatement extends SelectStatement {
             if (!columnsToSelect.toString().isEmpty()) {
                 columnsToSelect.append(",");
             }
-            columnsToSelect.append(column);
+            columnsToSelect.append("`");
+            columnsToSelect.append(column).append("`");
         }
         StringBuilder builder = new StringBuilder(String.format(H2Query.SELECT.getQuery(), columnsToSelect, table.getName()));
         builder.append(whereStatement == null ? "" : " WHERE " + whereStatement.build().getQuery());

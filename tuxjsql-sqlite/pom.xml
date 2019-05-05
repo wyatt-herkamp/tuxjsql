@@ -7,11 +7,11 @@
     <parent>
         <groupId>me.kingtux</groupId>
         <artifactId>tuxjsql</artifactId>
-        <version>1.2.2</version>
+        <version>1.2.3</version>
     </parent>
 
     <artifactId>tuxjsql-sqlite</artifactId>
-    <version>1.2.2</version>
+    <version>1.2.3</version>
 
 
     <name>TuxJSQL (SQLITE)</name>
@@ -111,7 +111,7 @@
         <dependency>
             <groupId>me.kingtux</groupId>
             <artifactId>tuxjsql-core</artifactId>
-            <version>1.2.2</version>
+            <version>1.2.3</version>
         </dependency>
 
         <dependency>

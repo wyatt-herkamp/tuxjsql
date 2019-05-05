@@ -50,7 +50,7 @@ public class SQLiteTable extends Table {
             if (!columsToUpdate.toString().isEmpty()) {
                 columsToUpdate.append(",");
             }
-            columsToUpdate.append(column.getName() + "=?");
+            columsToUpdate.append("`").append(column.getName()).append("`").append("=?");
         }
         String query = String.format(SQLiteQuery.UPDATE.getQuery(), name, columsToUpdate, whereStatement.build().getQuery());
         getLogger().debug(query);
