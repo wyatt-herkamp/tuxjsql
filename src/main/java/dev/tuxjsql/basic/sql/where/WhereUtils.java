@@ -16,7 +16,17 @@ public class WhereUtils {
             } else if (object instanceof Where) {
                 Where where = (Where) object;
                 values.add(((Where) object).getValue());
-                builder.append(table.getName()).append(".").append(where.getKey()).append(((Where) object).getComparator()).append("?").append(" ");
+                if (table == null) {
+                    builder.append("`").append(where.getKey()).append("`")
+                            .append(where.getComparator())
+                            .append("?")
+                            .append(" ");
+                } else {
+                    builder.append(table.getName()).append(".").append(where.getKey())
+                            .append(where.getComparator())
+                            .append("?")
+                            .append(" ");
+                }
             } else if (object instanceof SubWhereStatement) {
                 BasicSubWhereStatement subWhereStatement = (BasicSubWhereStatement) object;
                 subWhereStatement.setTable(table);
