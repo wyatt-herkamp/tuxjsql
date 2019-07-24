@@ -10,7 +10,9 @@ public interface InsertStatement {
 
     InsertStatement values(Map<String, Object> map);
 
+
     InsertStatement value(String string, Object o);
+
 
     DBAction<DBInsert> execute();
 

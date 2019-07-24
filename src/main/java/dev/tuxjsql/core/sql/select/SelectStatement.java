@@ -5,14 +5,13 @@ import dev.tuxjsql.core.response.DBSelect;
 import dev.tuxjsql.core.sql.SQLColumn;
 import dev.tuxjsql.core.sql.SQLTable;
 import dev.tuxjsql.core.sql.where.WhereStatement;
+import dev.tuxjsql.core.sql.where.Whereable;
 
+import java.util.List;
 import java.util.function.Consumer;
 
-public interface SelectStatement {
+public interface SelectStatement extends Whereable<SelectStatement> {
 
-    WhereStatement<SelectStatement> where();
-
-    SelectStatement where(Consumer<WhereStatement> whereStatement);
 
     SelectStatement limit(int i);
 

@@ -2,6 +2,8 @@ package dev.tuxjsql.core.sql;
 
 import dev.tuxjsql.core.sql.select.SelectStatement;
 
+import java.util.List;
+
 public interface SQLTable {
 
     void executeStatement(String string);
@@ -17,4 +19,8 @@ public interface SQLTable {
     String getName();
 
     SQLColumn getColumn(String s);
+
+    List<SQLColumn> getColumns();
+
+    SQLColumn getPrimaryColumn();
 }

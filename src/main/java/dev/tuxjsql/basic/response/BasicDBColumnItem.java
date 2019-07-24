@@ -3,13 +3,16 @@ package dev.tuxjsql.basic.response;
 import dev.tuxjsql.basic.utils.BasicUtils;
 import dev.tuxjsql.core.response.DBColumnItem;
 
+import java.math.BigInteger;
 import java.util.UUID;
 
 public class BasicDBColumnItem implements DBColumnItem {
     private Object value;
-private String name;
+    private String name;
+
     public BasicDBColumnItem(Object value, String columnName) {
-        this.value = value; this.name = columnName;
+        this.value = value;
+        this.name = columnName;
     }
 
     @Override
@@ -20,7 +23,7 @@ private String name;
             return (T) value;
         }
         String string = getAsString();
-        if(string == null) return null;
+        if (string == null) return null;
         return BasicUtils.getAsEnum(string);
     }
 
@@ -41,6 +44,7 @@ private String name;
     @Override
     public int getAsInt() {
         if (value == null) return 0;
+        if (value instanceof BigInteger) return ((BigInteger) value).intValue();
         if (value instanceof Integer) return (int) value;
         return Integer.parseInt((String) value);
     }

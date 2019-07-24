@@ -3,28 +3,15 @@ package dev.tuxjsql.core.sql;
 import dev.tuxjsql.core.response.DBAction;
 import dev.tuxjsql.core.response.DBDelete;
 import dev.tuxjsql.core.sql.where.WhereStatement;
+import dev.tuxjsql.core.sql.where.Whereable;
 
 import java.util.function.Consumer;
 
 /**
  * This is an Object Representation of the SQL delete statement;
  */
-public interface DeleteStatement {
-    /**
-     * Where would you like to delete;
-     *
-     * @return WhereStatement with a return type of this
-     */
+public interface DeleteStatement extends Whereable<DeleteStatement> {
 
-    WhereStatement<DeleteStatement> where();
-
-    /**
-     * Where would you like to delete
-     *
-     * @param whereStatement the consumer for the wherestatement we provide
-     * @return the DeleteStatement
-     */
-    DeleteStatement where(Consumer<WhereStatement> whereStatement);
 
     /**
      * Creates a DBAction

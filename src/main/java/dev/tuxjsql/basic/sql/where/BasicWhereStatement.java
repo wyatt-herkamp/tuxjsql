@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.function.Consumer;
 
 
-
 public abstract class BasicWhereStatement<T> implements WhereStatement<T> {
     private T and;
     protected List<Object> whereObjects = new ArrayList<>();
@@ -22,6 +21,7 @@ public abstract class BasicWhereStatement<T> implements WhereStatement<T> {
         this.and = and;
         this.core = core;
     }
+
     public BasicWhereStatement(TuxJSQL core) {
         this.and = null;
         this.core = core;
@@ -29,7 +29,7 @@ public abstract class BasicWhereStatement<T> implements WhereStatement<T> {
 
 
     @Override
-    public WhereStatement<T> start(String s, String comparator,Object value) {
+    public WhereStatement<T> start(String s, String comparator, Object value) {
         if (!whereObjects.isEmpty()) {
             throw new IllegalArgumentException("You cant start twice");
         }
@@ -73,7 +73,7 @@ public abstract class BasicWhereStatement<T> implements WhereStatement<T> {
     }
 
     @Override
-    public WhereStatement<T> AND(String s,String comparator, Object value) {
+    public WhereStatement<T> AND(String s, String comparator, Object value) {
         whereObjects.add(WhereSeperator.AND);
         whereObjects.add(new BasicWhere(s, value, comparator));
         return this;
@@ -109,7 +109,7 @@ public abstract class BasicWhereStatement<T> implements WhereStatement<T> {
     }
 
     @Override
-    public WhereStatement<T> OR(String s, String comparator,Object value) {
+    public WhereStatement<T> OR(String s, String comparator, Object value) {
 
         whereObjects.add(WhereSeperator.OR);
         whereObjects.add(new BasicWhere(s, value, comparator));
@@ -146,7 +146,7 @@ public abstract class BasicWhereStatement<T> implements WhereStatement<T> {
     }
 
     @Override
-    public WhereStatement<T> NOT(String s,String comparator, Object value) {
+    public WhereStatement<T> NOT(String s, String comparator, Object value) {
         whereObjects.add(WhereSeperator.NOT);
         whereObjects.add(new BasicWhere(s, value, comparator));
         return this;
@@ -191,5 +191,9 @@ public abstract class BasicWhereStatement<T> implements WhereStatement<T> {
 
     public void setTable(SQLTable table) {
         this.table = table;
+    }
+
+    public void setAnd(T basicSelectStatement) {
+        and = basicSelectStatement;
     }
 }

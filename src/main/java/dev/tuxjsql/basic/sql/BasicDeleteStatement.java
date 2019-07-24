@@ -1,8 +1,11 @@
 package dev.tuxjsql.basic.sql;
 
+import dev.tuxjsql.basic.sql.where.BasicWhereStatement;
 import dev.tuxjsql.core.TuxJSQL;
 import dev.tuxjsql.core.sql.DeleteStatement;
 import dev.tuxjsql.core.sql.SQLTable;
+import dev.tuxjsql.core.sql.UpdateStatement;
+import dev.tuxjsql.core.sql.select.SelectStatement;
 import dev.tuxjsql.core.sql.where.WhereStatement;
 
 import java.util.function.Consumer;
@@ -20,9 +23,15 @@ public abstract class BasicDeleteStatement implements DeleteStatement {
     public WhereStatement<DeleteStatement> where() {
         return whereStatement;
     }
+    @Override
+    public DeleteStatement where(WhereStatement whereStatement) {
+        this.whereStatement = whereStatement;
+        ((BasicWhereStatement<DeleteStatement>) this.whereStatement).setAnd(this);
+        return this;
+    }
 
     @Override
-    public DeleteStatement where(Consumer<WhereStatement> whereStatement) {
+    public DeleteStatement where(Consumer<WhereStatement<DeleteStatement>> whereStatement) {
         whereStatement.accept(this.whereStatement);
 
         return this;

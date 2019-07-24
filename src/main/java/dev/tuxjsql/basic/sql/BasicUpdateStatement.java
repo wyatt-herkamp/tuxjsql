@@ -1,8 +1,11 @@
 package dev.tuxjsql.basic.sql;
 
+import dev.tuxjsql.basic.sql.where.BasicWhereStatement;
 import dev.tuxjsql.core.TuxJSQL;
+import dev.tuxjsql.core.sql.DeleteStatement;
 import dev.tuxjsql.core.sql.SQLTable;
 import dev.tuxjsql.core.sql.UpdateStatement;
+import dev.tuxjsql.core.sql.select.SelectStatement;
 import dev.tuxjsql.core.sql.where.WhereStatement;
 
 import java.util.HashMap;
@@ -29,9 +32,15 @@ public abstract class BasicUpdateStatement implements UpdateStatement {
     public WhereStatement<UpdateStatement> where() {
         return whereStatement;
     }
+    @Override
+    public UpdateStatement where(WhereStatement whereStatement) {
+        this.whereStatement = whereStatement;
+        ((BasicWhereStatement<UpdateStatement>) this.whereStatement).setAnd(this);
+        return this;
+    }
 
     @Override
-    public UpdateStatement where(Consumer<WhereStatement> consumer) {
+    public UpdateStatement where(Consumer<WhereStatement<UpdateStatement>> consumer) {
         consumer.accept(whereStatement);
         return this;
     }

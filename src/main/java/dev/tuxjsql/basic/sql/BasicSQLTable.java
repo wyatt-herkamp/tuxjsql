@@ -1,4 +1,5 @@
 package dev.tuxjsql.basic.sql;
+
 import dev.tuxjsql.core.TuxJSQL;
 import dev.tuxjsql.core.sql.*;
 import dev.tuxjsql.core.sql.select.SelectStatement;
@@ -6,6 +7,7 @@ import dev.tuxjsql.core.sql.select.SelectStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BasicSQLTable implements SQLTable {
@@ -19,14 +21,13 @@ public abstract class BasicSQLTable implements SQLTable {
         this.name = name;
         this.sqlColumns = sqlColumns;
         this.sqlColumns.forEach(column -> {
-            ((BasicSQLColumn)column).setTable(this);
+            ((BasicSQLColumn) column).setTable(this);
         });
     }
 
     /**
      * Prepare the Table on the database side :)
-     *
-     * */
+     */
     public abstract void prepareTable();
 
     @Override
@@ -82,5 +83,15 @@ public abstract class BasicSQLTable implements SQLTable {
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public List<SQLColumn> getColumns() {
+        return new ArrayList<>(sqlColumns);
+    }
+
+    @Override
+    public SQLColumn getPrimaryColumn() {
+        return sqlColumns.stream().filter(SQLColumn::primaryKey).findFirst().orElse(null);
     }
 }

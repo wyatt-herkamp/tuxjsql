@@ -24,6 +24,7 @@ public abstract class BasicInsertStatement implements InsertStatement {
         return this;
     }
 
+
     @Override
     public InsertStatement value(String string, Object o) {
         if (o instanceof Enum) {

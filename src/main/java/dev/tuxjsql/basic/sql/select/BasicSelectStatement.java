@@ -1,5 +1,6 @@
 package dev.tuxjsql.basic.sql.select;
 
+import dev.tuxjsql.basic.sql.where.BasicWhereStatement;
 import dev.tuxjsql.core.TuxJSQL;
 import dev.tuxjsql.core.sql.SQLColumn;
 import dev.tuxjsql.core.sql.SQLTable;
@@ -21,6 +22,13 @@ public abstract class BasicSelectStatement implements SelectStatement {
     protected TuxJSQL tuxJSQL;
     protected WhereStatement<SelectStatement> whereStatement;
 
+    @Override
+    public SelectStatement where(WhereStatement whereStatement) {
+        this.whereStatement = whereStatement;
+        ((BasicWhereStatement<SelectStatement>) this.whereStatement).setAnd(this);
+        return this;
+    }
+
     public BasicSelectStatement(TuxJSQL tuxJSQL) {
         this.tuxJSQL = tuxJSQL;
         whereStatement = tuxJSQL.createWhere(this);
@@ -33,7 +41,7 @@ public abstract class BasicSelectStatement implements SelectStatement {
     }
 
     @Override
-    public SelectStatement where(Consumer<WhereStatement> consumer) {
+    public SelectStatement where(Consumer<WhereStatement<SelectStatement>> consumer) {
         consumer.accept(whereStatement);
         return this;
     }
