@@ -1,5 +1,5 @@
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/dev.tuxjsql/core/badge.svg)](https://mvnrepository.com/artifact/dev.tuxjsql/core)
-
+[![Build Status](https://travis-ci.org/tuxjsql/tuxjsql.svg?branch=master)](https://travis-ci.org/tuxjsql/tuxjsql)
 # TuxJSQL  - A simple to use SQL library
 TuxJSQL is an simple to use SQL library that handles: Query Building, query executing, and database results. It also handles
 
