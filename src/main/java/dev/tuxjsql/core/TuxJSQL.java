@@ -1,7 +1,6 @@
 package dev.tuxjsql.core;
 
 
-import dev.tuxjsql.basic.BasicTableCollection;
 import dev.tuxjsql.basic.sql.BasicDataTypes;
 import dev.tuxjsql.core.builders.ColumnBuilder;
 import dev.tuxjsql.core.builders.SQLBuilder;
@@ -19,6 +18,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 
 /**
@@ -31,7 +33,7 @@ public final class TuxJSQL {
     private ConnectionProvider provider;
     private SQLBuilder builder;
     private ExecutorService executor;
-    private TableCollection tableCollection = new BasicTableCollection();
+    private List<SQLTable> tableCollection = new ArrayList<>();
 
     TuxJSQL(ConnectionProvider provider, SQLBuilder builder, ExecutorService executor) {
         if (logger.isInfoEnabled())
@@ -80,13 +82,15 @@ public final class TuxJSQL {
         TuxJSQL.logger = logger;
     }
 
-    public TableCollection getTableCollection() {
-        return tableCollection;
-    }
 
     public void addTable(SQLTable table) {
         tableCollection.add(table);
     }
+
+    public Optional<SQLTable> getTable(String name) {
+        return tableCollection.stream().filter(t -> t.getName().equals(name)).findFirst();
+    }
+
 
     public TableBuilder createTable() {
         return builder.createTable();
