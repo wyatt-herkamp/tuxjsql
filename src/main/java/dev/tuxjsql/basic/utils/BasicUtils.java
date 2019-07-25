@@ -16,7 +16,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BasicUtils {
-
+    /**
+     * This method converts a ResultSet to a DBSelect response
+     *
+     * @param set The resultset you want to convert
+     * @return your new DBSelect
+     */
     public static DBSelect resultSetToDBSelect(ResultSet set) {
         Validate.notNull(set, "ResultSet cant be null.");
         try {
@@ -27,15 +32,15 @@ public class BasicUtils {
         }
         List<DBRow> rows = new ArrayList<>();
         try {
-            ResultSetMetaData metaData  =set.getMetaData();
+            ResultSetMetaData metaData = set.getMetaData();
             while (set.next()) {
                 int i = metaData.getColumnCount();
-                 List<DBColumnItem> items = new ArrayList<>();
-                    for (int j = 1; j <= i; j++) {
+                List<DBColumnItem> items = new ArrayList<>();
+                for (int j = 1; j <= i; j++) {
 
-                        items.add(new BasicDBColumnItem(set.getObject(j), String.format("%s.%s", metaData.getTableName(j), metaData.getColumnName(j))));
-                    }
-                    rows.add(new BasicDBRow(items));
+                    items.add(new BasicDBColumnItem(set.getObject(j), String.format("%s.%s", metaData.getTableName(j), metaData.getColumnName(j))));
+                }
+                rows.add(new BasicDBRow(items));
 
             }
         } catch (SQLException e) {
