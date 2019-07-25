@@ -1,7 +1,5 @@
 package dev.tuxjsql.core.response;
 
-import dev.tuxjsql.core.sql.QueryType;
-
 import java.util.List;
 
 public interface DBSelect extends Iterable<DBRow>{

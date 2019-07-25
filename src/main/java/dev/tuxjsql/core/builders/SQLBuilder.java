@@ -120,14 +120,6 @@ public interface SQLBuilder {
      */
     String jdbcClass();
 
-    /**
-     * An array of supported actions by this dialect
-     *
-     * @return supported actions for this dialect
-     */
-    SQLAction[] supportedActions();
-
-    boolean supportsAction(SQLAction actions);
 
     /**
      * This will convert a public DataType to its local dialect version.

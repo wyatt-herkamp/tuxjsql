@@ -62,6 +62,7 @@ public class TuxJSQLBuilder {
         }
     }
 
+
     public static TuxJSQL create(Properties properties, ExecutorService service) {
         SQLBuilder builder;
         if (properties.containsKey("db.type")) {
