@@ -1,5 +1,6 @@
 package dev.tuxjsql.basic.sql;
 
+import dev.tuxjsql.core.TuxJSQL;
 import dev.tuxjsql.core.sql.SQLColumn;
 import dev.tuxjsql.core.sql.SQLDataType;
 import dev.tuxjsql.core.sql.SQLTable;
@@ -14,12 +15,12 @@ public abstract class BasicSQLColumn implements SQLColumn {
     private SQLColumn foreignKey;
     private SQLTable table;
     private SQLDataType type;
-
+private TuxJSQL tuxJSQL;
     public BasicSQLColumn() {
 
     }
 
-    public BasicSQLColumn(String name, Object defaultValue, List<String> dataTypeRules, boolean notNull, boolean unique, boolean autoIncrement, boolean primaryKey, SQLColumn foreignKey, SQLTable table, SQLDataType type) {
+    public BasicSQLColumn(String name, Object defaultValue, List<String> dataTypeRules, boolean notNull, boolean unique, boolean autoIncrement, boolean primaryKey, SQLColumn foreignKey, SQLTable table, SQLDataType type, TuxJSQL tuxJSQL) {
         this.name = name;
         this.defaultValue = defaultValue;
         this.dataTypeRules = dataTypeRules;
@@ -30,9 +31,11 @@ public abstract class BasicSQLColumn implements SQLColumn {
         this.foreignKey = foreignKey;
         this.table = table;
         this.type = type;
+        this.tuxJSQL = tuxJSQL;
     }
 
     protected String buildDataType() {
+        if(type instanceof BasicDataTypes) type = tuxJSQL.getBuilder().convertDataType((BasicDataTypes) type);
         StringBuilder builder = new StringBuilder(type.key());
         if (!dataTypeRules().isEmpty()) {
             builder.append("(");
@@ -121,6 +124,14 @@ public abstract class BasicSQLColumn implements SQLColumn {
 
     public void setUnique(boolean unique) {
         this.unique = unique;
+    }
+
+    public void setDefaultValue(Object defaultValue) {
+        this.defaultValue = defaultValue;
+    }
+
+    public void setTuxJSQL(TuxJSQL tuxJSQL) {
+        this.tuxJSQL = tuxJSQL;
     }
 
     public void setAutoIncrement(boolean autoIncrement) {

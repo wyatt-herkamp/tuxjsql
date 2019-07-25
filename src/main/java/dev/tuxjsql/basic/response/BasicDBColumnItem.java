@@ -46,14 +46,14 @@ public class BasicDBColumnItem implements DBColumnItem {
         if (value == null) return 0;
         if (value instanceof BigInteger) return ((BigInteger) value).intValue();
         if (value instanceof Integer) return (int) value;
-        return Integer.parseInt((String) value);
+        return Integer.parseInt(value.toString());
     }
 
     @Override
     public long getAsLong() {
         if (value == null) return 0L;
         if (value instanceof Long) return (long) value;
-        return Long.parseLong((String) value);
+        return Long.parseLong(value.toString());
     }
 
     @Override

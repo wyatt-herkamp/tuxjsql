@@ -1,5 +1,6 @@
 package dev.tuxjsql.basic.builders;
 
+import dev.tuxjsql.core.TuxJSQL;
 import dev.tuxjsql.core.builders.ColumnBuilder;
 import dev.tuxjsql.core.sql.SQLColumn;
 import dev.tuxjsql.core.sql.SQLDataType;
@@ -16,6 +17,9 @@ public abstract class BasicColumnBuilder<T> implements ColumnBuilder<T> {
     private List<String> dataTypeRules = new ArrayList<>();
     private Object defaultValue;
     private T andValue;
+    protected TuxJSQL tuxJSQL;
+
+
     private SQLTable table;
 
     public boolean isUnique() {
@@ -28,8 +32,9 @@ public abstract class BasicColumnBuilder<T> implements ColumnBuilder<T> {
         return this;
     }
 
-    public BasicColumnBuilder(T andValue) {
+    public BasicColumnBuilder(TuxJSQL tuxJSQL, T andValue) {
         this.andValue = andValue;
+        this.tuxJSQL =tuxJSQL;
     }
 
     @Override
