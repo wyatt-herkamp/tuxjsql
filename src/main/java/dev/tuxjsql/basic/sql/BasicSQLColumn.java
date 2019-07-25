@@ -14,9 +14,11 @@ public abstract class BasicSQLColumn implements SQLColumn {
     private SQLColumn foreignKey;
     private SQLTable table;
     private SQLDataType type;
-    public BasicSQLColumn(){
+
+    public BasicSQLColumn() {
 
     }
+
     public BasicSQLColumn(String name, Object defaultValue, List<String> dataTypeRules, boolean notNull, boolean unique, boolean autoIncrement, boolean primaryKey, SQLColumn foreignKey, SQLTable table, SQLDataType type) {
         this.name = name;
         this.defaultValue = defaultValue;
@@ -31,8 +33,18 @@ public abstract class BasicSQLColumn implements SQLColumn {
     }
 
     protected String buildDataType() {
-        //TODO build with values
-        return type.key();
+        StringBuilder builder = new StringBuilder(type.key());
+        if (!dataTypeRules().isEmpty()) {
+            builder.append("(");
+            int i = 0;
+            for (String s : dataTypeRules) {
+                if (i != 0) builder.append(", ");
+                builder.append(s);
+                i++;
+            }
+            builder.append(")");
+        }
+        return builder.toString();
     }
 
     @Override

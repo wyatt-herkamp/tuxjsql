@@ -1,6 +1,7 @@
 package dev.tuxjsql.basic.sql;
 
 import dev.tuxjsql.core.TuxJSQL;
+import dev.tuxjsql.core.response.*;
 import dev.tuxjsql.core.sql.*;
 import dev.tuxjsql.core.sql.select.SelectStatement;
 
@@ -9,6 +10,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public abstract class BasicSQLTable implements SQLTable {
     protected TuxJSQL tuxJSQL;
@@ -94,4 +96,44 @@ public abstract class BasicSQLTable implements SQLTable {
     public SQLColumn getPrimaryColumn() {
         return sqlColumns.stream().filter(SQLColumn::primaryKey).findFirst().orElse(null);
     }
+
+    @Override
+    public DBAction<DBSelect> select(Object primaryKey) {
+        return select(getPrimaryColumn(), primaryKey);
+    }
+
+    @Override
+    public DBAction<DBUpdate> update(Object primaryKey, Map<?, Object> values) {
+        UpdateStatement updateStatement = update().where().start(getPrimaryColumn().getName(), primaryKey).and();
+        values.forEach((o, o2) -> updateStatement.value(nameOrIt(o), o2));
+        return updateStatement.execute();
+    }
+
+    @Override
+    public DBAction<DBInsert> insert(Map<?, Object> values) {
+        InsertStatement insert = insert();
+        values.forEach((o, o2) -> insert.value(nameOrIt(o), o2));
+        return insert.execute();
+    }
+
+    public static String nameOrIt(Object o) {
+        String name;
+        if (o instanceof SQLColumn) {
+            name = ((SQLColumn) o).getName();
+        } else {
+            name = (String) o;
+        }
+        return name;
+    }
+
+    @Override
+    public DBAction<DBSelect> select(Object columnToLookFor, Object value) {
+        return select().where().start(nameOrIt(columnToLookFor), value).and().execute();
+    }
+
+    @Override
+    public DBAction<DBDelete> delete(Object primarykey) {
+        return delete().where().start(getPrimaryColumn().getName(), primarykey).and().execute();
+    }
+
 }

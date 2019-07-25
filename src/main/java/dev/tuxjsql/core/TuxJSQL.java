@@ -7,6 +7,7 @@ import dev.tuxjsql.core.builders.ColumnBuilder;
 import dev.tuxjsql.core.builders.SQLBuilder;
 import dev.tuxjsql.core.builders.TableBuilder;
 import dev.tuxjsql.core.connection.ConnectionProvider;
+import dev.tuxjsql.core.logger.NoLogger;
 import dev.tuxjsql.core.sql.SQLDataType;
 import dev.tuxjsql.core.sql.SQLTable;
 import dev.tuxjsql.core.sql.select.JoinStatement;
@@ -61,7 +62,7 @@ public final class TuxJSQL {
      *
      * @return a connection!
      */
-    public Connection getConnection(){
+    public Connection getConnection() {
         return provider.getConnection();
     }
 
@@ -69,9 +70,13 @@ public final class TuxJSQL {
         return logger;
     }
 
-
+    /**
+     * Change the logger
+     *
+     * @param logger The new logger you want if null it will use NoLogger
+     */
     public static void setLogger(Logger logger) {
-        if (logger == null) return;
+        if (logger == null) TuxJSQL.logger = new NoLogger();
         TuxJSQL.logger = logger;
     }
 

@@ -2,9 +2,16 @@ package dev.tuxjsql.core.sql;
 
 import java.util.List;
 
+/**
+ * This represents a column
+ */
 public interface SQLColumn {
 
-
+    /**
+     * returns the column name
+     *
+     * @return the name of this column
+     */
     String getName();
 
     Object defaultValue();
@@ -22,6 +29,11 @@ public interface SQLColumn {
 
     SQLColumn foreignKey();
 
+    /**
+     * This is the table its apart of
+     *
+     * @return the table
+     */
     SQLTable getTable();
 
 
@@ -31,6 +43,7 @@ public interface SQLColumn {
 
     /**
      * This takes all the rules. And makes a string for building the column
+     *
      * @return the column and its rules;
      */
     String build();
