@@ -1,10 +1,9 @@
-sudo: required
+sudo: false
 language: java
+install: true
 jdk:
   - openjdk8
   - openjdk9
-  - openjdk10
-  - openjdk11
   - openjdk12
 addons:
   sonarcloud:
