@@ -26,31 +26,29 @@ public class DBAction<T> {
         this.tuxjsql = tuxjsql;
     }
 
-    public T complete() {
+    public T complete() throws InterruptedException {
         Future<T> future = tuxjsql.getExecutor().submit(callable);
         try {
             return future.get();
-        } catch (InterruptedException | ExecutionException e) {
+        } catch (ExecutionException e) {
             TuxJSQL.getLogger().error(ERROR_MESSAGE, e);
         }
         return null;
     }
 
-    public T complete(long time, TimeUnit unit) throws TimeoutException {
+    public T complete(long time, TimeUnit unit) throws TimeoutException, InterruptedException {
         Future<T> future = tuxjsql.getExecutor().submit(callable);
         try {
             return future.get(time, unit);
-        } catch (InterruptedException | ExecutionException e) {
+        } catch (ExecutionException e) {
             TuxJSQL.getLogger().error(ERROR_MESSAGE, e);
         }
         return null;
-
     }
 
     public void queue() {
         tuxjsql.getExecutor().submit(callable);
     }
-
 
 
     public void queue(Consumer<T> handler) {
