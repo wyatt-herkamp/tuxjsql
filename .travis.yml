@@ -4,7 +4,7 @@ install: true
 jdk:
   - openjdk8
   - openjdk9
-  - openjdk12
+  #- openjdk12
 addons:
   sonarcloud:
     organization: "tuxjsql"
