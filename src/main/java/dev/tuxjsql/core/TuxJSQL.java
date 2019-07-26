@@ -87,6 +87,12 @@ public final class TuxJSQL {
         tableCollection.add(table);
     }
 
+    /**
+     * Gets a table from the list
+     *
+     * @param name the table name
+     * @return the table Optional
+     */
     public Optional<SQLTable> getTable(String name) {
         return tableCollection.stream().filter(t -> t.getName().equals(name)).findFirst();
     }

@@ -26,6 +26,13 @@ public class DBAction<T> {
         this.tuxjsql = tuxjsql;
     }
 
+    /**
+     * Complete the action
+     * This is a blocking call and will block the current thread until complete
+     *
+     * @return The response
+     * @throws InterruptedException if the thread was interrupted
+     */
     public T complete() throws InterruptedException {
         Future<T> future = tuxjsql.getExecutor().submit(callable);
         try {
@@ -36,6 +43,15 @@ public class DBAction<T> {
         return null;
     }
 
+    /**
+     * Complete the action
+     * This is a blocking call and will block the current thread until complete
+     *
+     * @param time how much time
+     * @param unit the unit of time measured
+     * @return The response
+     * @throws InterruptedException if the thread was interrupted
+     */
     public T complete(long time, TimeUnit unit) throws TimeoutException, InterruptedException {
         Future<T> future = tuxjsql.getExecutor().submit(callable);
         try {
@@ -46,11 +62,18 @@ public class DBAction<T> {
         return null;
     }
 
+    /**
+     * Queues the action the action will execute and the rest of the code will go on
+     */
     public void queue() {
         tuxjsql.getExecutor().submit(callable);
     }
 
-
+    /**
+     * Queues the action and takes in a Consumer to handle it once its done
+     *
+     * @param handler your handler
+     */
     public void queue(Consumer<T> handler) {
         CompletableFuture.runAsync(() -> {
             try {

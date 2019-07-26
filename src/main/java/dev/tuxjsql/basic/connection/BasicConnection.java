@@ -44,7 +44,13 @@ public final class BasicConnection implements Connection, AutoCloseable {
         connection.rollback();
     }
 
+    /**
+     * this is left empty because this type of close is used for returning a connection
+     *
+     * @throws SQLException if an error happens
+     */
     public void close() throws SQLException {
+        //Left empty
     }
 
     public boolean isClosed() throws SQLException {
