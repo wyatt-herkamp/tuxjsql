@@ -6,19 +6,25 @@ import dev.tuxjsql.core.sql.SQLTable;
 public class BasicDBUpdate implements DBUpdate {
     private SQLTable table;
     private int numberOfRowsEffected;
+    private boolean success;
 
-    public BasicDBUpdate(SQLTable table, int numberOfRowsEffected) {
+    public BasicDBUpdate(SQLTable table, int numberOfRowsEffected, boolean success) {
         this.table = table;
         this.numberOfRowsEffected = numberOfRowsEffected;
+        this.success = success;
+    }
+    @Override
+    public boolean success() {
+        return success;
     }
 
     @Override
-    public SQLTable tableEffected() {
-        return table;
-    }
-
-    @Override
-    public int numberOfRowsEffected() {
+    public int numberOfRows() {
         return numberOfRowsEffected;
+    }
+
+    @Override
+    public SQLTable tableAffected() {
+        return table;
     }
 }

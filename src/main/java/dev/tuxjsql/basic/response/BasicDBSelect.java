@@ -2,23 +2,28 @@ package dev.tuxjsql.basic.response;
 
 import dev.tuxjsql.core.response.DBSelect;
 import dev.tuxjsql.core.response.DBRow;
+import dev.tuxjsql.core.sql.SQLTable;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 public class BasicDBSelect implements DBSelect {
     private List<DBRow> rows;
     private boolean successful;
+    private SQLTable table;
 
-    public BasicDBSelect(List<DBRow> rows, boolean successful) {
+    public BasicDBSelect(List<DBRow> rows, boolean successful, SQLTable table) {
         this.rows = rows;
         this.successful = successful;
+        this.table = table;
     }
 
-    public BasicDBSelect(boolean successful) {
+    public BasicDBSelect(boolean successful, SQLTable table) {
         this.successful = successful;
         this.rows = new ArrayList<>();
+        this.table = table;
     }
 
     public BasicDBSelect(List<DBRow> rows) {
@@ -27,9 +32,8 @@ public class BasicDBSelect implements DBSelect {
 
     @Override
     public List<DBRow> getRows() {
-        return rows;
+        return new ArrayList<>(rows);
     }
-
 
 
     @Override
@@ -38,8 +42,16 @@ public class BasicDBSelect implements DBSelect {
     }
 
     @Override
-    public DBRow first() {
-        return get(0);
+    public Optional<DBRow> first() {
+        if (numberOfRows() == 0) {
+            return Optional.empty();
+        }
+        return Optional.of(rows.get(0));
+    }
+
+    @Override
+    public boolean success() {
+        return successful;
     }
 
     @Override
@@ -48,9 +60,10 @@ public class BasicDBSelect implements DBSelect {
     }
 
     @Override
-    public boolean successful() {
-        return successful;
+    public SQLTable tableAffected() {
+        return table;
     }
+
 
     @Override
     public Iterator<DBRow> iterator() {

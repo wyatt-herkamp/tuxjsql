@@ -20,9 +20,9 @@ public class BasicUtils {
      * This method converts a ResultSet to a DBSelect response
      *
      * @param set The resultset you want to convert
-     * @return your new DBSelect
+     * @return your List of rows
      */
-    public static DBSelect resultSetToDBSelect(ResultSet set) {
+    public static List<DBRow>  resultSetToDBSelect(ResultSet set) {
         Validate.notNull(set, "ResultSet cant be null.");
         try {
             Validate.isTrue(!set.isClosed(), "ResultSet must be open");
@@ -54,7 +54,7 @@ public class BasicUtils {
             return null;
         }
 
-        return new BasicDBSelect(rows);
+        return rows;
     }
 
     public static <T> T getAsEnum(String string) {

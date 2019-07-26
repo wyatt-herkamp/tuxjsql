@@ -2,10 +2,7 @@ package dev.tuxjsql.core.response;
 
 import dev.tuxjsql.core.sql.SQLTable;
 
-public interface DBDelete {
+public interface DBDelete extends DBResult {
 
-    SQLTable tableEffected();
-
-    int numberOfRowsEffected();
 
 }
