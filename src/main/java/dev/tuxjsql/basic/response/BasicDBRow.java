@@ -15,10 +15,6 @@ public class BasicDBRow implements DBRow {
         this.items = items;
     }
 
-    @Override
-    public DBColumnItem getRow(String name) {
-        return getColumn(name).get();
-    }
 
     @Override
     public Optional<DBColumnItem> getColumn(String name) {

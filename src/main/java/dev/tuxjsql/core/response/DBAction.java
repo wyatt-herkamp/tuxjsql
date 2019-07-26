@@ -32,8 +32,8 @@ public class DBAction<T> {
             return future.get();
         } catch (InterruptedException | ExecutionException e) {
             TuxJSQL.getLogger().error(ERROR_MESSAGE, e);
+            return null;
         }
-        return null;
     }
 
     public T complete(long time, TimeUnit unit) throws TimeoutException {
@@ -42,8 +42,8 @@ public class DBAction<T> {
             return future.get(time, unit);
         } catch (InterruptedException | ExecutionException e) {
             TuxJSQL.getLogger().error(ERROR_MESSAGE, e);
+            return null;
         }
-        return null;
     }
 
     public void queue() {
