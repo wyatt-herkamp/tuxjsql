@@ -14,6 +14,9 @@ import java.util.concurrent.Executors;
  * This is the starting point for your TuxJSQL jour
  */
 public class TuxJSQLBuilder {
+    private TuxJSQLBuilder() {
+
+    }
 
     /**
      * Get a SQLBuilder by the class
@@ -69,6 +72,9 @@ public class TuxJSQLBuilder {
             builder = getBuildByClazz(properties.getProperty("db.type"));
         } else {
             throw new IllegalArgumentException("Must provide a DB type");
+        }
+        if (builder == null) {
+            return null;
         }
         return create(properties, builder, service);
     }
