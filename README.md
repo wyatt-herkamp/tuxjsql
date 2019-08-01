@@ -5,15 +5,8 @@
 # TuxJSQL  - A simple to use SQL library
 TuxJSQL is an simple to use SQL library that handles: Query Building, query executing, and database results. It also handles
 
-### Supported Dialects
-- SQLite
-- MySQL 
-### Connection Providers
-
-A connection provider is a interface to allow customizable connection pools and stuff like that
-Supported Connection providers
-- Basic(Basic is just a single connection and is built into TuxJSQL and used by default)
-
+### Using TuxJSQL
+For instructions on using TuxJSQL please to go [tuxjsql.dev](https://tuxjsql.dev/)
 
 ### Support 
 To get support for TuxJSQL please join [Tux's Kingdom](https://discordapp.com/invite/SfqvqRC) on Discord. 
@@ -23,4 +16,3 @@ To get support for TuxJSQL please join [Tux's Kingdom](https://discordapp.com/in
 
 ### Using TuxJSQL
 For instructions on using TuxJSQL please to go [tuxjsql.dev](https://tuxjsql.dev/)
-The javadocs are located at [docs.tuxjsql.dev](https://docs.tuxjsql.dev)

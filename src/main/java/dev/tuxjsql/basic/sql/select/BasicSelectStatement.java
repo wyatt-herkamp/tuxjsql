@@ -24,7 +24,7 @@ public abstract class BasicSelectStatement implements SelectStatement {
 
     @Override
     public SelectStatement where(WhereStatement whereStatement) {
-        this.whereStatement = whereStatement;
+        this.whereStatement = whereStatement == null ? tuxJSQL.createWhere() : whereStatement;
         ((BasicWhereStatement<SelectStatement>) this.whereStatement).setAnd(this);
         return this;
     }

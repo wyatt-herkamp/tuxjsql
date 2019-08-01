@@ -14,6 +14,7 @@ public abstract class BasicDeleteStatement implements DeleteStatement {
     protected SQLTable table;
     protected WhereStatement<DeleteStatement> whereStatement;
     protected TuxJSQL tuxJSQL;
+
     public BasicDeleteStatement(TuxJSQL tuxJSQL) {
         this.tuxJSQL = tuxJSQL;
         whereStatement = tuxJSQL.createWhere(this);
@@ -23,9 +24,10 @@ public abstract class BasicDeleteStatement implements DeleteStatement {
     public WhereStatement<DeleteStatement> where() {
         return whereStatement;
     }
+
     @Override
     public DeleteStatement where(WhereStatement whereStatement) {
-        this.whereStatement = whereStatement;
+        this.whereStatement = whereStatement == null ? tuxJSQL.createWhere() : whereStatement;
         ((BasicWhereStatement<DeleteStatement>) this.whereStatement).setAnd(this);
         return this;
     }

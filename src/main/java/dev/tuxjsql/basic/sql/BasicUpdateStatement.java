@@ -34,7 +34,7 @@ public abstract class BasicUpdateStatement implements UpdateStatement {
     }
     @Override
     public UpdateStatement where(WhereStatement whereStatement) {
-        this.whereStatement = whereStatement;
+        this.whereStatement = whereStatement == null ? tuxJSQL.createWhere() : whereStatement;
         ((BasicWhereStatement<UpdateStatement>) this.whereStatement).setAnd(this);
         return this;
     }
