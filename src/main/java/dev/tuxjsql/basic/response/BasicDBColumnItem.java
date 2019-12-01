@@ -1,6 +1,7 @@
 package dev.tuxjsql.basic.response;
 
 import dev.tuxjsql.basic.utils.BasicUtils;
+import dev.tuxjsql.core.TuxJSQL;
 import dev.tuxjsql.core.response.DBColumnItem;
 
 import java.math.BigInteger;
@@ -9,10 +10,11 @@ import java.util.UUID;
 public class BasicDBColumnItem implements DBColumnItem {
     private Object value;
     private String name;
-
-    public BasicDBColumnItem(Object value, String columnName) {
+private TuxJSQL tuxJSQL;
+    public BasicDBColumnItem(Object value, String columnName, TuxJSQL tuxJSQL) {
         this.value = value;
         this.name = columnName;
+        this.tuxJSQL = tuxJSQL;
     }
 
     @Override
@@ -24,7 +26,7 @@ public class BasicDBColumnItem implements DBColumnItem {
         }
         String string = getAsString();
         if (string == null) return null;
-        return BasicUtils.getAsEnum(string);
+        return BasicUtils.getAsEnum(string,tuxJSQL.getInternalClassLoader());
     }
 
     @Override

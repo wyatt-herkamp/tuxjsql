@@ -24,10 +24,10 @@ public class TuxJSQLBuilder {
      * @param clazz the class path
      * @return the SQLBuilder
      */
-    public static SQLBuilder getBuildByClazz(String clazz) {
+    public static SQLBuilder getBuildByClazz(String clazz, ClassLoader classLoader) {
         Class<?> cla;
         try {
-            cla = Class.forName(clazz);
+            cla = Class.forName(clazz, true, classLoader);
         } catch (ClassNotFoundException e) {
             throw new NoSQLBuilderException("Unable to find SQLBuilder for " + clazz);
         }
@@ -65,11 +65,27 @@ public class TuxJSQLBuilder {
         }
     }
 
+    private static ExecutorService getExecutorsService(Properties properties) {
+        if (properties.containsKey("executors.count")) {
+            return Executors.newFixedThreadPool(Integer.parseInt(properties.getProperty("executors.count")));
+        } else {
+            return Executors.newSingleThreadExecutor();
+        }
+    }
+
+    public static TuxJSQL create(Properties properties, ClassLoader classLoader) {
+        return create(properties, getExecutorsService(properties), classLoader);
+    }
+
 
     public static TuxJSQL create(Properties properties, ExecutorService service) {
+        return create(properties, service, TuxJSQL.class.getClassLoader());
+    }
+
+    public static TuxJSQL create(Properties properties, ExecutorService service, ClassLoader classLoader) {
         SQLBuilder builder;
         if (properties.containsKey("db.type")) {
-            builder = getBuildByClazz(properties.getProperty("db.type"));
+            builder = getBuildByClazz(properties.getProperty("db.type"), classLoader);
         } else {
             throw new IllegalArgumentException("Must provide a DB type");
         }

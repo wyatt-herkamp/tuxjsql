@@ -34,8 +34,10 @@ public final class TuxJSQL {
     private SQLBuilder builder;
     private ExecutorService executor;
     private List<SQLTable> tableCollection = new ArrayList<>();
+    private ClassLoader internalClassLoader;
 
     TuxJSQL(ConnectionProvider provider, SQLBuilder builder, ExecutorService executor) {
+        this.internalClassLoader = builder.getClass().getClassLoader();
         if (logger.isInfoEnabled())
             getLogger().info(String.format("TuxJSQL is using %s For its Connections!", provider.name()));
         this.provider = provider;
@@ -144,5 +146,9 @@ public final class TuxJSQL {
 
     public ExecutorService getExecutor() {
         return executor;
+    }
+
+    public ClassLoader getInternalClassLoader() {
+        return internalClassLoader;
     }
 }

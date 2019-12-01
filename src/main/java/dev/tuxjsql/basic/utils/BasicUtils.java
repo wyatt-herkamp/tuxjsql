@@ -2,11 +2,9 @@ package dev.tuxjsql.basic.utils;
 
 import dev.tuxjsql.basic.response.BasicDBColumnItem;
 import dev.tuxjsql.basic.response.BasicDBRow;
-import dev.tuxjsql.basic.response.BasicDBSelect;
 import dev.tuxjsql.core.TuxJSQL;
 import dev.tuxjsql.core.response.DBColumnItem;
 import dev.tuxjsql.core.response.DBRow;
-import dev.tuxjsql.core.response.DBSelect;
 import org.apache.commons.lang3.Validate;
 
 import java.sql.ResultSet;
@@ -22,7 +20,7 @@ public class BasicUtils {
      * @param set The resultset you want to convert
      * @return your List of rows
      */
-    public static List<DBRow>  resultSetToDBSelect(ResultSet set) {
+    public static List<DBRow>  resultSetToDBSelect(ResultSet set,TuxJSQL tuxJSQL) {
         Validate.notNull(set, "ResultSet cant be null.");
         try {
             Validate.isTrue(!set.isClosed(), "ResultSet must be open");
@@ -38,7 +36,7 @@ public class BasicUtils {
                 List<DBColumnItem> items = new ArrayList<>();
                 for (int j = 1; j <= i; j++) {
 
-                    items.add(new BasicDBColumnItem(set.getObject(j), String.format("%s.%s", metaData.getTableName(j), metaData.getColumnName(j))));
+                    items.add(new BasicDBColumnItem(set.getObject(j), String.format("%s.%s", metaData.getTableName(j), metaData.getColumnName(j)), tuxJSQL));
                 }
                 rows.add(new BasicDBRow(items));
 
@@ -57,7 +55,7 @@ public class BasicUtils {
         return rows;
     }
 
-    public static <T> T getAsEnum(String string) {
+    public static <T> T getAsEnum(String string, ClassLoader classLoader) {
         String[] split = string.split("#");
         if (split.length == 0) return null;
         Class<T> clazz;
