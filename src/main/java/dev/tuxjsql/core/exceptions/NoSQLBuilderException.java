@@ -1,7 +1,7 @@
 package dev.tuxjsql.core.exceptions;
 
-public class NoSQLBuilderException extends RuntimeException {
-    public NoSQLBuilderException(String s) {
-        super(s);
+public class NoSQLBuilderException extends Exception {
+    public NoSQLBuilderException(String s, ClassNotFoundException e) {
+        super(s, e);
     }
 }

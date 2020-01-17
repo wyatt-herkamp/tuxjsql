@@ -1,6 +1,7 @@
 package dev.tuxjsql.core.connection;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Properties;
 
 /**
@@ -46,5 +47,8 @@ public interface ConnectionProvider {
      * @param settings     the settings from the implementation
      * @param userSettings the user settings(Pool size, username, password, and ....)
      */
-    void setup(ConnectionSettings settings, Properties userSettings);
+    void setup(ConnectionSettings settings, Properties userSettings) throws SQLException;
+
+    boolean isClosed();
+
 }

@@ -61,4 +61,13 @@ public class BasicConnectionProvider implements ConnectionProvider {
         }
         TuxJSQL.getLogger().info("Successfully logged into your connection");
     }
+
+    @Override
+    public boolean isClosed() {
+        try {
+            return connection.isClosed();
+        } catch (SQLException e) {
+TuxJSQL.getLogger().error("Unable to get connection status", e);        }
+        return true;
+    }
 }

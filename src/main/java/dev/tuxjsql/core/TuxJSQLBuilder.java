@@ -24,12 +24,12 @@ public class TuxJSQLBuilder {
      * @param clazz the class path
      * @return the SQLBuilder
      */
-    public static SQLBuilder getBuildByClazz(String clazz, ClassLoader classLoader) {
+    public static SQLBuilder getBuildByClazz(String clazz, ClassLoader classLoader) throws Exception {
         Class<?> cla;
         try {
             cla = Class.forName(clazz, true, classLoader);
         } catch (ClassNotFoundException e) {
-            throw new NoSQLBuilderException("Unable to find SQLBuilder for " + clazz);
+            throw new NoSQLBuilderException("Unable to find SQLBuilder for ", e);
         }
         return getBuildByClazz(cla);
     }
@@ -40,14 +40,10 @@ public class TuxJSQLBuilder {
      * @param clazz the clazz object
      * @return the SQLBuilder
      */
-    public static SQLBuilder getBuildByClazz(Class<?> clazz) {
+    public static SQLBuilder getBuildByClazz(Class<?> clazz) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
 
-        try {
-            return (SQLBuilder) clazz.getConstructor().newInstance();
-        } catch (InstantiationException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-            TuxJSQL.getLogger().error("Unable to create instance of " + clazz.getCanonicalName(), e);
-        }
-        return null;
+        return (SQLBuilder) clazz.getConstructor().newInstance();
+
     }
 
     /**
@@ -57,7 +53,7 @@ public class TuxJSQLBuilder {
      * @param properties the java properties object with rules
      * @return the TuxJSQL object
      */
-    public static TuxJSQL create(Properties properties) {
+    public static TuxJSQL create(Properties properties) throws Exception {
         if (properties.containsKey("executors.count")) {
             return create(properties, Executors.newFixedThreadPool(Integer.parseInt(properties.getProperty("executors.count"))));
         } else {
@@ -73,16 +69,16 @@ public class TuxJSQLBuilder {
         }
     }
 
-    public static TuxJSQL create(Properties properties, ClassLoader classLoader) {
+    public static TuxJSQL create(Properties properties, ClassLoader classLoader) throws Exception {
         return create(properties, getExecutorsService(properties), classLoader);
     }
 
 
-    public static TuxJSQL create(Properties properties, ExecutorService service) {
+    public static TuxJSQL create(Properties properties, ExecutorService service) throws Exception {
         return create(properties, service, TuxJSQL.class.getClassLoader());
     }
 
-    public static TuxJSQL create(Properties properties, ExecutorService service, ClassLoader classLoader) {
+    public static TuxJSQL create(Properties properties, ExecutorService service, ClassLoader classLoader) throws Exception {
         SQLBuilder builder;
         if (properties.containsKey("db.type")) {
             builder = getBuildByClazz(properties.getProperty("db.type"), classLoader);
@@ -96,10 +92,12 @@ public class TuxJSQLBuilder {
     }
 
 
-    public static TuxJSQL create(Properties properties, SQLBuilder builder, ExecutorService service) {
+    public static TuxJSQL create(Properties properties, SQLBuilder builder, ExecutorService service) throws Exception {
         ConnectionProvider provider = CPProvider.getCP();
         builder.configureConnectionProvider(provider, properties);
-
+        if (provider.isClosed()) {
+            return null;
+        }
         return new TuxJSQL(provider, builder, service);
     }
 }

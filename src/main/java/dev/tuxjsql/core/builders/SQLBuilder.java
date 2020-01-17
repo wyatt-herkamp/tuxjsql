@@ -135,7 +135,7 @@ public interface SQLBuilder {
      * @param provider       the found Connection provider
      * @param userProperties the users properties
      */
-    void configureConnectionProvider(ConnectionProvider provider, Properties userProperties);
+    void configureConnectionProvider(ConnectionProvider provider, Properties userProperties) throws Exception;
 
     /**
      * Set the TuxJSQL
