@@ -6,6 +6,7 @@ import dev.tuxjsql.core.builders.ColumnBuilder;
 import dev.tuxjsql.core.builders.SQLBuilder;
 import dev.tuxjsql.core.builders.TableBuilder;
 import dev.tuxjsql.core.connection.ConnectionProvider;
+import dev.tuxjsql.core.logger.BasicLogger;
 import dev.tuxjsql.core.logger.NoLogger;
 import dev.tuxjsql.core.sql.SQLDataType;
 import dev.tuxjsql.core.sql.SQLTable;
@@ -16,6 +17,7 @@ import dev.tuxjsql.core.sql.where.WhereStatement;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.helpers.NOPLogger;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -29,7 +31,7 @@ import java.util.concurrent.ExecutorService;
  * @author KingTux
  */
 public final class TuxJSQL {
-    private static Logger logger = LoggerFactory.getLogger(TuxJSQL.class);
+    private static Logger logger = loadLogger();
     private ConnectionProvider provider;
     private SQLBuilder builder;
     private ExecutorService executor;
@@ -151,4 +153,13 @@ public final class TuxJSQL {
     public ClassLoader getInternalClassLoader() {
         return internalClassLoader;
     }
+
+    private static Logger loadLogger() {
+        Logger logger = LoggerFactory.getLogger(TuxJSQL.class);
+        if (logger instanceof NOPLogger) {
+            logger = new BasicLogger("TuxJSQL");
+        }
+        return logger;
+    }
+
 }

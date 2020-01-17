@@ -85,9 +85,7 @@ public class TuxJSQLBuilder {
         } else {
             throw new IllegalArgumentException("Must provide a DB type");
         }
-        if (builder == null) {
-            return null;
-        }
+
         return create(properties, builder, service);
     }
 

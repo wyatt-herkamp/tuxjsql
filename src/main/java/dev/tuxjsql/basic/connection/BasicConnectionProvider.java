@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
+
 @AutoService(ConnectionProvider.class)
 public class BasicConnectionProvider implements ConnectionProvider {
     private Connection connection;
@@ -51,13 +52,13 @@ public class BasicConnectionProvider implements ConnectionProvider {
     }
 
     @Override
-    public void setup(ConnectionSettings connectionRules, Properties userRules) {
+    public void setup(ConnectionSettings connectionRules, Properties userRules) throws Exception{
         try {
             Class.forName(connectionRules.getDriver());
             connection = new BasicConnection(DriverManager.getConnection(connectionRules.getUrl(), userRules));
         } catch (ClassNotFoundException | SQLException e) {
-            TuxJSQL.getLogger().error("Unable to connect to db", e);
-            return;
+            TuxJSQL.getLogger().error("Unable to connect to db");
+            throw e;
         }
         TuxJSQL.getLogger().info("Successfully logged into your connection");
     }
@@ -67,7 +68,8 @@ public class BasicConnectionProvider implements ConnectionProvider {
         try {
             return connection.isClosed();
         } catch (SQLException e) {
-TuxJSQL.getLogger().error("Unable to get connection status", e);        }
+            TuxJSQL.getLogger().error("Unable to get connection status", e);
+        }
         return true;
     }
 }

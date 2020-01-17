@@ -47,7 +47,7 @@ public interface ConnectionProvider {
      * @param settings     the settings from the implementation
      * @param userSettings the user settings(Pool size, username, password, and ....)
      */
-    void setup(ConnectionSettings settings, Properties userSettings) throws SQLException;
+    void setup(ConnectionSettings settings, Properties userSettings) throws Exception;
 
     boolean isClosed();
 
