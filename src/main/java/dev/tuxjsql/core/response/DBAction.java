@@ -85,5 +85,14 @@ public class DBAction<T> {
 
     }
 
-
+    /**
+     * Returns the Callble for this action.
+     * <p>
+     * This was added for the TuxORM.
+     *
+     * @return the callable for this action.
+     */
+    public Callable<T> getCallable() {
+        return callable;
+    }
 }
