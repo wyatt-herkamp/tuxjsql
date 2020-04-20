@@ -86,5 +86,7 @@ public class DBAction<T> {
 
     }
 
-
+    public Callable<T> getCallable() {
+        return callable;
+    }
 }
