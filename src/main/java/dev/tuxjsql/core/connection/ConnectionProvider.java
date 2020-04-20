@@ -46,6 +46,7 @@ public interface ConnectionProvider {
      *
      * @param settings     the settings from the implementation
      * @param userSettings the user settings(Pool size, username, password, and ....)
+     * @throws Exception unable to create connection
      */
     void setup(ConnectionSettings settings, Properties userSettings) throws Exception;
 

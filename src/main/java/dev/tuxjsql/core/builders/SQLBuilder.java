@@ -134,6 +134,8 @@ public interface SQLBuilder {
      *
      * @param provider       the found Connection provider
      * @param userProperties the users properties
+     *
+     * @throws Exception unable to create connection
      */
     void configureConnectionProvider(ConnectionProvider provider, Properties userProperties) throws Exception;
 

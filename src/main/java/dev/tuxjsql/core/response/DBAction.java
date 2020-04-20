@@ -51,6 +51,7 @@ public class DBAction<T> {
      * @param unit the unit of time measured
      * @return The response
      * @throws InterruptedException if the thread was interrupted
+     * @throws TimeoutException didnt meet time requirements
      */
     public T complete(long time, TimeUnit unit) throws TimeoutException, InterruptedException {
         Future<T> future = tuxjsql.getExecutor().submit(callable);

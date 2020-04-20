@@ -18,6 +18,7 @@ public class BasicUtils {
      * This method converts a ResultSet to a DBSelect response
      *
      * @param set The resultset you want to convert
+     * @param tuxJSQL TuxJSQL value
      * @return your List of rows
      */
     public static List<DBRow>  resultSetToDBSelect(ResultSet set,TuxJSQL tuxJSQL) {
