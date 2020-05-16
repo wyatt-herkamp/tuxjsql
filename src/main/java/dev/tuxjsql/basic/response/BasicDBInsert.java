@@ -3,15 +3,24 @@ package dev.tuxjsql.basic.response;
 import dev.tuxjsql.core.response.DBInsert;
 import dev.tuxjsql.core.sql.SQLTable;
 
+import java.util.Optional;
+
 public class BasicDBInsert implements DBInsert {
     private SQLTable table;
     private Object primaryKey;
-    private boolean success;
+    private final boolean success;
+    private Exception exception;
 
     public BasicDBInsert(SQLTable table, Object primaryKey, boolean success) {
         this.table = table;
         this.primaryKey = primaryKey;
         this.success = success;
+    }
+
+    public BasicDBInsert(Exception exception, SQLTable sqlTable) {
+        this.exception = exception;
+        this.table = sqlTable;
+        success = false;
     }
 
     @Override
@@ -27,5 +36,10 @@ public class BasicDBInsert implements DBInsert {
     @Override
     public SQLTable tableAffected() {
         return table;
+    }
+
+    @Override
+    public Optional<Exception> getExceptionThrown() {
+        return Optional.ofNullable(exception);
     }
 }

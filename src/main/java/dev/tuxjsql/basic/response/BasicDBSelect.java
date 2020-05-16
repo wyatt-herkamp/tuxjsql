@@ -13,6 +13,7 @@ public class BasicDBSelect implements DBSelect {
     private List<DBRow> rows;
     private boolean successful;
     private SQLTable table;
+    private Exception exception;
 
     public BasicDBSelect(List<DBRow> rows, boolean successful, SQLTable table) {
         this.rows = rows;
@@ -24,6 +25,10 @@ public class BasicDBSelect implements DBSelect {
         this.successful = successful;
         this.rows = new ArrayList<>();
         this.table = table;
+    }
+
+    public BasicDBSelect(Exception exception, SQLTable table) {
+        this.exception = exception;
     }
 
     public BasicDBSelect(List<DBRow> rows) {
@@ -52,6 +57,11 @@ public class BasicDBSelect implements DBSelect {
     @Override
     public boolean success() {
         return successful;
+    }
+
+    @Override
+    public Optional<Exception> getExceptionThrown() {
+        return Optional.ofNullable(exception);
     }
 
     @Override

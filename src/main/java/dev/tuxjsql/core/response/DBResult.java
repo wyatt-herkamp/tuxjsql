@@ -2,6 +2,8 @@ package dev.tuxjsql.core.response;
 
 import dev.tuxjsql.core.sql.SQLTable;
 
+import java.util.Optional;
+
 /**
  * This is the basic data that all DBResults will have
  */
@@ -12,6 +14,14 @@ public interface DBResult {
      * @return the status
      */
     boolean success();
+
+    /**
+     * Returns an Optional of the exception thrown.
+     *
+     * @return The Exception Thrown
+     */
+    Optional<Exception> getExceptionThrown();
+
 
     /**
      * The number of rows affected or collected
