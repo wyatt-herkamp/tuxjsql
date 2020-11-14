@@ -1,9 +1,13 @@
 package dev.tuxjsql.core.builders;
 
 import dev.tuxjsql.basic.sql.BasicDataTypes;
+import dev.tuxjsql.core.Configuration;
 import dev.tuxjsql.core.TuxJSQL;
 import dev.tuxjsql.core.connection.ConnectionProvider;
-import dev.tuxjsql.core.sql.*;
+import dev.tuxjsql.core.sql.DeleteStatement;
+import dev.tuxjsql.core.sql.InsertStatement;
+import dev.tuxjsql.core.sql.SQLDataType;
+import dev.tuxjsql.core.sql.UpdateStatement;
 import dev.tuxjsql.core.sql.select.JoinStatement;
 import dev.tuxjsql.core.sql.select.SelectStatement;
 import dev.tuxjsql.core.sql.where.SubWhereStatement;
@@ -61,6 +65,7 @@ public interface SQLBuilder {
      * @return the sub where statement
      */
     SubWhereStatement createSubWhereStatement();
+
     /**
      * creates a subwhere
      *
@@ -123,6 +128,7 @@ public interface SQLBuilder {
 
     /**
      * This will convert a public DataType to its local dialect version.
+     *
      * @param dataType the BasicDataType to convert
      * @return the correct SQLDataType
      */
@@ -134,10 +140,11 @@ public interface SQLBuilder {
      *
      * @param provider       the found Connection provider
      * @param userProperties the users properties
-     *
      * @throws Exception unable to create connection
      */
     void configureConnectionProvider(ConnectionProvider provider, Properties userProperties) throws Exception;
+
+    void configureConnectionProvider(Configuration configuration) throws Exception;
 
     /**
      * Set the TuxJSQL

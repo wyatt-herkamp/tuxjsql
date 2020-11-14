@@ -52,5 +52,16 @@ public interface Configuration<T extends Configuration> {
      */
     T setSQLBuilder(SimpleSupplier<SQLBuilder> builder);
 
+    /**
+     * Sets the ThreadPool size. Default is 1
+     *
+     * @return this
+     */
+    T setThreadPoolSize(int size);
+
+    SimpleSupplier<SQLBuilder> getSQLBuilder();
+
+    int getThreadPoolSize();
+
 
 }
