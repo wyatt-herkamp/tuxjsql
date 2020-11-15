@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>dev.tuxjsql</groupId>
+    <groupId>me.kingtux</groupId>
     <artifactId>tuxjsql</artifactId>
     <version>2.2-SNAPSHOT</version>
     <name>TuxJSQL (Core)</name>
@@ -13,7 +13,7 @@
             <name>GNU General Public License v3.0</name>
         </license>
     </licenses>
-    <url>https://tuxjsql.dev</url>
+    <url>https://tuxjsql.potatocorp.dev</url>
 
     <description>A JDBC wrapper, sql builder, and sql executor</description>
     <scm>

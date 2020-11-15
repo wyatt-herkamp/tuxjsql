@@ -27,7 +27,7 @@ public interface Configuration<T extends Configuration> {
 
     /**
      * this will set the User Properties also known as Connection Pool Rules.
-     *
+     * @param properties The  ConnectionProvider Properties
      * @return this
      */
     T setUserProperties(Properties properties);
@@ -48,13 +48,13 @@ public interface Configuration<T extends Configuration> {
      * This is the default. All the other setSQLBuilder will just fork into this
      *
      * @param builder a Supplier that will build the SQLBuilder
-     * @return the Supplier<SQLBuilder>
+     * @return the Supplier SQLBuilder
      */
     T setSQLBuilder(SimpleSupplier<SQLBuilder> builder);
 
     /**
      * Sets the ThreadPool size. Default is 1
-     *
+     * @param size the Si
      * @return this
      */
     T setThreadPoolSize(int size);
