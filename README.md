@@ -6,13 +6,13 @@
 TuxJSQL is an simple to use SQL library that handles: Query Building, query executing, and database results. It also handles
 
 ### Using TuxJSQL
-For instructions on using TuxJSQL please to go [tuxjsql.dev](https://tuxjsql.dev/)
+For instructions on using TuxJSQL please to go COMING SOON
 
 ### Support 
-To get support for TuxJSQL please join [Tux's Kingdom](https://discordapp.com/invite/SfqvqRC) on Discord. 
+To get support for TuxJSQL please join [The People](https://discord.com/invite/qtCKz4X) on Discord. 
 
 ### Notable Projects
 - [TuxORM](https://github.com/wherkamp/TuxORM) is an orm built ontop of TuxJSQL 
 
 ### Using TuxJSQL
-For instructions on using TuxJSQL please to go [tuxjsql.dev](https://tuxjsql.dev/)
+For instructions on using TuxJSQL please to go 
