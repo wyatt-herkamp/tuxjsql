@@ -144,7 +144,7 @@ public interface SQLBuilder {
      */
     void configureConnectionProvider(ConnectionProvider provider, Properties userProperties) throws Exception;
 
-    void configureConnectionProvider(Configuration configuration) throws Exception;
+    void configureConnectionProvider(ConnectionProvider provider, Configuration configuration) throws Exception;
 
     /**
      * Set the TuxJSQL
