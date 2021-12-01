@@ -89,7 +89,7 @@
                         <annotationProcessorPath>
                             <groupId>com.google.auto.service</groupId>
                             <artifactId>auto-service</artifactId>
-                            <version>1.0-rc5</version>
+                            <version>1.0</version>
                         </annotationProcessorPath>
                     </annotationProcessorPaths>
                 </configuration>
