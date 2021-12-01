@@ -1,5 +1,5 @@
-import dev.tuxjsql.basic.utils.BasicUtils;
-import dev.tuxjsql.core.TuxJSQL;
+import me.kingtux.tuxjsql.basic.utils.BasicUtils;
+import me.kingtux.tuxjsql.core.TuxJSQL;
 import test.cool.EnumTest;
 
 public class TestEnum {
